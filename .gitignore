@@ -2,3 +2,5 @@ LinkSharing-grailsPlugins.iml
 LinkSharing.iml
 .idea
 target
+.slcache
+out

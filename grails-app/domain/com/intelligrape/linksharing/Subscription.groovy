@@ -1,14 +1,18 @@
 package com.intelligrape.linksharing
 
 class Subscription {
-    Topics topics
+    User user
+    Topic topic
+    Seriousness seriousness
     static belongsTo=[user:User]
     Date dateCreated
-  //  static belongsTo = [user:User]
 
     static constraints = {
-        topics(unique: true)
+     topic unique: "user"
 
+    }
+    def afterInsert() {
+        log.info "----------User is Subscribed------"
     }
 
 }

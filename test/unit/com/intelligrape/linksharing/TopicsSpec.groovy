@@ -6,7 +6,7 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@TestFor(Topics)
+@TestFor(Topic)
 class TopicsSpec extends Specification {
 
     def setup() {
@@ -19,7 +19,7 @@ class TopicsSpec extends Specification {
         given:
         User user=new User();
 
-       Topics topic=new Topics(topicName:testTopic,createdBy:crtBy,visibility:vsbl)
+       Topic topic=new Topic(topicName:testTopic,createdBy:crtBy,visibility:vsbl)
         expect:
         topic.validate()==result
        where:
@@ -33,7 +33,7 @@ class TopicsSpec extends Specification {
 
         setup:
         User user=new User()
-        Topics topic=new Topics(topicName:"history",createdBy:user,visibility:Visibility.PRIVIATE)
+        Topic topic=new Topic(topicName:"history",createdBy:user,visibility:Visibility.PRIVIATE)
         when:
         topic.save()
 
@@ -41,12 +41,22 @@ class TopicsSpec extends Specification {
         topic.count() == 1
 
         when:
-        Topics topic2=new Topics(topicName:"history",createdBy:user,visibility:Visibility.PRIVIATE)
+        Topic topic2=new Topic(topicName:"history",createdBy:user,visibility:Visibility.PRIVIATE)
         topic2.save()
 
         then:
         topic2.count() == 1
         topic2.errors.allErrors.size() == 1
         topic2.errors.getFieldErrorCount('createdBy') == 1
+    }
+
+    void "to String test"() {
+
+        given:
+        User user=new User()
+        Topic topic=new Topic(topicName:"history",createdBy:user,visibility:Visibility.PRIVIATE)
+        expect:
+        topic.toString()=="history"
+
     }
 }

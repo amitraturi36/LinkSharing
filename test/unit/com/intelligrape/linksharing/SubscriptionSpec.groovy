@@ -17,7 +17,7 @@ class SubscriptionSpec extends Specification {
 
     void "test Subscription "() {
         given:
-        Topics testTopics=new Topics()
+        Topic testTopics=new Topic()
         User testUser=new User()
         Subscription subscription1=new Subscription(topics:testTopics,user:testUser)
 

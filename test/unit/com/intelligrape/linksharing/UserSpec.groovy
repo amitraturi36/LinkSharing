@@ -59,7 +59,14 @@ class UserSpec extends Specification {
         user2.errors.getFieldErrorCount('email') == 1
 
     }
+    void "to String test"() {
 
+        given:
+        User user=new User(firstName: "amit",lastName:"raturi",password: "1234568")
+        expect:
+        user.toString()=="amit raturi"
+
+    }
 
 
 }

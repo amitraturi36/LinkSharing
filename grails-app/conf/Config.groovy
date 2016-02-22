@@ -2,7 +2,7 @@
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
 
-//grails.config.locations =["file:${userHome}/.grails/${appName}-config.groovy"]
+grails.config.locations =["file:${userHome}/.grails/${appName}-config.groovy"]
 
 // grails.config.locations = [ "classpath:${appName}-config.properties",
 //                             "classpath:${appName}-config.groovy",
@@ -106,9 +106,9 @@ environments {
 log4j.main = {
     // Example of changing the log pattern for the default console appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name: 'stdout', layout: pattern(conversionPattern: '%d{yyy-MM-dd HH:mm:ss,SSS} %p %c{2} %m%n')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -120,11 +120,9 @@ log4j.main = {
            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
-    all     "com.intelligrape.LinkSharing.controllers.UtilController"
+           'net.sf.ehcache.hibernate',
+            'grails.app'
+    info 'grails.app'
 
-    appenders {
-        file name:'file', file:'/home/amit/logs/mylog.log'
-        layout:pattern(conversionPattern: '%c{2} %m%n')
-    }
+
 }
