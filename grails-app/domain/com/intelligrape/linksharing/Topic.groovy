@@ -9,9 +9,14 @@ class Topic {
     static constraints = {
 
 
-        topicName blank:false,unique: "createdBy"
+        topicName blank: false, unique: "createdBy"
 
     }
+    static mapping = {
+        sort "topicName"
+
+    }
+
 
     @Override
     String toString() {
@@ -19,19 +24,19 @@ class Topic {
         return this.topicName;
     }
 
+
+
     def afterInsert() {
         log.info "----------Into After Insert------"
 
-         Subscription subscription
+        Subscription subscription
 
         Topic.withNewSession {
 
-         subscription= new Subscription(topic: this , user: this.createdBy,seriousness:Seriousness.VERYSERIOUS)
-            if (!subscription.save())
-            {
+            subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERYSERIOUS)
+            if (!subscription.save()) {
                 log.error(subscription.errors)
             }
-
 
 
         }

@@ -11,6 +11,9 @@ class Subscription {
      topic unique: "user"
 
     }
+    static mapping = {
+        seriousness defaultValue:Seriousness.SERIOUS
+    }
     def afterInsert() {
         log.info "----------User is Subscribed------"
     }

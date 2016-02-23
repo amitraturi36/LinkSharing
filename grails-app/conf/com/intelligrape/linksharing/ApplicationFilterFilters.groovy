@@ -15,8 +15,11 @@ class ApplicationFilterFilters {
             }
         }
         sessionCheck(controller:'*', action:'*') {
-
-
+            before = {
+//                if(params) {
+//                 //   log.info(parms)
+//                }
+            }
         }
         loginCheck(controller:'user',action: '*') {
 

@@ -9,6 +9,7 @@ class BootStrap {
         subscribeTopics()
         createReadingItems()
         createResourceRatings()
+
     }
 
     void createUser() {
@@ -96,7 +97,6 @@ class BootStrap {
 
     void createReadingItems() {
         ReadingItem readingItem
-        //
         Resource resource
         Subscription.getAll().each {
             resource = Resource.findByTopic(it.topic)
@@ -130,6 +130,7 @@ class BootStrap {
         }
 
     }
+
 
     def destroy = {
     }
