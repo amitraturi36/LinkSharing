@@ -25,7 +25,12 @@ class Topic {
     }
 
 
-
+   static def search(Long id) {
+        List<Topic> topicList = Topic.createCriteria().list {
+            eq("id",id)
+        }
+        return topicList
+    }
     def afterInsert() {
         log.info "----------Into After Insert------"
 

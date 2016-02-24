@@ -14,15 +14,15 @@ class TopicController {
         Topic topic = Topic.load(id)
         try {
             topic.delete()
-            flash.message="Sucessfully Deleted"
-        } catch (ObjectNotFoundException  e) {
-            flash.error=e
+            flash.message = "Sucessfully Deleted"
+        } catch (ObjectNotFoundException e) {
+            flash.error = e
         }
 
     }
 
-    def read(Long id) {
-        Topic topic = Topic.read(id)
+    def show(ResourceSearchCo resourceSearchCo) {
+        Topic topic = Topic.read(resourceSearchCo.topicId)
         render topic.toString()
     }
 
@@ -41,5 +41,11 @@ class TopicController {
 
     }
 
+    def search(ResourceSearchCo resourceSearchCo) {
+       List <Topic> topicList=Topic.search(resourceSearchCo.topicId)
+        render topicList.resources.description
+    }
 
 }
+
+

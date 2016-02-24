@@ -3,7 +3,7 @@ package com.intelligrape.linksharing
 class ApplicationFilterFilters {
 
     def filters = {
-        all(controller:'*', action:'*') {
+        all(controller: '*', action: '*') {
             before = {
 
             }
@@ -14,19 +14,19 @@ class ApplicationFilterFilters {
 
             }
         }
-        sessionCheck(controller:'*', action:'*') {
+        sessionCheck(controller: '*', action: '*') {
             before = {
 //                if(params) {
-//                 //   log.info(parms)
+//                    log.info(params)
 //                }
             }
         }
-        loginCheck(controller:'user',action: '*') {
+        loginCheck(controller: 'user', action: '*') {
 
             before = {
 
-                if(!session.status){
-                    redirect(controller:'login',action: 'index' )
+                if (!session.status) {
+                    redirect(controller: 'login', action: 'index')
                 }
 
             }

@@ -21,18 +21,19 @@ class LoginController {
 
     }
 
-    def loginHandler(String user,String password) {
-    if((!user)&&(!password)) {
+    def loginHandler(String username,String password) {
+    if((!username)&&(!password)) {
         render "Please enter valid user or password"
     }
         else {
-        User userdata = User.findByEmail(user)
-        if ((userdata.email == user) && (userdata.password == password)) {
-            if (!userdata.active) {
+        User user= User.findByEmail(username,password)
+        println user.email
+        if (user) {
+            if (!user.active) {
                 flash.error = "Your accoutn is not active"
                 redirect(action: "index")
             } else {
-                session.userName = userdata.userName
+                session.userName = user.userName
                 session.status = "LoggedIn"
                 redirect(action: "index")
             }
