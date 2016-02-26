@@ -18,10 +18,14 @@ class LoginControllerSpec extends Specification {
 
     void "test for Login Handler"() {
         when:
-        new User(firstName: "amit",lastName: "raturi",email: "amit@gmail",password:"1234567",confirmPassword: "1234567" ).save(flush: true)
+       User userobj= new User(firstName: "amit",lastName:"raturi",email:"amit@gmail",password:"1234567",confirmPassword: "1234567",active:true  )
+               userobj.save(flush: true)
+        def userMock=Mock(User)
+        User user= userMock
+        userMock.user.findAllByEmail("amit@gmail")<<userobj
         controller.loginHandler("amit@gmail","1234567")
         then:
-        response.getRedirectedUrl(controller:"login")
+        controller.response.redirectUrl=="login/index"
 
 
     }

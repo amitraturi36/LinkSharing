@@ -2,7 +2,6 @@ package com.intelligrape.linksharing
 
 import java.sql.Blob
 
-
 class User {
     String email
     String password
@@ -43,23 +42,8 @@ class User {
 
     }
 
-
     @Override
     String toString() {
         return this.userName
     }
-
-    def afterInsert() {
-        log.info "----------Into After Insert------"
-    }
-
-    def beforeInsert() {
-        log.info "----------Into before Insert------"
-    }
-
-    def beforeValidate() {
-        log.info "----------Into before Validate------"
-    }
-
-
 }

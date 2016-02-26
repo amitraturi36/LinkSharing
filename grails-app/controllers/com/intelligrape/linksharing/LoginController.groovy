@@ -8,8 +8,8 @@ class LoginController {
         } else if (session.status) {
             forward(controller: 'User', action: 'index')
         } else {
-            List list=Resource.toppost()
-            render "Top posts are ${list }"
+            List list = Resource.toppost()
+            render  "Top posts are ${list}"
 
         }
 

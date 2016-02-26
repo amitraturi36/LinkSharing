@@ -8,4 +8,5 @@ class ReadingItem {
     static constraints = {
         resource unique: "user"
     }
+
 }

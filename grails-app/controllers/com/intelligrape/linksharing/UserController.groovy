@@ -12,7 +12,6 @@ class UserController {
     }
 
 
-
     def register(String email, String fname, String lname, String passwrd, String CnfrmPsswrd, String uname) {
         User user = new User(email: email, firstName: fname, lastName: lname, password: passwrd, confirmPassword: CnfrmPsswrd)
         user.validate()

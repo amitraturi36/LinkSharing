@@ -39,13 +39,23 @@ abstract class Resource {
     static def toppost() {
         List<Topic> topicList = ResourceRating.createCriteria().list {
             createAlias('resource', 'resc')
+            createAlias('resource.topic', 'resctp')
             projections {
                 groupProperty('resc.topic')
                 count('id')
+                property('resc.createdBy')
+                property('resctp.visibility')
+                property('resc.topic.id')
 
             }
         }
-        return topicList
+        List<TopicVO> topicVOList = []
+        topicList.each { row ->
+            topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2],visibility:row[3] ,id: row[4]))
+
+        }
+
+        return topicVOList
     }
 
 }
