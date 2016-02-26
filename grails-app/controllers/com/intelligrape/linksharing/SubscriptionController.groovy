@@ -1,5 +1,8 @@
 package com.intelligrape.linksharing
 
+import org.hibernate.ObjectNotFoundException
+
+
 class SubscriptionController {
 
     def index() {}
@@ -8,16 +11,16 @@ class SubscriptionController {
         Subscription subscription = Subscription.load(id)
         try {
             subscription.delete()
-            render("<br/>Sucess")
-        } catch (Exception e) {
-            render "<br/>Subscription not found"
+            render("Sucess")
+        } catch (ObjectNotFoundException error) {
+            flash.errors = error
         }
     }
 
     def save(Long id) {
         Topic topic = Topic.get(id)
-        User user = User.findByFirstName(session.userName)
-        Subscription subscription = new Subscription(topic: topic, user: user)
+        User user = User.findByEmail(session.user)
+        Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.SERIOUS)
         if (subscription.save(flush: true, failOnError: true)) {
 
             render "Sucess"
@@ -29,8 +32,7 @@ class SubscriptionController {
     }
 
     def update(Long id, Seriousness seriousness) {
-
-        Subscription subscription = Subscription.load(id)
+        Subscription subscription = Subscription.get(id)
         subscription.seriousness = seriousness
         if (subscription.save(flush: true, failOnError: true)) {
             render "Sucess"

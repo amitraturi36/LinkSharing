@@ -6,6 +6,6 @@ class ReadingItem {
     Boolean isRead
 
     static constraints = {
-       resource unique:"user"
+        resource unique: "user"
     }
 }

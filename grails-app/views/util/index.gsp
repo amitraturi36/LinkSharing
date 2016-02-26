@@ -11,6 +11,5 @@
   <title></title>
 </head>
 <body>
-<b>hello groovy</b>
 </body>
 </html>

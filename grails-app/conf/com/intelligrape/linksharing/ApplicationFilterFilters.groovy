@@ -21,13 +21,11 @@ class ApplicationFilterFilters {
 //                }
             }
         }
-        loginCheck(controller: 'user', action: '*') {
-
+        loginCheck(controller: 'login', action: '*', invert: true) {
             before = {
-
-                if (!session.status) {
-                    redirect(controller: 'login', action: 'index')
-                }
+//                if (!session.status) {
+//                    redirect(controller: 'login', action: 'index')
+//                }
 
             }
             after = { Map model ->

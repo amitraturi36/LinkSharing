@@ -22,7 +22,7 @@ class TopicControllerSpec extends Specification {
         when:
         controller.save(topic,"public")
         then:
-        flash.message=="Topic is saved"
+        flash.message=="topic.saved.message"
     }
 
     void "Deletion of topic"() {

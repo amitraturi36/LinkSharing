@@ -16,9 +16,9 @@ class BootStrap {
         Integer count = User.count()
         if (count == 0) {
 
-            User user = new User(email: "user1@gmail.com", password: "amit12345", firstName: "Bhuwan", lastName: "brijwasi", admin: false, active: false,confirmPassword:"amit12345")
+            User user = new User(email: "user1@gmail.com", password: "amit12345", firstName: "Bhuwan", lastName: "brijwasi", admin: false, active: false, confirmPassword: "amit12345")
 
-            User admin = new User(email: "amit@gmail.com", password: "12345admin", firstName: "Amit", lastName: "Raturi", admin: true, active: true,confirmPassword:"12345admin")
+            User admin = new User(email: "amit@gmail.com", password: "12345admin", firstName: "Amit", lastName: "Raturi", admin: true, active: true, confirmPassword: "12345admin")
 
             log.info("data is created")
             user.save(failOnError: true, flush: true)

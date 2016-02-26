@@ -4,16 +4,17 @@ class Subscription {
     User user
     Topic topic
     Seriousness seriousness
-    static belongsTo=[user:User]
+    static belongsTo = [user: User]
     Date dateCreated
 
     static constraints = {
-     topic unique: "user"
+        topic unique: "user"
 
     }
     static mapping = {
-        seriousness defaultValue:Seriousness.SERIOUS
+        seriousness defaultValue: Seriousness.SERIOUS
     }
+
     def afterInsert() {
         log.info "----------User is Subscribed------"
     }
