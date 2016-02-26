@@ -64,9 +64,9 @@ class TopicController {
     }
 
     def search(ResourceSearchCO resourceSearchCO) {
-//        List <Topic> topicList = Topic.search(resourceSearchCO).list()
-//        render topicList.resources.description
-       render Topic.getTrendingTopics()
+        List <Topic> topicList = Topic.search(resourceSearchCO).list()
+        render topicList.resources.description
+
     }
 
 }
