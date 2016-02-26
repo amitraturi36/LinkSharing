@@ -18,12 +18,13 @@ class ResourceController {
     }
 
     def resourceShow() {
-        List<TopicVO> topics = Topic.getTrendingTopics(0)
+        List<TopicVO> topics =[]
         int i
         2.times {
+            topics = Topic.getTrendingTopics(it)
             i = 0
             render "${topics[i++].createdBy}   ${topics[i++].name}  ${topics[i++].count}  ${topics[i++].id}  ${topics[i].visibility}<br/>"
-            topics = Topic.getTrendingTopics(5)
+
         }
     }
 }

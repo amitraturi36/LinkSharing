@@ -7,7 +7,7 @@ abstract class Resource {
     Date dateCreated
     Date lastUpdated
     RatingInfoVO ratingInfo
-    static transients =['ratingInfo']
+    static transients = ['ratingInfo']
     static hasMany = [ratings: ResourceRating, readingItems: ReadingItem]
     static belongsTo = [topic: Topic]
 
@@ -15,25 +15,37 @@ abstract class Resource {
         description(type: 'text')
     }
 
-    def getRatingInfo(){
-        if(!ratingInfo){
+    def getRatingInfo() {
+        if (!ratingInfo) {
             ratingInfo = Resource.resourceRater(this)
         }
         ratingInfo
     }
 
-    static  RatingInfoVO resourceRater (Resource resource) {
-        List<ResourceRating> resourceList = ResourceRating.createCriteria().list{
+    static RatingInfoVO resourceRater(Resource resource) {
+        List<ResourceRating> resourceList = ResourceRating.createCriteria().list {
             projections {
                 sum "score"
                 avg("score")
-               count('id', "score")
+                count('id', "score")
             }
             eq('resource', Resource.get(resource.id))
 
         }
 
-      return  new RatingInfoVO(averageScore:resourceList[1],totalScore:resourceList[0],totalVotes:resourceList[2])
+        return new RatingInfoVO(averageScore: resourceList[1], totalScore: resourceList[0], totalVotes: resourceList[2])
+    }
+
+    static def toppost() {
+        List<Topic> topicList = ResourceRating.createCriteria().list {
+            createAlias('resource', 'resc')
+            projections {
+                groupProperty('resc.topic')
+                count('id')
+
+            }
+        }
+        return topicList
     }
 
 }
