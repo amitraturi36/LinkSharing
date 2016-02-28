@@ -37,7 +37,7 @@ class TopicController {
 
         } else {
             if (topic.visibility == Visibility.PRIVIATE) {
-                if (topic.subscriptions.user.userName.find{it==session.userName}) {
+                if (topic.subscriptions.user.userName.find { it == session.userName }) {
                     render "Sucess"
                 } else {
                     flash.error = "Topic not Subscribed"
@@ -51,8 +51,8 @@ class TopicController {
     }
 
     def save(Topic topic, String seriousness) {
-        if (topic.createdBy.userName == session.userName) {
-            Subscription.findByTopic(topic).seriousness=Seriousness.stringToEnum(seriousness)
+        if (topic.createdBy == session.user) {
+            Subscription.findByTopic(topic).seriousness = Seriousness.stringToEnum(seriousness)
             if (topic.save(flush: true, failOnError: true)) {
                 flash.message = message(code: "topic.saved.message")
             } else {
@@ -60,11 +60,14 @@ class TopicController {
             }
 
         }
+        else{
+            flash.message = message(code: "topic.not.saved.message")
+        }
 
     }
 
     def search(ResourceSearchCO resourceSearchCO) {
-        List <Topic> topicList = Topic.search(resourceSearchCO).list()
+        List<Topic> topicList = Topic.search(resourceSearchCO).list()
         render topicList.resources.description
 
     }

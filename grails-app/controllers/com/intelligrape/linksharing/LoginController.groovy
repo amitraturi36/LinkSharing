@@ -5,11 +5,13 @@ class LoginController {
     def index() {
         if (flash.error) {
             render "${flash.error}"
-        } else if (session.status) {
+        } else if (session.user) {
             forward(controller: 'User', action: 'index')
+
         } else {
             List list = Resource.toppost()
-            render  "Top posts are ${list}"
+          render  view:'index',model:[list:list]
+
 
         }
 
@@ -19,15 +21,13 @@ class LoginController {
         if ((!username) && (!password)) {
             render "Please enter valid user or password"
         } else {
-            User user = User.findByEmail(username, password)
+            User user = User.findByEmailAndPassword(username, password)
             if (user) {
                 if (!user.active) {
                     flash.error = "Your accoutn is not active"
                     redirect(action: "index")
                 } else {
-                    session.userName = user.userName
-                    session.user = user.email
-                    session.status = "LoggedIn"
+                    session.user = user
                     redirect(action: "index")
                 }
             } else {

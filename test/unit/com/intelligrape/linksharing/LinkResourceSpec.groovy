@@ -19,9 +19,9 @@ class LinkResourceSpec extends Specification {
 
     void "to String test"() {
         given:
-        LinkResource linkResource=new LinkResource(url: "www.abc.com")
+        LinkResource linkResource = new LinkResource(url: "www.abc.com")
         expect:
-        linkResource.toString()=="www.abc.com"
+        linkResource.toString() == "www.abc.com"
 
     }
 }

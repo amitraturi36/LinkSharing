@@ -15,18 +15,18 @@ class ReadingItemSpec extends Specification {
     def cleanup() {
     }
 
-    void "Reading Item"(Resource resc,User usr,Boolean bool,Boolean result) {
+    void "Reading Item"(Resource resc, User usr, Boolean bool, Boolean result) {
 
         Resource resource
         User user
         Boolean isRead
         given:
-        ReadingItem readingItem=new ReadingItem(user:usr,resource:resc,isRead:bool)
+        ReadingItem readingItem = new ReadingItem(user: usr, resource: resc, isRead: bool)
         expect:
-        readingItem.validate()==result
+        readingItem.validate() == result
         where:
-        resc          |usr       |bool |result
-        null          |new User()| true|false
-        Mock(Resource)|new User()|true |true
+        resc           | usr        | bool | result
+        null           | new User() | true | false
+        Mock(Resource) | new User() | true | true
     }
 }

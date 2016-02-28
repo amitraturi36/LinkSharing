@@ -23,7 +23,7 @@ class ApplicationFilterFilters {
         }
         loginCheck(controller: 'login', action: '*', invert: true) {
             before = {
-//                if (!session.status) {
+//                if (!session.user) {
 //                    redirect(controller: 'login', action: 'index')
 //                }
 

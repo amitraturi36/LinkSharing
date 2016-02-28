@@ -15,29 +15,28 @@ class ResourceRatingSpec extends Specification {
     def cleanup() {
     }
 
-    void "Rating"(Integer scoreTest,Boolean result) {
+    void "Rating"(Integer scoreTest, Boolean result) {
 
         given:
-        User usr=new User()
-        Resource resc=Mock(Resource)
-        ResourceRating resourceRating=new ResourceRating(resource:resc, user:usr,score:scoreTest)
-       expect:
-       resourceRating.validate()==result
+        User usr = new User()
+        Resource resc = Mock(Resource)
+        ResourceRating resourceRating = new ResourceRating(resource: resc, user: usr, score: scoreTest)
+        expect:
+        resourceRating.validate() == result
         where:
-        scoreTest|result
-        0        |false
-        2        |true
-        6        |false
+        scoreTest | result
+        0         | false
+        2         | true
+        6         | false
 
     }
 
-    void "Checking Uniqueness"()
-    {
+    void "Checking Uniqueness"() {
 
         setup:
-        User usr=new User()
-        Resource resc=Mock(Resource)
-        ResourceRating resourceRating=new ResourceRating(resource:resc, user:usr,score:3)
+        User usr = new User()
+        Resource resc = Mock(Resource)
+        ResourceRating resourceRating = new ResourceRating(resource: resc, user: usr, score: 3)
         when:
         resourceRating.save()
 
@@ -45,7 +44,7 @@ class ResourceRatingSpec extends Specification {
         resourceRating.count() == 1
 
         when:
-        ResourceRating resourceRating2=new ResourceRating(resource:resc, user:usr,score:3)
+        ResourceRating resourceRating2 = new ResourceRating(resource: resc, user: usr, score: 3)
         resourceRating2.save()
 
         then:

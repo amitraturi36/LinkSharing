@@ -19,7 +19,7 @@ class SubscriptionController {
 
     def save(Long id) {
         Topic topic = Topic.get(id)
-        User user = User.findByEmail(session.user)
+        User user = session.user
         Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.SERIOUS)
         if (subscription.save(flush: true, failOnError: true)) {
 

@@ -19,9 +19,9 @@ class DocumentResourceSpec extends Specification {
     void "to String test"() {
 
         given:
-        LinkResource linkResource=new LinkResource(filePaths:"c:/abc/pqr.txt")
+        LinkResource linkResource = new LinkResource(filePaths: "c:/abc/pqr.txt")
         expect:
-        linkResource.toString()!="c:/abc/pqr.txt"
+        linkResource.toString() != "c:/abc/pqr.txt"
 
     }
 }

@@ -1,5 +1,7 @@
 package com.intelligrape.linksharing
 
+import org.codehaus.groovy.control.messages.Message
+
 class UserController {
     String confirmPassword
     static constraints = {
@@ -7,15 +9,17 @@ class UserController {
     }
 
     def index() {
+       List<TopicVO> topicVOList=Topic.getTrendingTopics(0)
+      render (view:"index", model:[list:topicVOList])
+       // render topicVOList
 
-        render "user dahsboard ${session.userName}"
     }
 
 
     def register(String email, String fname, String lname, String passwrd, String CnfrmPsswrd, String uname) {
         User user = new User(email: email, firstName: fname, lastName: lname, password: passwrd, confirmPassword: CnfrmPsswrd)
         user.validate()
-        render "${user.errors.allErrors.collect { it }.join("")}"
+        render message(code: "${user.errors.allErrors}")
 
 
     }

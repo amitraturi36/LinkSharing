@@ -19,29 +19,29 @@ class UserSpec extends Specification {
     @Unroll("Executing #sno")
     void "validating user"() {
         given:
-        User user=new User(email:testEmail,firstName:testFirstName,lastName:testLastName,password: "123456" )
+        User user = new User(email: testEmail, firstName: testFirstName, lastName: testLastName, password: "123456")
         when:
         Boolean result = user.validate()
 
         then:
-        result== valid
+        result == valid
         when:
-        String TempUName=username
+        String TempUName = username
         then:
-        TempUName==username
+        TempUName == username
         where:
-        sno | testFirstName    |testLastName  | testEmail        |username       | valid
-        1   | ""               | "hello"      | "a@b.com"        |  null         | false
-        2   | "amit"           | "raturi"     | "abc"            |  "amit raturi"| false
-        3   | "amit"           | "xyz"        | "amit@gmail.com" |  "amit xyz"   | true
+        sno | testFirstName | testLastName | testEmail        | username      | valid
+        1   | ""            | "hello"      | "a@b.com"        | null          | false
+        2   | "amit"        | "raturi"     | "abc"            | "amit raturi" | false
+        3   | "amit"        | "xyz"        | "amit@gmail.com" | "amit xyz"    | true
 
     }
-    void "Unique Email"()
-    {
+
+    void "Unique Email"() {
 
         setup:
         String testEmail = "amit@tothenew.com"
-        User user=new User(email:testEmail,firstName:"testFirstName",lastName:"testLastName",password: "123456" )
+        User user = new User(email: testEmail, firstName: "testFirstName", lastName: "testLastName", password: "123456")
 
         when:
         user.save()
@@ -50,7 +50,7 @@ class UserSpec extends Specification {
         user.count() == 1
 
         when:
-        User user2=new User(email:testEmail,firstName:"testFirstName",lastName:"testLastName",password: "123456" )
+        User user2 = new User(email: testEmail, firstName: "testFirstName", lastName: "testLastName", password: "123456")
         user2.save()
 
         then:
@@ -59,12 +59,13 @@ class UserSpec extends Specification {
         user2.errors.getFieldErrorCount('email') == 1
 
     }
+
     void "to String test"() {
 
         given:
-        User user=new User(firstName: "amit",lastName:"raturi",password: "1234568")
+        User user = new User(firstName: "amit", lastName: "raturi", password: "1234568")
         expect:
-        user.toString()=="amit raturi"
+        user.toString() == "amit raturi"
 
     }
 

@@ -1,12 +1,15 @@
 package com.intelligrape.linksharing
 
 import grails.test.mixin.TestFor
+import grails.test.mixin.TestMixin
+import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 
 /**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
+ * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
  */
-@TestFor(UserController)
+@TestFor(UserControllerSpec)
+@TestMixin(GrailsUnitTestMixin)
 class UserControllerSpec extends Specification {
 
     def setup() {
@@ -15,17 +18,13 @@ class UserControllerSpec extends Specification {
     def cleanup() {
     }
 
-    void "Login  Controller index action"() {
-             given:
-             LoginController logobj=new LoginController()
-             when:
-            logobj.index()
+    void "user Controller index action"() {
+        given:
+        controller.session.status = "logged in"
+        when:
+        controller.index()
         then:
-        response.contentAsString =="failure"
+        response.contentAsString == "failure"
 
     }
-    void  "Login Haldler"(){
-
-    }
-
 }

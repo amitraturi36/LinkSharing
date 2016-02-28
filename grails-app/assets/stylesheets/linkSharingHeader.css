@@ -33,6 +33,13 @@
 .right-addon input {
     padding-right: 30px;
 }
-.headbgcolor{
+
+.headbgcolor {
     background-color: #265a88;
+}
+
+.lnkAndSrchHdr {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
 }

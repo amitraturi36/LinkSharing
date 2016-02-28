@@ -11,21 +11,19 @@ import spock.lang.Specification
  */
 @TestFor(LoginController)
 @TestMixin(GrailsUnitTestMixin)
-@Mock([Topic,User,Subscription])
+@Mock([Topic, User, Subscription])
 
 class LoginControllerSpec extends Specification {
 
 
     void "test for Login Handler"() {
-        when:
-       User userobj= new User(firstName: "amit",lastName:"raturi",email:"amit@gmail",password:"1234567",confirmPassword: "1234567",active:true  )
-               userobj.save(flush: true)
-        def userMock=Mock(User)
-        User user= userMock
-        userMock.user.findAllByEmail("amit@gmail")<<userobj
-        controller.loginHandler("amit@gmail","1234567")
+        setup:
+        User.metaClass.'static'.findByEmailAndPassword = { def email, def password ->
+            return new User(active: true)
+        }
+        controller.loginHandler("amit@gmail", "1234567")
         then:
-        controller.response.redirectUrl=="login/index"
+        response.redirectedUrl == "/login/index"
 
 
     }

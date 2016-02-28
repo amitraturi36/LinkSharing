@@ -64,10 +64,10 @@ class TopicsSpec extends Specification {
     void "String to Enum Test"() {
 
         given:
-        User user=new User()
+        User user = new User()
         Topic topic = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
         expect:
-        topic.visibility.stringToEnum("private").class==Visibility
+        topic.visibility.stringToEnum("private").class == Visibility
 
     }
 }

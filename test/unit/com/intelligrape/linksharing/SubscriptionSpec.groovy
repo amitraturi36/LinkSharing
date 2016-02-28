@@ -17,9 +17,9 @@ class SubscriptionSpec extends Specification {
 
     void "test Subscription "() {
         given:
-        Topic testTopics=new Topic()
-        User testUser=new User()
-        Subscription subscription1=new Subscription(topics:testTopics,user:testUser)
+        Topic testTopics = new Topic()
+        User testUser = new User()
+        Subscription subscription1 = new Subscription(topics: testTopics, user: testUser)
 
         when:
         subscription1.save()
@@ -28,7 +28,7 @@ class SubscriptionSpec extends Specification {
         subscription1.count() == 1
 
         when:
-        Subscription subscription2=new Subscription(topics:testTopics,user:testUser)
+        Subscription subscription2 = new Subscription(topics: testTopics, user: testUser)
         subscription2.save()
 
         then:
