@@ -50,17 +50,21 @@ class TopicController {
         }
     }
 
-    def save(Topic topic, String seriousness) {
-        if (topic.createdBy == session.user) {
-            Subscription.findByTopic(topic).seriousness = Seriousness.stringToEnum(seriousness)
+    def save(String topicName,String visiblity, String seriousness) {
+        if (topicName) {
+            Topic topic=new Topic()
+            topic.visibility=Visibility.stringToEnum(visiblity)
+            topic.createdBy = session.user
+            topic.topicName=topicName
+          //  topic.subscription = Seriousness.stringToEnum(seriousness)
             if (topic.save(flush: true, failOnError: true)) {
                 flash.message = message(code: "topic.saved.message")
+                render("sucess")
             } else {
                 flash.message = message(code: "topic.not.saved.message")
             }
 
-        }
-        else{
+        } else {
             flash.message = message(code: "topic.not.saved.message")
         }
 

@@ -9,9 +9,8 @@ class UserController {
     }
 
     def index() {
-       List<TopicVO> topicVOList=Topic.getTrendingTopics(0)
-      render (view:"index", model:[list:topicVOList])
-       // render topicVOList
+        List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
+       render(view: "index", model: [list: topicVOList, subtopics: session.user.subscribedTopic])
 
     }
 

@@ -6,7 +6,7 @@ class Topic {
     String topicName
     Visibility visibility
     User createdBy
-    static hasMany = [subscriptions: Subscription, resources: Resource]
+    static hasMany = [subscription: Subscription, resources: Resource]
     static belongsTo = [createdBy: User]
     static constraints = {
 
@@ -40,7 +40,7 @@ class Topic {
     }
 
     static List getTrendingTopics(int offst) {
-        List<Resource> topicList = Resource.createCriteria().list(max:5,offset:offst) {
+        List<Resource> topicList = Resource.createCriteria().list(max: 5, offset: offst) {
             createAlias('topic', 't')
             projections {
                 groupProperty('topic')
@@ -53,8 +53,8 @@ class Topic {
             order('t.topicName')
         }
         List<TopicVO> topicVOList = []
-        topicList.each {row->
-            topicVOList.add(new TopicVO(name:row[0],count:row[1],createdBy: row[2],visibility:row[3],id:row[4]))
+        topicList.each { row ->
+            topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4]))
 
         }
 
@@ -66,12 +66,11 @@ class Topic {
     def afterInsert() {
         log.info "----------Into After Insert------"
 
-        Subscription subscription
+
 
         Topic.withNewSession {
-
-            subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERYSERIOUS)
-            if (!subscription.save()) {
+                Subscription subscription = new Subscription(topic: this, user: this.createdBy,seriousness:Seriousness.SERIOUS )
+            if (!subscription.save(flush:true,failOnError: true )) {
                 log.error(subscription.errors)
             }
 

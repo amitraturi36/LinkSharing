@@ -8,7 +8,6 @@ class Subscription {
     Date dateCreated
 
     static constraints = {
-        topic unique: "user"
 
     }
     static mapping = {

@@ -8,18 +8,21 @@
                 <h4 class="modal-title">Send Invitations</h4>
             </div>
 
-            <div class="modal-body" style="borer: 1px solid grey;background:trasparent; ">
-                <form class="inline-form">
+
+        <div class="modal-body" style="borer: 1px solid grey;background:transparent; ">
+            <form class="inline-form" style="padding-bottom:20px">
                     <span class=" col-sm-4">Email<sup>*</sup></span>
                     <input type="Text" class=" col-sm-6"><br/><br/>
                     <span class=" col-sm-4">Topics<sup>*</sup></span>
                     <select class=" col-sm-5" style="background:white">
-                        <option>Subscribe</option>
-                        <option>Unsubscribe</option>
+                        <g:each in="${subtopics}">
+                            <option>${it}</option>
+                        </g:each>
                     </select>
+        </form>
 
-                </form>
             </div>
+        <div  class=" col-sm-12"></div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default">Invite</button>

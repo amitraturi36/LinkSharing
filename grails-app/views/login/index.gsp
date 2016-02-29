@@ -129,10 +129,10 @@
                            placeholder="Password"
                            style="border: 1px solid grey;"><br/><br/><br/><br/>
 
-                    <span class="col-sm-8 text-info">Forgot Password</span> <g:submitButton name="Login"
-                                                                                            class="btn col-sm-4"
-                                                                                            value="Login"
-                                                                                            style="border:1px solid grey"/>
+                   <a href="#" data-toggle="modal"
+                                                        data-target="#forgetpassword "> <span class="col-sm-8 text-info">Forgot Password</span></a>
+                    <g:render template="/layouts/login/forgetPassword"></g:render>
+                    <g:submitButton name="Login" class="btn col-sm-4" value="Login" style="border:1px solid grey"/>
                 </div>
             </g:form></div></div><br/><br/><br/><br/>
 

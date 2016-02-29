@@ -1,5 +1,6 @@
 package com.intelligrape.linksharing
 
+
 import java.sql.Blob
 
 class User {
@@ -19,7 +20,7 @@ class User {
 
         return [this.firstName, ' ', this.lastName].findAll { it }.join('')
     }
-    static hasMany = [topics: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
+    static hasMany = [topic: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
 
 
     static constraints = {
@@ -40,6 +41,14 @@ class User {
             return result
         })
 
+    }
+
+    def getSubscribedTopic() {
+        List<Topic> topicList = Topic.createCriteria().list {
+            createAlias('subscription', 'sp')
+            eq('sp.user', this)
+        }
+        return topicList
     }
 
     @Override
