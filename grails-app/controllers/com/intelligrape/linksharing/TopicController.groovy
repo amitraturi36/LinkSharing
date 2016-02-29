@@ -56,7 +56,7 @@ class TopicController {
             topic.visibility=Visibility.stringToEnum(visiblity)
             topic.createdBy = session.user
             topic.topicName=topicName
-          //  topic.subscription = Seriousness.stringToEnum(seriousness)
+           topic.addToSubscription(seriousness:  Seriousness.stringToEnum(seriousness))
             if (topic.save(flush: true, failOnError: true)) {
                 flash.message = message(code: "topic.saved.message")
                 render("sucess")

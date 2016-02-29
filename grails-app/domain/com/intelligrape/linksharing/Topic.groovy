@@ -6,7 +6,7 @@ class Topic {
     String topicName
     Visibility visibility
     User createdBy
-    static hasMany = [subscription: Subscription, resources: Resource]
+    static hasMany = [subscription: Subscription, resources: Resource ]
     static belongsTo = [createdBy: User]
     static constraints = {
 
@@ -69,8 +69,14 @@ class Topic {
 
 
         Topic.withNewSession {
-                Subscription subscription = new Subscription(topic: this, user: this.createdBy,seriousness:Seriousness.SERIOUS )
-            if (!subscription.save(flush:true,failOnError: true )) {
+            Subscription subscription
+            if(!this.subscription) {
+                subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.SERIOUS)
+            }
+            else{
+                subscription= this.addToSubscription(topic:this,user:this.createdBy)
+            }
+                if (!subscription.save(flush:true,failOnError: true )) {
                 log.error(subscription.errors)
             }
 

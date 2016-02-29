@@ -10,7 +10,7 @@ class UserController {
 
     def index() {
         List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
-       render(view: "index", model: [list: topicVOList, subtopics: session.user.subscribedTopic])
+        render(view: "index", model: [list: topicVOList, subtopics: session.user.subscribedTopic])
 
     }
 
@@ -18,8 +18,9 @@ class UserController {
     def register(String email, String fname, String lname, String passwrd, String CnfrmPsswrd, String uname) {
         User user = new User(email: email, firstName: fname, lastName: lname, password: passwrd, confirmPassword: CnfrmPsswrd)
         user.validate()
-        render message(code: "${user.errors.allErrors}")
-
+        // message(code: "${user.errors.allErrors}")
+        List errors = []
+        render user.errors.allErrors.collect { message(error: it) }.join(',')
 
     }
 

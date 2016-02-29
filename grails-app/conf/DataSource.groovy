@@ -23,9 +23,9 @@ environments {
         dataSource {
             username = "root"
             password = "igdefault"
-            dbCreate = 'update' //"create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+            dbCreate = 'create-drop' //"create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://localhost/LinkSharing"
-            logSql = false
+            logSql = true
         }
     }
     test {
