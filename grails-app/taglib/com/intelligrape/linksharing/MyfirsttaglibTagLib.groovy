@@ -1,13 +1,14 @@
 package com.intelligrape.linksharing
 
 class MyfirsttaglibTagLib {
-    static namespace = "Ls"
+    static namespace = "ls"
     static defaultEncodeAs = [taglib: 'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
 
-    def ahowAdmin = { attrs, body ->
+    def showAdmin = { attrs, body ->
         Boolean isAdmin = Boolean.valueOf(session.username)
-        if (isAdmin) {
+        if (!isAdmin) {
+            println(body())
             out << body()
         }
 
@@ -18,9 +19,14 @@ class MyfirsttaglibTagLib {
         {
             userList.add(new User(firstName: "user_${i}",lastName:"lastName${i}",id: i))
         }
-        out<<render(template: '/user/userList',model:[userLists:userList] )
+        out<<render(template: '/layouts/Topic/email',model:[userLists:userList] )
     }
 
-    def showdetail
+    def showdetail={attrs, body ->
+      out<< attrs.attrs.findAll{it%2}
+
+
+
+    }
 
 }

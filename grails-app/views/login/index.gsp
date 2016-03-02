@@ -10,7 +10,7 @@
 <!------------ box1 -->
 
 
-<div class="col-sm-7 ">
+<div class="col-sm-7  ">
 
     <div style="padding:10px">
         <div class="panel-default ">
@@ -115,7 +115,7 @@
 
         <div class="panel-body " style="border:1px solid grey">
 
-            <g:form class="form-inline" role="form" url="[action: 'loginHandler']">
+            <g:form class="form-inline" role="form" url="[action:'loginHandler']">
                 <div class="form-group">
                     <label class="control-label col-sm-5" for="Email">Email/UserName<sup>*</sup></label>
                     <input type="email" class="form-control col-sm-6" id="inputEmail" placeholder="Email"
@@ -128,13 +128,13 @@
                     <input type="password" class="form-control col-sm-6" id="inputPassword" name="password"
                            placeholder="Password"
                            style="border: 1px solid grey;"><br/><br/><br/><br/>
-
-                   <a href="#" data-toggle="modal"
-                                                        data-target="#forgetpassword "> <span class="col-sm-8 text-info">Forgot Password</span></a>
-                    <g:render template="/layouts/login/forgetPassword"></g:render>
+                    <a href="#" data-toggle="modal"
+                       data-target="#forgetpassword "><span class="col-sm-8 text-info">Forgot Password</span></a>
                     <g:submitButton name="Login" class="btn col-sm-4" value="Login" style="border:1px solid grey"/>
                 </div>
-            </g:form></div></div><br/><br/><br/><br/>
+            </g:form>
+            <g:render template="/layouts/login/forgetPassword"></g:render>
+        </div></div><br/><br/><br/><br/>
 
 
     <div class="panel-default ">
@@ -195,5 +195,8 @@
             </form></div></div>
 
 </div>
+
 </body>
 </html>
+
+

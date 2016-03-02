@@ -11,5 +11,6 @@
 *= require mobile
 *= require_self
 *= require_bootstrap.min
-*=require linkSharingHeader
+*= require linkSharingHeader
+*= require linksharingbody
 */

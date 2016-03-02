@@ -3,17 +3,19 @@ package com.intelligrape.linksharing
 class LoginController {
 
     def index() {
-        if (flash.error) {
+       if (flash.error) {
             render "${flash.error}"
         } else if (session.user) {
             forward(controller: 'User', action: 'index')
 
         } else {
             List list = Resource.toppost()
-          render  view:'index',model:[list:list]
+           render  view:'index',model:[list:list]
+
 
 
         }
+
 
     }
 
@@ -32,7 +34,7 @@ class LoginController {
                 }
             } else {
                 flash.error = "User not found"
-                render flash.error
+               render flash.error
             }
         }
     }
