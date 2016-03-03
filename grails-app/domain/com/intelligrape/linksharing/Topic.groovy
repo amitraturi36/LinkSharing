@@ -2,12 +2,15 @@ package com.intelligrape.linksharing
 
 import org.hibernate.criterion.Order
 
+import java.beans.Transient
+
 class Topic {
     String topicName
     Visibility visibility
     User createdBy
     static hasMany = [subscription: Subscription, resources: Resource ]
     static belongsTo = [createdBy: User]
+    static Transient=['subscribedUsers']
     static constraints = {
 
 
@@ -37,6 +40,14 @@ class Topic {
                     like("visibility", co.visibility)
                 }
         }
+    }
+
+    List <User> getSubscribedUser(){
+        List <Subscription>userList=Subscription.createCriteria().list{
+            eq('topic',this)
+
+        }
+        return userList*.user
     }
 
     static List getTrendingTopics(int offst) {

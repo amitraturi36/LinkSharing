@@ -18,8 +18,9 @@ class TopicController {
             topic.delete()
             flash.message = "Sucessfully Deleted"
         } catch (ObjectNotFoundException e) {
-            flash.error = e
+            flash.errors = e
         }
+        redirect(action:  'index')
 
     }
 
@@ -31,23 +32,25 @@ class TopicController {
     def show(ResourceSearchCO resourceSearchCo) {
         Topic topic = Topic.findById(resourceSearchCo.topicId)
         if (!topic) {
-            flash.error = "Topic not found"
-            if (session.status)
+            flash.errors = "Topic not found"
+            if (session.user)
                 redirect(controller: "login", action: "index")
 
         } else {
             if (topic.visibility == Visibility.PRIVIATE) {
-                if (topic.subscriptions.user.userName.find { it == session.userName }) {
-                    render "Sucess"
+                if (topic.subscription.user.userName.find { it == session.userName }) {
+                    flash.message= "Sucess"
                 } else {
                     flash.error = "Topic not Subscribed"
                     if (session.status)
                         redirect(controller: "login", action: "index")
                 }
             } else {
-                render "Sucess"
+                flash.message="Sucess"
+
             }
         }
+        redirect(action:  'index')
     }
 
     def save(String topicName,String visiblity, String seriousness) {

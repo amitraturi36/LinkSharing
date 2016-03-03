@@ -18,9 +18,22 @@ class UserController {
     def register(String email, String fname, String lname, String passwrd, String CnfrmPsswrd, String uname) {
         User user = new User(email: email, firstName: fname, lastName: lname, password: passwrd, confirmPassword: CnfrmPsswrd)
         user.validate()
-        // message(code: "${user.errors.allErrors}")
-        List errors = []
-        render user.errors.allErrors.collect { message(error: it) }.join(',')
+       // render user.errors.allErrors.collect { message(error: it) }.join(',')
+        flash.errors=message(error:user.errors.getFieldError('email'))+","+message(error:user.errors.getFieldError('password'))+","+message(error:user.errors.getFieldError('firstName'))+","+message(error:user.errors.getFieldError('lastName'))
+        render view:'register'
+
+    }
+    def showSubscribedTopics(Long id){
+        if(id) {
+            Topic topic = Topic.get(id)
+            List<User> user = topic.subscribedUser
+            render view: "showtopics", model: [user: user, subtopics: topic]
+
+        }
+        else{
+            flash.errors="No such Topic Exists"
+             redirect(action:  'index')
+        }
 
     }
 

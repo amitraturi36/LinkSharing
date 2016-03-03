@@ -15,6 +15,7 @@ class SubscriptionController {
         } catch (ObjectNotFoundException error) {
             flash.errors = error
         }
+        redirect(action:  'index')
     }
 
     def save(Long id) {
@@ -29,6 +30,7 @@ class SubscriptionController {
 
             render "Errors"
         }
+        redirect(action:  'index')
     }
 
     def update(Long id, Seriousness seriousness) {
@@ -40,5 +42,6 @@ class SubscriptionController {
 
             render "Errors"
         }
+        redirect(action:  'index')
     }
 }

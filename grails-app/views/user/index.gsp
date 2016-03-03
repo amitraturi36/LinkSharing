@@ -10,74 +10,32 @@
 
     <h2>Welcome</h2>
 
-    <h3>${session.user.userName}</h3>
-
     <div class="col-sm-6">
-        <g:each in="${list}">
 
-            <div class="col-sm-12" style="padding:10px;margin:10px 0px">
-
-            </div>
-
-            <div style="padding:10px;margin:20px 0px">
-                <div class="panel">
-                    <div class="panel-heading col-sm-12 " style="border: 1px solid grey; background:#f2f2f2;">Top Post
-                    </div>
-
-                    <div class="panel-body col-sm-12" style="border: 1px solid grey;">
-
-                        <div class="col-sm-2" style="margin: 25px 0px;border: 1px solid grey"><span
-                                class="glyphicon glyphicon-user " style="font-size:60px;"></span>
-                        </div>
-                        <span class=" col-sm-6 " style="font-size: 15px;padding:20px 15px;">${it.createdBy}</span>
-                        <span class=" col-sm-3 text-muted " style="padding:20px 0px;">${it.name}</span>
-
-                        <p class="text-muted col-sm-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
-                        <div class=" col-sm-10">
-                            <i class="fa fa-facebook "></i>
-                            <i class="fa fa-google"></i>
-                            <i class="fa fa-twitter"></i>
-
-                            <span class="text-info col-sm-2"><a href="#"><ins>click</ins></a></span>
-
-                        </div></div></div></div>
-        </g:each>
+        <div style="padding:10px;margin:0px 19px;">
+            <div class="panel  col-sm-9 " style="border: 1px solid grey;" >
+                <div class="col-sm-3" style="margin: 25px 0px;border: 1px solid grey;"><span class="glyphicon glyphicon-user " style="font-size:70px;" > </span>
+                </div>
+                <div class="panel-body col-sm-7" >
+                    <span class="text-muted col-sm-12 h4"><strong>${ session.user.userName}</strong></span>
+                    <span class="text-muted col-sm-12">@ ${session.user.firstName}</span ><span class="text-muted col-sm-6">  Subscriptions</span> <span class="text-muted col-sm-6">Topics</span>
+                    <span class="text-info col-sm-6">${subtopics.totalCount}</span>
+                    <span class="text-info col-sm-6">30</span>
+                </div>
+            </div></div>
+       <g:render template="subscribedtopics"/>
     </div>
 
     <div class="col-sm-6">
-        <g:each in="${subtopics}">
+
 
             <div class="col-sm-12" style="padding:10px;margin:10px 0px">
 
             </div>
 
             <div style="padding:10px;margin:20px 0px">
-                <div class="panel">
-                    <div class="panel-heading col-sm-12 "
-                         style="border: 1px solid grey; background:#f2f2f2;">Subscribed Topics
-                    </div>
-
-                    <div class="panel-body col-sm-12" style="border: 1px solid grey;">
-
-                        <div class="col-sm-2" style="margin: 25px 0px;border: 1px solid grey"><span
-                                class="glyphicon glyphicon-user " style="font-size:60px;"></span>
-                        </div>
-                        <span class=" col-sm-6 "
-                              style="font-size: 15px;padding:20px 15px;">${it.createdBy.firstName}</span>
-                        <span class=" col-sm-3 text-muted " style="padding:20px 0px;">${it}</span>
-
-                        <p class="text-muted col-sm-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
-                        <div class=" col-sm-10">
-                            <i class="fa fa-facebook "></i>
-                            <i class="fa fa-google"></i>
-                            <i class="fa fa-twitter"></i>
-
-                            <span class="text-info col-sm-2"><a href="#"><ins>click</ins></a></span>
-
-                        </div></div></div></div>
-        </g:each>
+                <g:render template="toppost"/>
+               </div>
     </div>
 </g:if>
 </body>

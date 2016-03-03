@@ -52,13 +52,13 @@
                             <g:render template="/layouts/documentResource/create"></g:render>
                             <div style="position:absolute;top:3px;right:20px;"><a
                                     class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
-                                    href="#">uday
+                                    href="#">${session.user.firstName}
                                 <span class="caret"></span>
                             </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Profile</a></li>
                                     <li><a href="#">Users</a></li>
-                                    <li><a href="#">Topics</a></li>
+                                    <li><a href="/user/showSubscribedTopics">$Topics</a></li>
                                     <li><a href="#">Posts</a></li>
                                     <li><a href="#">LogOut</a></li>
                                 </ul></div>
@@ -70,8 +70,12 @@
             </ul></div>
     </div></div>
 
+<div class="alert-danger" style="border:1px solid lightgrey;display: block  "><g:if test="${flash.errors}">
+    ${flash.errors}
 
-<div class="body"><g:layoutBody/> </div>
+</g:if></div>
+
+<div class="body"><g:layoutBody/></div>
 
 <div class="footer" role="contentinfo"></div>
 
