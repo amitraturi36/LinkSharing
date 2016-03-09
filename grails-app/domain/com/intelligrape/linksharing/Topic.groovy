@@ -72,28 +72,11 @@ class Topic {
 
 
     def afterInsert() {
-        log.info "----------Into After Insert------"
-
-
-
         Topic.withNewSession {
-            Subscription subscription
-            if (!this.subscriptions) {
-                subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.SERIOUS)
-
-            } else {
-                subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERY_SERIOUS)
-
-            }
+            Subscription subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERY_SERIOUS)
             if (!subscription.save(flush: true, failOnError: true)) {
                 log.error(subscription.errors)
             }
-
-
         }
-
-
     }
-
-
 }
