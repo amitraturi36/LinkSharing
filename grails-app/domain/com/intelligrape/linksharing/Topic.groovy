@@ -17,15 +17,6 @@ class Topic {
         sort "topicName"
 
     }
-
-
-    @Override
-    String toString() {
-
-        return this.topicName;
-    }
-
-
     static namedQueries = {
         search {
             ResourceSearchCO co ->
@@ -79,4 +70,10 @@ class Topic {
             }
         }
     }
+
+    @Override
+    String toString() {
+        return this.topicName;
+    }
+
 }

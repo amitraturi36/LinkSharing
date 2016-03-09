@@ -16,16 +16,33 @@ class BootStrap {
         Integer count = User.count()
         if (count == 0) {
 
-            User user = new User(email: "user1@gmail.com", password:Constants.PASSWORD , firstName: "Bhuwan", lastName: "brijwasi", admin: false, active: false, confirmPassword: "amit12345")
+            User user = new User([
+                    email          : "user1@gmail.com",
+                    password       : Constants.PASSWORD,
+                    firstName      : "Bhuwan",
+                    lastName       : "brijwasi",
+                    admin          : false,
+                    active         : false,
+                    confirmPassword: "amit12345"
+            ])
 
-            User admin = new User(email: "amit@gmail.com", password: Constants.PASSWORD, firstName: "Amit", lastName: "Raturi", admin: true, active: true, confirmPassword: "12345admin")
+            User admin = new User([email          : "amit@gmail.com",
+                                   password       : Constants.PASSWORD,
+                                   firstName      : "Amit",
+                                   lastName       : "Raturi",
+                                   admin          : true,
+                                   active         : true,
+                                   confirmPassword: "12345admin"])
 
-            log.info("data is created")
-            user.save(failOnError: true, flush: true)
 
-            admin.save(failOnError: true, flush: true)
+
+            if (user.save(failOnError: true, flush: true) && (admin.save(failOnError: true, flush: true))) {
+                log.info("save is successfull")
+            } else {
+                log.error("save failed")
+            }
         } else {
-            log.info("User alredy exist")
+            log.error("User alredy exist")
         }
 
 
@@ -40,8 +57,12 @@ class BootStrap {
             User.getAll().each {
                 creater = it
                 5.times {
-                    topic = new Topic(topicName: "topic ${it + 1}", createdBy: creater, visibility: Visibility.PRIVATE)
-                    if (!topic.save()) {
+                    topic = new Topic([
+                            topicName : "topic ${it + 1}",
+                            createdBy : creater,
+                            visibility: Visibility.PRIVATE
+                    ])
+                    if (!topic.save(flush: true)) {
                         log.error(topic.errors)
                     }
 
@@ -56,19 +77,27 @@ class BootStrap {
     void createResources() {
         Resource linkResource
         Resource documentResource
-        Topic topic
-        if (!Resource.getAll()) {
+        if (!Resource.count()) {
             Topic.getAll().each
-                    {
-                        topic = it
+                    { topic ->
                         2.times {
-                            linkResource = new LinkResource(topic: topic, createdBy: topic.createdBy, description: "description ${topic.topicName} LinkResource${it}", url: "http://www.url.com")
-                            documentResource = new DocumentResource(topic: topic, createdBy: topic.createdBy, description: "description ${topic.topicName} documentResource ${it}", filePaths: "c:/filepath/abc${it}.txt")
+                            linkResource = new LinkResource([
+                                    topic      : topic,
+                                    createdBy  : topic.createdBy,
+                                    description: "description ${topic.topicName} LinkResource${it}",
+                                    url        : "http://www.url.com"
+                            ])
+                            documentResource = new DocumentResource([
+                                    topic      : topic,
+                                    createdBy  : topic.createdBy,
+                                    description: "description ${topic.topicName} documentResource ${it}",
+                                    filePaths  : "c:/filepath/abc${it}.txt"
+                            ])
                             if (!linkResource.save()) {
                                 log.error(linkResource.errors)
                             }
                             if (!documentResource.save()) {
-                                documentResource.errors
+                                log.error(documentResource.errors)
                             }
                         }
                     }
@@ -77,17 +106,18 @@ class BootStrap {
 
     void subscribeTopics() {
         Subscription subscription
-        Topic topic
-        Topic.getAll().each {
-            topic = it
+        Topic.getAll().each { topic ->
             User.getAll().each {
                 if (topic.createdBy != it) {
-                    if (!Subscription.findAllByTopicAndUser(topic, it)) {
-                        subscription = new Subscription(topic: topic, user: it, seriousness: Seriousness.CASUAL)
-                        if (!subscription.save()) {
-                            log.info(subscription.errors)
-                        }
+                    subscription = new Subscription([
+                            topic      : topic,
+                            user       : it,
+                            seriousness: Seriousness.CASUAL
+                    ])
+                    if (!subscription.save(flush: true)) {
+                        log.error(subscription.errors)
                     }
+
                 }
             }
         }
@@ -100,7 +130,7 @@ class BootStrap {
 
         Subscription.getAll().each {
             Resource.findAllByTopic(it.topic).each { resource ->
-                if ((resource.createdBy != it.user) && (!ReadingItem.findByUserAndResource(it.user, resource))) {
+                if ((resource.createdBy != it.user) && (!ReadingItem.countByUserAndResource(it.user, resource))) {
                     readingItem = new ReadingItem(user: it.user, resource: resource, isRead: false)
                     if (!readingItem.save()) {
                         log.error(readingItem.errors)
@@ -121,7 +151,11 @@ class BootStrap {
         ReadingItem.getAll().each {
             if (!it.isRead) {
 
-                rating = new ResourceRating(createdBy: it.user, resource: it.resource, score: 1)
+                rating = new ResourceRating([
+                        createdBy: it.user,
+                        resource : it.resource,
+                        score    : 1
+                ])
                 if (!rating.save()) {
                     log.error(rating.errors)
                 }
