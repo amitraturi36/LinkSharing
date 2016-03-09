@@ -48,6 +48,7 @@ abstract class Resource {
                 property('resc.topic.id')
 
             }
+            order('score')
         }
         List<TopicVO> topicVOList = []
         topicList.each { row ->
@@ -57,5 +58,16 @@ abstract class Resource {
 
         return topicVOList
     }
+     static def getTopPosts(){
+         List <TopicVO> topicVOList=toppost()
+         topicVOList=topicVOList-topicVOList.findAll{it.visibility==Visibility.PRIVIATE}
+         return  topicVOList
+
+     }
+    void resourceType(){
+
+    }
+
+
 
 }

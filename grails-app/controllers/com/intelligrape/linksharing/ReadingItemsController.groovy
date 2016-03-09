@@ -1,12 +1,22 @@
 package com.intelligrape.linksharing
 
 class ReadingItemsController {
-    def changeIsRead(Long id, Boolean isRead) {
+    def changeIsRead( Long id) {
+        if(id) {
+            if (ReadingItem.executeUpdate("update ReadingItem set isRead=${isRead} where resource=${id} AND user=${session.user}") == 0) {
 
-        if (ReadingItem.executeUpdate("update ReadingItem set isRead=${isRead} where resource=${id}") == 0) {
-            render("sucess")
-        } else {
-            render "error"
+            }
         }
+        else {
+            render view:'/user/index'
+        }
+    }
+
+    def show() {
+        def user = session.user
+        User user1 = User.get(user.id)
+        List<String> resources = user1.subscriptions.topic.resources
+
+        render view: '/resource/resource', model: [resources: resources]
     }
 }

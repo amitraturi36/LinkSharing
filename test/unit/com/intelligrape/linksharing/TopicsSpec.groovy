@@ -34,7 +34,7 @@ class TopicsSpec extends Specification {
 //
 //        setup:
 //        User user = new User()
-//        Topic topic = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
+//        topic topic = new topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
 //        when:
 //        topic.save()
 //
@@ -42,7 +42,7 @@ class TopicsSpec extends Specification {
 //        topic.count() == 1
 //
 //        when:
-//        Topic topic2 = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
+//        topic topic2 = new topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
 //        topic2.save()
 //
 //        then:

@@ -20,8 +20,12 @@ class User {
 
         return [this.firstName, ' ', this.lastName].findAll { it }.join('')
     }
+
     static hasMany = [topic: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
 
+    static mapping = {
+//        subscriptions lazy: false
+    }
 
     static constraints = {
         email(unique: true, blank: false, email: true)
@@ -53,7 +57,12 @@ class User {
         }
         return topicList
     }
+static boolean canDeleteResource(Long id,User user){
+    Resource resource=Resource.get(id)
+    User tempuser=get(user.id)
+   return resource.createdBy==tempuser
 
+}
     @Override
     String toString() {
         return this.userName

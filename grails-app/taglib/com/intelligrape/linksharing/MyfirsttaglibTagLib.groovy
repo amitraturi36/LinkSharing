@@ -19,7 +19,7 @@ class MyfirsttaglibTagLib {
         {
             userList.add(new User(firstName: "user_${i}",lastName:"lastName${i}",id: i))
         }
-        out<<render(template: '/layouts/Topic/email',model:[userLists:userList] )
+        out<<render(template: '/topic/email',model:[userLists:userList] )
     }
 
     def showdetail={attrs, body ->

@@ -21,28 +21,28 @@
 
 <body>
 <div class="navbar navbar-default">
-    <div class="container-fluid headbgcolor" style="border:1px solid grey">
+    <div class="container-fluid headbgcolor" >
         <div class="navbar-inner">
             <ul class="nav">
 
                 <li><span class="col-sm-6 lnkAndSrchHdr"><a href="#"><h3 style="margin:0px"><ins>Link Sharing</ins></h3>
                 </a></span></li>
 
-                <li><span class="col-sm-3 lnkAndSrchHdr "><form class="form-control" style="overflow:hidden">
+                <li class="col-sm-3 lnkAndSrchHdr"><form class="form-control" style="overflow:hidden" action="/topic/show">
+                    <i class="glyphicon glyphicon-remove form-control-feedback" style="overflow:hidden ;border:none; top:10px; right:10px; position: absolute;"></i>
                     <div class="inner-addon left-addon">
-                        <i class="glyphicon glyphicon-search" style="margin:-5px -10px"></i><input type="search"
-                                                                                                   placeholder="Search"
-                                                                                                   style="overflow:hidden ;border:none;background:white"/>
+                        <button type="submit" style="background-color: inherit;border: none "><i class="glyphicon glyphicon-search "></i>
+                        </button><input type="search" class="form-control" placeholder="Search" style="overflow:hidden ;border:none;background-color:inherit;height:100%;width:100%;margin-top:-25px" />
                     </div>
-                </form></span></li>
+                </form></li>
                 <g:if test="${session.user != null}">
                     <div class=" col-sm-3 " style="padding:10px 0px;margin:10px 0px">
                         <li><a href="#" class="glyphicon glyphicon-comment" style="padding:0px 5px;margin:0px 5px"
                                data-toggle="modal" data-target="#myModal1"></a>
-                            <g:render template="/layouts/Topic/createTopicTemplate"></g:render>
+                            <g:render template="/topic/createTopicTemplate"></g:render>
                             <a href="#" class="glyphicon glyphicon-envelope" style="padding:0px 7px;margin:0px 7px"
                                data-toggle="modal" data-target="#myModal2"></a>
-                            <g:render template="/layouts/Topic/email"></g:render>
+                            <g:render template="/topic/email"></g:render>
 
                             <a href="#" class="glyphicon glyphicon-link" style="padding:0px 7px;margin:0px 7px"
                                data-toggle="modal" data-target="#createlink"></a>
@@ -73,7 +73,9 @@
 <div class="alert-danger" style="border:1px solid lightgrey;display: block  "><g:if test="${flash.errors}">
     ${flash.errors}
 
-</g:if></div>
+</g:if>
+
+</div>
 
 <div class="body"><g:layoutBody/></div>
 

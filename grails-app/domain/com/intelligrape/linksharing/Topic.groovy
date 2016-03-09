@@ -74,6 +74,9 @@ class Topic {
 
     }
 
+
+
+
     def afterInsert() {
         log.info "----------Into After Insert------"
 
@@ -83,13 +86,16 @@ class Topic {
             Subscription subscription
             if(!this.subscription) {
                 subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.SERIOUS)
+
             }
             else{
-                subscription= this.addToSubscription(topic:this,user:this.createdBy)
+                subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERYSERIOUS)
+
             }
-                if (!subscription.save(flush:true,failOnError: true )) {
+            if (!subscription.save(flush:true,failOnError: true )) {
                 log.error(subscription.errors)
             }
+
 
 
         }
@@ -97,12 +103,5 @@ class Topic {
 
     }
 
-    def beforeInsert() {
-        log.info "----------Into before Insert------"
-    }
-
-    def beforeValidate() {
-        log.info "----------Into before Validate------"
-    }
 
 }

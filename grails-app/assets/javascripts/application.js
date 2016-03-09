@@ -9,6 +9,7 @@
 //= require_tree .
 //= require_self
 //= require_bootstrap.min
+//= require_changeread
 
 if (typeof jQuery !== 'undefined') {
     (function ($) {

@@ -5,7 +5,6 @@ import org.hibernate.ObjectNotFoundException
 
 class SubscriptionController {
 
-    def index() {}
 
     def delete(Long id) {
         Subscription subscription = Subscription.load(id)

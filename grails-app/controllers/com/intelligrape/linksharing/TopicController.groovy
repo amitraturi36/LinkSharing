@@ -5,13 +5,6 @@ import org.hibernate.ObjectNotFoundException
 
 class TopicController {
 
-    def index() {
-
-
-    }
-
-    def test() {}
-
     def delete(Long id) {
         Topic topic = Topic.load(id)
         try {
@@ -29,37 +22,28 @@ class TopicController {
         render topic.toString()
     }
 
-    def show(ResourceSearchCO resourceSearchCo) {
-        Topic topic = Topic.findById(resourceSearchCo.topicId)
-        if (!topic) {
-            flash.errors = "Topic not found"
-            if (session.user)
-                redirect(controller: "login", action: "index")
-
-        } else {
-            if (topic.visibility == Visibility.PRIVIATE) {
-                if (topic.subscription.user.userName.find { it == session.userName }) {
-                    flash.message= "Sucess"
-                } else {
-                    flash.error = "Topic not Subscribed"
-                    if (session.status)
-                        redirect(controller: "login", action: "index")
-                }
-            } else {
-                flash.message="Sucess"
-
-            }
+    def show(Long id) {
+        Topic topic = Topic.findById(id)
+        if(!topic)
+        {
+            flash.errors = "topic not found"
+            redirect(controller: "user", action: "index")
         }
-        redirect(action:  'index')
+        else{
+            List <User>userList=topic.subscribedUser
+
+            render view: 'show',model:[topic:topic,user:userList]
+        }
+
+
     }
 
-    def save(String topicName,String visiblity, String seriousness) {
+    def save(String topicName,String visiblity) {
         if (topicName) {
             Topic topic=new Topic()
             topic.visibility=Visibility.stringToEnum(visiblity)
             topic.createdBy = session.user
             topic.topicName=topicName
-           topic.addToSubscription(seriousness:  Seriousness.stringToEnum(seriousness))
             if (topic.save(flush: true, failOnError: true)) {
                 flash.message = message(code: "topic.saved.message")
                 render("sucess")

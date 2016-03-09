@@ -40,7 +40,7 @@ class BootStrap {
             User.getAll().each {
                 creater = it
                 5.times {
-                    topic = new Topic(topicName: "Topic ${it + 1}", createdBy: creater, visibility: Visibility.PRIVIATE)
+                    topic = new Topic(topicName: "topic ${it + 1}", createdBy: creater, visibility: Visibility.PRIVIATE)
                     if (!topic.save()) {
                         log.error(topic.errors)
                     }
@@ -97,15 +97,15 @@ class BootStrap {
 
     void createReadingItems() {
         ReadingItem readingItem
-        Resource resource
-        Subscription.getAll().each {
-            resource = Resource.findByTopic(it.topic)
-            if ((resource.createdBy != it.user) && (!ReadingItem.findByUserAndResource(it.user, resource))) {
-                readingItem = new ReadingItem(user: it.user, resource: resource, isRead: false)
-                if (!readingItem.save()) {
-                    log.error(readingItem.errors)
-                }
 
+        Subscription.getAll().each {
+            Resource.findAllByTopic(it.topic).each { resource ->
+                if ((resource.createdBy != it.user) && (!ReadingItem.findByUserAndResource(it.user, resource))) {
+                    readingItem = new ReadingItem(user: it.user, resource: resource, isRead: false)
+                    if (!readingItem.save()) {
+                        log.error(readingItem.errors)
+                    }
+                }
 
             }
 

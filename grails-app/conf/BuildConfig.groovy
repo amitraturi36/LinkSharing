@@ -62,6 +62,7 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
+        compile 'org.grails.plugins:mail:1.0.7'
         // asset-pipeline 2.0+ requires Java 7, use version 1.9.x with Java 6
         compile ":asset-pipeline:2.2.3"
         compile "org.grails.plugins:twitter-bootstrap:3.3.4"
