@@ -62,7 +62,7 @@ class BootStrap {
                     {
                         topic = it
                         2.times {
-                            linkResource = new LinkResource(topic: topic, createdBy: topic.createdBy, description: "description ${topic.topicName} LinkResource${it}", url: "www.url.com")
+                            linkResource = new LinkResource(topic: topic, createdBy: topic.createdBy, description: "description ${topic.topicName} LinkResource${it}", url: "http://www.url.com")
                             documentResource = new DocumentResource(topic: topic, createdBy: topic.createdBy, description: "description ${topic.topicName} documentResource ${it}", filePaths: "c:/filepath/abc${it}.txt")
                             if (!linkResource.save()) {
                                 log.error(linkResource.errors)

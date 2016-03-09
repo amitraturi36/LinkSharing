@@ -9,7 +9,7 @@ class SubscriptionController {
     def delete(Long id) {
         Subscription subscription = Subscription.load(id)
         try {
-            subscription.delete()
+            subscription.delete(flush: true)
             render("Sucess")
         } catch (ObjectNotFoundException error) {
             flash.errors = error

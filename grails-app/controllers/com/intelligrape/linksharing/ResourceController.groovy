@@ -78,12 +78,11 @@ class ResourceController {
     }
 
     def delete(Long id){
-       def resources = Resource.get(id)
-        if (!resources.delete())
+       def resources = Resource.load(id)
+        if (!resources.delete(flush: true))
         {
-           resources.save(flush: true)
+
             flash.errors="Successfully  deleted Post"
-            render  Resource.get(id) +"  "+resource
         }
         else
         {

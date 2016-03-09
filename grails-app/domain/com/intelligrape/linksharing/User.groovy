@@ -20,7 +20,7 @@ class User {
         return this.firstName + ' ' + this.lastName
     }
 
-    static hasMany = [topic: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
+    static hasMany = [topics: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
 
     static mapping = {
 //        subscriptions lazy: false
@@ -48,7 +48,7 @@ class User {
 
     def getSubscribedTopic() {
         List<Topic> topicList = Topic.createCriteria().list([max: 5, offset: 0]) {
-            createAlias('subscription', 'sp')
+            createAlias('subscriptions', 'sp')
             eq('sp.user', this)
 //            subscription{
 //                eq('user', this)
