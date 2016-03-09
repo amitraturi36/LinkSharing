@@ -1,12 +1,12 @@
 package com.intelligrape.linksharing
 
 enum Visibility {
-    PUBLIC, PRIVIATE
+    PUBLIC, PRIVATE
 
     static Visibility stringToEnum(String string) {
 
-        if (string.equalsIgnoreCase("PRIVIATE")) {
-            PRIVIATE
+        if (string.equalsIgnoreCase("PRIVATE")) {
+            PRIVATE
         } else {
             PUBLIC
         }

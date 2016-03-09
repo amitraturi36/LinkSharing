@@ -4,7 +4,6 @@ import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
-import spock.lang.IgnoreRest
 import spock.lang.Specification
 
 /**
@@ -18,7 +17,7 @@ class TopicControllerSpec extends Specification {
         given:
         controller.session.userName = "Amit Raturi"
         User user=new User(firstName:'Amit',lastName: 'Raturi' )
-        Topic topic=new Topic(topicName: "topic12",createdBy:user,visibility:Visibility.PRIVIATE )
+        Topic topic=new Topic(topicName: "topic12",createdBy:user,visibility:Visibility.PRIVATE )
         when:
         controller.save(topic,"public")
         then:
@@ -28,7 +27,7 @@ class TopicControllerSpec extends Specification {
     void "Deletion of topic"() {
         given:
         User user=new User(firstName:'Amit',lastName: 'Raturi' )
-        Topic topic=new Topic(topicName: "topic12",createdBy:user,visibility:Visibility.PRIVIATE )
+        Topic topic=new Topic(topicName: "topic12",createdBy:user,visibility:Visibility.PRIVATE )
         topic.save()
         when:
         controller.delete(1)

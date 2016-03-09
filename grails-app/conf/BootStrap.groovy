@@ -40,7 +40,7 @@ class BootStrap {
             User.getAll().each {
                 creater = it
                 5.times {
-                    topic = new Topic(topicName: "topic ${it + 1}", createdBy: creater, visibility: Visibility.PRIVIATE)
+                    topic = new Topic(topicName: "topic ${it + 1}", createdBy: creater, visibility: Visibility.PRIVATE)
                     if (!topic.save()) {
                         log.error(topic.errors)
                     }

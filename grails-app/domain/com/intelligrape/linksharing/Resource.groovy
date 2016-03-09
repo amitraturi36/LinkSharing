@@ -61,7 +61,7 @@ abstract class Resource {
     }
      static def getTopPosts(){
          List <TopicVO> topicVOList=toppost()
-         topicVOList=topicVOList-topicVOList.findAll{it.visibility==Visibility.PRIVIATE}
+         topicVOList=topicVOList-topicVOList.findAll{it.visibility==Visibility.PRIVATE}
          return  topicVOList
 
      }

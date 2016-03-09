@@ -25,7 +25,7 @@ class ResourceController {
 ////                redirect(controller: "login", action: "index")
 ////
 ////        } else {
-////            if (topic.visibility == Visibility.PRIVIATE) {
+////            if (topic.visibility == Visibility.PRIVATE) {
 ////                if (topic.subscription.user.userName.find { it == session.userName }) {
 ////                    flash.message= "Sucess"
 ////                    render view: '/topic/show',model:[topic:topic]

@@ -1,7 +1,6 @@
 package com.intelligrape.linksharing
 
 import grails.test.mixin.TestFor
-import org.junit.Ignore
 import spock.lang.Specification
 
 /**
@@ -25,7 +24,7 @@ class TopicsSpec extends Specification {
         topic.validate() == result
         where:
         testTopic | crtBy      | vsbl                | result
-        "history" | new User() | Visibility.PRIVIATE | true
+        "history" | new User() | Visibility.PRIVATE | true
         "history" | null       | null                | false
 
     }
@@ -34,7 +33,7 @@ class TopicsSpec extends Specification {
 //
 //        setup:
 //        User user = new User()
-//        topic topic = new topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
+//        topic topic = new topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVATE)
 //        when:
 //        topic.save()
 //
@@ -42,7 +41,7 @@ class TopicsSpec extends Specification {
 //        topic.count() == 1
 //
 //        when:
-//        topic topic2 = new topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
+//        topic topic2 = new topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVATE)
 //        topic2.save()
 //
 //        then:
@@ -55,7 +54,7 @@ class TopicsSpec extends Specification {
 
         given:
         User user = new User()
-        Topic topic = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
+        Topic topic = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVATE)
         expect:
         topic.toString() == "history"
 
@@ -65,7 +64,7 @@ class TopicsSpec extends Specification {
 
         given:
         User user = new User()
-        Topic topic = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVIATE)
+        Topic topic = new Topic(topicName: "history", createdBy: user, visibility: Visibility.PRIVATE)
         expect:
         topic.visibility.stringToEnum("private").class == Visibility
 
