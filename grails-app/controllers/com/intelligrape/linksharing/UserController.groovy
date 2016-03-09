@@ -1,8 +1,5 @@
 package com.intelligrape.linksharing
 
-import grails.util.Holders
-import org.springframework.beans.factory.annotation.Autowired
-
 class UserController {
     String confirmPassword
     static constraints = {
@@ -23,11 +20,23 @@ class UserController {
 
 
     def register(String email, String fname, String lname, String passwrd, String CnfrmPsswrd, String uname) {
-        User user = new User(email: email, firstName: fname, lastName: lname, password: passwrd, confirmPassword: CnfrmPsswrd)
-        user.validate()
-        // render user.errors.allErrors.collect { message(error: it) }.join(',')
-        flash.errors = message(error: user.errors.getFieldError('email')) + "," + message(error: user.errors.getFieldError('password')) + "," + message(error: user.errors.getFieldError('firstName')) + "," + message(error: user.errors.getFieldError('lastName'))
+        User user = new User([
+                email          : email,
+                firstName      : fname,
+                lastName       : lname,
+                password       : passwrd,
+                confirmPassword: CnfrmPsswrd
+        ])
+        if (user.validate()) {
+            user.save(flush: true)
+            flash.message = "sucessfully registered"
+
+        } else {
+            flash.errors = message(error: user.errors.getFieldError('email')) + "," + message(error: user.errors.getFieldError('password')) + "," + message(error: user.errors.getFieldError('firstName')) + "," + message(error: user.errors.getFieldError('lastName'))
+
+        }
         render view: 'register'
+        // render user.errors.allErrors.collect { message(error: it) }.join(',')
 
     }
 

@@ -14,33 +14,29 @@ class SubscriptionController {
         } catch (ObjectNotFoundException error) {
             flash.errors = error
         }
-        redirect(action:  'index')
+        redirect(controller:'user' , action: 'index')
     }
 
     def save(Long id) {
         Topic topic = Topic.get(id)
         User user = session.user
         Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.SERIOUS)
-        if (subscription.save(flush: true, failOnError: true)) {
-
-            render "Sucess"
-
+        if (subscription.validate()) {
+            subscription.save(flush: true, failOnError: true)
         } else {
-
-            render "Errors"
+            flash.errors="fail to update seriousness"
         }
-        redirect(action:  'index')
+        redirect(controller:'user' , action: 'index')
     }
 
     def update(Long id, Seriousness seriousness) {
         Subscription subscription = Subscription.get(id)
         subscription.seriousness = seriousness
-        if (subscription.save(flush: true, failOnError: true)) {
-            render "Sucess"
+        if (subscription.validate()) {
+            subscription.save(flush: true, failOnError: true)
         } else {
-
-            render "Errors"
+            flash.errors = "fail to update seriousness"
         }
-        redirect(action:  'index')
+        redirect(controller:'user' , action: 'index')
     }
 }

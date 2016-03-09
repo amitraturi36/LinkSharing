@@ -13,7 +13,7 @@ class TopicController {
         } catch (ObjectNotFoundException e) {
             flash.errors = e
         }
-        redirect(action:  'index')
+        redirect(action: 'index')
 
     }
 
@@ -24,26 +24,33 @@ class TopicController {
 
     def show(Long id) {
         Topic topic = Topic.findById(id)
-        if(!topic)
-        {
+        if (!topic) {
             flash.errors = "topic not found"
-            redirect(controller: "user", action: "index")
-        }
-        else{
-            List <User>userList=topic.subscribedUser
+            redirect(controller: "login", action: "index")
 
-            render view: 'show',model:[topic:topic,user:userList]
+        } else {
+            if (topic.visibility == Visibility.PUBLIC) {
+                List<User> userList = topic.subscribedUser
+                render view: 'show', model: [topic: topic, user: userList]
+            } else {
+                if (topic.subscriptions.user == session.user) {
+                    List<User> userList = topic.subscribedUser
+                    render view: 'show', model: [topic: topic, user: userList]
+                }
+            }
+
+
         }
 
 
     }
 
-    def save(String topicName,String visiblity) {
+    def save(String topicName, String visiblity) {
         if (topicName) {
-            Topic topic=new Topic()
-            topic.visibility=Visibility.stringToEnum(visiblity)
+            Topic topic = new Topic()
+            topic.visibility = Visibility.stringToEnum(visiblity)
             topic.createdBy = session.user
-            topic.topicName=topicName
+            topic.topicName = topicName
             if (topic.save(flush: true, failOnError: true)) {
                 flash.message = message(code: "topic.saved.message")
                 render("sucess")

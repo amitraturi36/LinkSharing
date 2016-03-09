@@ -72,7 +72,7 @@ class ResourceController {
             flash.message = message(code: "topic.not.saved.message")
             render "fails"
         }
-        redirect(action: 'index')
+        redirect(controller:'user' , action: 'index')
 
 
     }

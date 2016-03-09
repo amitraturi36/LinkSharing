@@ -23,7 +23,7 @@ class BootStrap {
                     lastName       : "brijwasi",
                     admin          : false,
                     active         : false,
-                    confirmPassword: "amit12345"
+                    confirmPassword: Constants.PASSWORD
             ])
 
             User admin = new User([email          : "amit@gmail.com",
@@ -32,7 +32,7 @@ class BootStrap {
                                    lastName       : "Raturi",
                                    admin          : true,
                                    active         : true,
-                                   confirmPassword: "12345admin"])
+                                   confirmPassword: Constants.PASSWORD])
 
 
 

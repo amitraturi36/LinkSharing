@@ -3,15 +3,15 @@ package com.intelligrape.linksharing
 class LoginController {
 
     def index() {
-       if (flash.error) {
-            render "${flash.error}"
+        if (flash.error) {
+            List list = Resource.toppost()
+            render view: 'index', model: [list: list]
         } else if (session.user) {
             forward(controller: 'User', action: 'index')
 
         } else {
             List list = Resource.toppost()
-           render  view:'index',model:[list:list]
-
+            render view: 'index', model: [list: list]
 
 
         }
@@ -21,20 +21,21 @@ class LoginController {
 
     def loginHandler(String username, String password) {
         if ((!username) && (!password)) {
-            render "Please enter valid user or password"
+            flash.errors = "Please enter valid user or password"
+            redirect(action: "index")
         } else {
             User user = User.findByEmailAndPassword(username, password)
             if (user) {
                 if (!user.active) {
-                    flash.error = "Your accoutn is not active"
+                    flash.errors = "Your accoutn is not active"
                     redirect(action: "index")
                 } else {
                     session.user = user
                     redirect(action: "index")
                 }
             } else {
-                flash.error = "User not found"
-               render flash.error
+                flash.errors = "User not found"
+                redirect(action: 'index')
             }
         }
     }
