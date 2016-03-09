@@ -79,9 +79,6 @@ class ResourceController {
 
     def delete(Long id){
        def resources = Resource.get(id)
-        def readingitems=ReadingItem.where {
-            resource==resources}
-       def c= readingitems.deleteAll()
         if (!resources.delete())
         {
            resources.save(flush: true)

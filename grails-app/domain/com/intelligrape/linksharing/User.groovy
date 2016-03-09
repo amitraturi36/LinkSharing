@@ -60,7 +60,7 @@ class User {
 static boolean canDeleteResource(Long id,User user){
     Resource resource=Resource.get(id)
     User tempuser=get(user.id)
-   return resource.createdBy==tempuser
+   return resource.createdBy==tempuser ||tempuser.admin==true
 
 }
     @Override

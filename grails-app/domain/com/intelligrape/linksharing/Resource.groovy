@@ -14,6 +14,9 @@ abstract class Resource {
     static constraints = {
         description(type: 'text')
     }
+    static mapping = {
+        readingItems cascade: 'all-delete-orphan'
+    }
 
     def getRatingInfo() {
         if (!ratingInfo) {
