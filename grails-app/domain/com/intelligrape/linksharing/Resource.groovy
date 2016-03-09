@@ -9,14 +9,12 @@ abstract class Resource {
     RatingInfoVO ratingInfo
     static transients = ['ratingInfo']
     static hasMany = [ratings: ResourceRating, readingItems: ReadingItem]
-    static belongsTo = [topic: Topic]
+    static belongsTo = [topic:Topic]
 
     static constraints = {
         description(type: 'text')
     }
-    static mapping = {
-        readingItems cascade: 'all-delete-orphan'
-    }
+    static mapping = {}
 
     def getRatingInfo() {
         if (!ratingInfo) {
