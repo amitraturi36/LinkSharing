@@ -17,8 +17,7 @@ class User {
     static transients = ['name', 'confirmPassword']
 
     String getName() {
-
-        return [this.firstName, ' ', this.lastName].findAll { it }.join('')
+        return this.firstName + ' ' + this.lastName
     }
 
     static hasMany = [topic: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
@@ -48,7 +47,7 @@ class User {
     }
 
     def getSubscribedTopic() {
-        List<Topic> topicList = Topic.createCriteria().list([max:5,offset:0]) {
+        List<Topic> topicList = Topic.createCriteria().list([max: 5, offset: 0]) {
             createAlias('subscription', 'sp')
             eq('sp.user', this)
 //            subscription{
@@ -57,12 +56,14 @@ class User {
         }
         return topicList
     }
-static boolean canDeleteResource(Long id,User user){
-    Resource resource=Resource.get(id)
-    User tempuser=get(user.id)
-   return resource.createdBy==tempuser || tempuser.admin
 
-}
+    static boolean canDeleteResource(Long id, User user) {
+        Resource resource = Resource.get(id)
+        User tempuser = get(user.id)
+        return resource.createdBy == tempuser || tempuser.admin
+
+    }
+
     @Override
     String toString() {
         return this.name
