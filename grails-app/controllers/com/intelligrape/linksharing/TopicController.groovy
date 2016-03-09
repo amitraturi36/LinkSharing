@@ -22,27 +22,16 @@ class TopicController {
         render topic.toString()
     }
 
-    def show(Long id) {
-        Topic topic = Topic.findById(id)
-        if (!topic) {
+    def show(Topic topic) {
+        if (topic && (topic.visibility == Visibility.PUBLIC ||topic.checksubscribeuser(session.user))) {
+            List<User> userList = topic.subscribedUser
+            render view: 'show', model: [topic: topic, user: userList]
+        } else if (!topic) {
             flash.errors = "topic not found"
             redirect(controller: "login", action: "index")
-
         } else {
-            if (topic.visibility == Visibility.PUBLIC) {
-                List<User> userList = topic.subscribedUser
-                render view: 'show', model: [topic: topic, user: userList]
-            } else {
-                if (topic.subscriptions.user == session.user) {
-                    List<User> userList = topic.subscribedUser
-                    render view: 'show', model: [topic: topic, user: userList]
-                }
-            }
-
-
+            redirect(controller: "login", action: "index")
         }
-
-
     }
 
     def save(String topicName, String visiblity) {

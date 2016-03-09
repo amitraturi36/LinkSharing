@@ -60,7 +60,12 @@ class ResourceController {
 
         if ((url) && (topicId)) {
             Topic topic = Topic.get(topicId)
-            LinkResource linkResource = new LinkResource(url: url, topic: topic, description: description, createdBy: topic.createdBy)
+            LinkResource linkResource = new LinkResource([
+                    url        : url,
+                    topic      : topic,
+                    description: description,
+                    createdBy  : topic.createdBy
+            ])
             if (linkResource.save(flush: true, failOnError: true)) {
                 flash.message = message(code: "topic.saved.message")
                 render("sucess")
@@ -72,22 +77,19 @@ class ResourceController {
             flash.message = message(code: "topic.not.saved.message")
             render "fails"
         }
-        redirect(controller:'user' , action: 'index')
+        redirect(controller: 'user', action: 'index')
 
 
     }
 
-    def delete(Long id){
-       def resources = Resource.load(id)
-        if (!resources.delete(flush: true))
-        {
+    def delete(Long id) {
+        def resources = Resource.load(id)
+        if (!resources.delete(flush: true)) {
 
-            flash.errors="Successfully  deleted Post"
-        }
-        else
-        {
-            flash.errors="Unable to delete Post"
-            render view:"/user/index"
+            flash.errors = "Successfully  deleted Post"
+        } else {
+            flash.errors = "Unable to delete Post"
+            render view: "/user/index"
         }
 
     }

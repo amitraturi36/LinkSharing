@@ -29,6 +29,10 @@ class Topic {
         }
     }
 
+    Boolean checksubscribeuser(User user) {
+        return Subscription.countByTopicAndUser(this, user) > 0
+    }
+
     List<User> getSubscribedUser() {
         List<Subscription> userList = Subscription.createCriteria().list {
             eq('topic', this)

@@ -18,9 +18,9 @@ class UserControllerSpec extends Specification {
     def cleanup() {
     }
 
-    void "user Controller index action"() {
+    void "user Controller index action"(User user) {
         given:
-        controller.session.status = "logged in"
+        controller.session.user = user
         when:
         controller.index()
         then:
