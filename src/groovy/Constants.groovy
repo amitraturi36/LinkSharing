@@ -1,4 +1,5 @@
 
 class Constants {
-    String PASSWORD = "12345678"
+   static String PASSWORD = "12345678"
+
 }
