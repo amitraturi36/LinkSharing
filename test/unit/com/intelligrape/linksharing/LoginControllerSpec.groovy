@@ -13,7 +13,7 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 @Mock([Topic, User, Subscription])
 
-class LoginControllerSpec extends Specification {
+class LoginControllerSpec  {
 
 
     void "test for Login Handler"() {
