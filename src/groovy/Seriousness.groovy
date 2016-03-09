@@ -1,15 +1,14 @@
 package com.intelligrape.linksharing
+
 enum Seriousness {
-    SERIOUS,VERYSERIOUS,CASUAL
-   static Seriousness stringToEnum(String stringToEnumdata) {
-        if(stringToEnumdata.compareToIgnoreCase("serious"))
-        {
+    SERIOUS, VERY_SERIOUS, CASUAL
+
+    static Seriousness stringToEnum(String stringToEnumdata) {
+        if (stringToEnumdata.compareToIgnoreCase("serious")) {
             return SERIOUS
-        }
-        else  if(stringToEnumdata.compareToIgnoreCase("veryserious")){
-            return VERYSERIOUS
-        }
-        else  {
+        } else if (stringToEnumdata.compareToIgnoreCase("veryserious")) {
+            return VERY_SERIOUS
+        } else {
             return CASUAL
         }
 

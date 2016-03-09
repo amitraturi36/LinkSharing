@@ -1,16 +1,12 @@
 package com.intelligrape.linksharing
 
-import org.hibernate.criterion.Order
-
-import java.beans.Transient
-
 class Topic {
     String topicName
     Visibility visibility
     User createdBy
-    static hasMany = [subscription: Subscription, resources: Resource ]
+    static hasMany = [subscription: Subscription, resources: Resource]
     static belongsTo = [createdBy: User]
-    static Transient=['subscribedUsers']
+    static Transient = ['subscribedUsers']
     static constraints = {
 
 
@@ -42,9 +38,9 @@ class Topic {
         }
     }
 
-    List <User> getSubscribedUser(){
-        List <Subscription>userList=Subscription.createCriteria().list{
-            eq('topic',this)
+    List<User> getSubscribedUser() {
+        List<Subscription> userList = Subscription.createCriteria().list {
+            eq('topic', this)
 
         }
         return userList*.user
@@ -75,8 +71,6 @@ class Topic {
     }
 
 
-
-
     def afterInsert() {
         log.info "----------Into After Insert------"
 
@@ -84,18 +78,16 @@ class Topic {
 
         Topic.withNewSession {
             Subscription subscription
-            if(!this.subscription) {
+            if (!this.subscription) {
                 subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.SERIOUS)
 
-            }
-            else{
-                subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERYSERIOUS)
+            } else {
+                subscription = new Subscription(topic: this, user: this.createdBy, seriousness: Seriousness.VERY_SERIOUS)
 
             }
-            if (!subscription.save(flush:true,failOnError: true )) {
+            if (!subscription.save(flush: true, failOnError: true)) {
                 log.error(subscription.errors)
             }
-
 
 
         }

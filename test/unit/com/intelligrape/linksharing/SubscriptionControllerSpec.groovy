@@ -41,7 +41,7 @@ class SubscriptionControllerSpec extends Specification {
 
     void "test for subscription update"() {
         when:
-        new Subscription(user: new User(), topic: new Topic(), seriousness: Seriousness.VERYSERIOUS).save(flush: true)
+        new Subscription(user: new User(), topic: new Topic(), seriousness: Seriousness.VERY_SERIOUS).save(flush: true)
         controller.update(1, Seriousness.SERIOUS)
         then:
         response.contentAsString == "Sucess"
