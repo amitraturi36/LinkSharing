@@ -170,7 +170,7 @@
                         </div>
                         <a href="#" class=" col-sm-9 " style="font-size: 15px;padding:20px 15px;"><ins>${topic}</ins>
                         </a>
-                        <span class="text-muted ">${it.userName}</span>
+                        <span class="text-muted ">${it.name}</span>
                     </div>
                 </g:each>
                 <br/><br/>

@@ -14,9 +14,9 @@ class User {
     Date dateCreated
     Date lastUpdated
     String confirmPassword
-    static transients = ['userName', 'confirmPassword']
+    static transients = ['name', 'confirmPassword']
 
-    String getUserName() {
+    String getName() {
 
         return [this.firstName, ' ', this.lastName].findAll { it }.join('')
     }
@@ -60,11 +60,11 @@ class User {
 static boolean canDeleteResource(Long id,User user){
     Resource resource=Resource.get(id)
     User tempuser=get(user.id)
-   return resource.createdBy==tempuser ||tempuser.admin==true
+   return resource.createdBy==tempuser || tempuser.admin
 
 }
     @Override
     String toString() {
-        return this.userName
+        return this.name
     }
 }
