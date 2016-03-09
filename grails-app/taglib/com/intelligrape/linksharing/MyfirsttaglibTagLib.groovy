@@ -13,18 +13,16 @@ class MyfirsttaglibTagLib {
         }
 
     }
-    def showUserList={
-        List <User>userList=[]
-        for (int i=1;i<=10;i++)
-        {
-            userList.add(new User(firstName: "user_${i}",lastName:"lastName${i}",id: i))
+    def showUserList = {
+        List<User> userList = []
+        for (int i = 1; i <= 10; i++) {
+            userList.add(new User(firstName: "user_${i}", lastName: "lastName${i}", id: i))
         }
-        out<<render(template: '/topic/email',model:[userLists:userList] )
+        out << render(template: '/topic/email', model: [userLists: userList])
     }
 
-    def showdetail={attrs, body ->
-      out<< attrs.attrs.findAll{it%2}
-
+    def showdetail = { attrs, body ->
+        out << attrs.attrs.findAll { it % 2 }
 
 
     }

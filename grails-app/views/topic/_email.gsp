@@ -9,8 +9,8 @@
             </div>
 
 
-        <div class="modal-body" style="borer: 1px solid grey;background:transparent; ">
-            <form class="inline-form" style="padding-bottom:20px">
+            <div class="modal-body" style="borer: 1px solid grey;background:transparent; ">
+                <form class="inline-form" style="padding-bottom:20px">
                     <span class=" col-sm-4">Email<sup>*</sup></span>
                     <input type="Text" class=" col-sm-6"><br/><br/>
                     <span class=" col-sm-4">Topics<sup>*</sup></span>
@@ -19,10 +19,11 @@
                             <option>${it}</option>
                         </g:each>
                     </select>
-        </form>
+                </form>
 
             </div>
-        <div  class=" col-sm-12"></div>
+
+            <div class=" col-sm-12"></div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default">Invite</button>

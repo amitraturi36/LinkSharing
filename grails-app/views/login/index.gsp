@@ -74,8 +74,6 @@
         </div></div>
     <g:render template="/topic/toppost"/>
 
-
-
 </div>
 
 <div class="col-sm-4 " style="padding:10px;">
@@ -86,7 +84,7 @@
 
         <div class="panel-body " style="border:1px solid grey">
 
-            <g:form class="form-inline" role="form" url="[action:'loginHandler']">
+            <g:form class="form-inline" role="form" url="[action: 'loginHandler']">
                 <div class="form-group">
                     <label class="control-label col-sm-5" for="Email">Email/UserName<sup>*</sup></label>
                     <input type="email" class="form-control col-sm-6" id="inputEmail" placeholder="Email"

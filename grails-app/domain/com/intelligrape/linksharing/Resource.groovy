@@ -9,7 +9,7 @@ abstract class Resource {
     RatingInfoVO ratingInfo
     static transients = ['ratingInfo']
     static hasMany = [ratings: ResourceRating, readingItems: ReadingItem]
-    static belongsTo = [topic:Topic]
+    static belongsTo = [topic: Topic]
 
     static constraints = {
         description(type: 'text')
@@ -59,16 +59,17 @@ abstract class Resource {
 
         return topicVOList
     }
-     static def getTopPosts(){
-         List <TopicVO> topicVOList=toppost()
-         topicVOList=topicVOList-topicVOList.findAll{it.visibility==Visibility.PRIVATE}
-         return  topicVOList
 
-     }
-    void resourceType(){
+    static def getTopPosts() {
+        List<TopicVO> topicVOList = toppost()
+        topicVOList = topicVOList - topicVOList.findAll { it.visibility == Visibility.PRIVATE }
+        return topicVOList
 
     }
 
+    void resourceType() {
+
+    }
 
 
 }

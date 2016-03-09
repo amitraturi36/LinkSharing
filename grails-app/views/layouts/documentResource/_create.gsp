@@ -11,7 +11,7 @@
             <div class="modal-body" style="borer: 1px solid grey;background:whitesmoke; ">
                 <form class="inline-form" enctype="multipart/form-data">
                     <span class=" col-sm-4">Document<sup>*</sup></span>
-                    <input type="file"class=" col-sm-6" style="border:none;  "><br/><br/>
+                    <input type="file" class=" col-sm-6" style="border:none;  "><br/><br/>
 
                     <span class=" col-sm-4">Description<sup>*</sup></span>
                     <textarea rows="4" cols="50" class=" col-sm-6"></textarea><br/><br/>

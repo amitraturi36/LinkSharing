@@ -12,8 +12,8 @@ class UseService {
 
     }
 
-    def sendmail(){
-        mailService.sendMail{
+    def sendmail() {
+        mailService.sendMail {
             to "myfriend@gmail.com"
             subject "This is a test mail"
             body "Hello, This is a test mail, how are you?"

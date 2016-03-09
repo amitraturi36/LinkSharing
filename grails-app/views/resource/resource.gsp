@@ -76,8 +76,10 @@
 
                                 <div class="col-xs-4" class='readitem'><ls:read resource="${resource}">
                                 </ls:read></div>
-                                <ls:canDeleteResource resource="${resource}"><a href="/resource/delete?id=${resource.id}"><span
-                                        class="glyphicon glyphicon-trash col-xs-1"></span></a></ls:canDeleteResource>
+                                <ls:canDeleteResource resource="${resource}"><a
+                                        href="/resource/delete?id=${resource.id}"><span
+                                            class="glyphicon glyphicon-trash col-xs-1"></span>
+                                </a></ls:canDeleteResource>
                             </div>
                         </div>
 

@@ -8,7 +8,7 @@
                 <h4 class="modal-title">Forget Password</h4>
             </div>
 
-            <g:form class="inline-form" method="post" url="[controller:'topic',action:'save']">
+            <g:form class="inline-form" method="post" url="[controller: 'topic', action: 'save']">
                 <div class="modal-body" style="borer: 1px solid grey;background:whitesmoke; ">
 
                     <span class=" col-sm-4">Email<sup>*</sup></span>

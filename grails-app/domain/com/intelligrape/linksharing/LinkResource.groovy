@@ -4,8 +4,9 @@ class LinkResource extends Resource {
     String url
     static belongsTo = [resource: Resource]
     static constraints = {
-        url url:true
+        url url: true
     }
+
     @Override
     String toString() {
         return this.url

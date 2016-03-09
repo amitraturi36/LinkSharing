@@ -2,7 +2,7 @@
 <div id="createlink" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
-        <!-- Modal content-->
+    <!-- Modal content-->
         <g:form class="inline-form" url="resource/saveLinkResources">
             <div class="modal-content">
                 <div class="modal-header" style="border: 1px solid grey; background:#f2f2f2;">
@@ -20,20 +20,20 @@
 
                     <span class=" col-sm-4" style="margin:10px 0px">Topics<sup>*</sup></span>
                     <select class=" col-sm-5" style="background:white;margin:10px 0px" name="topicId" value="Select Topics">
-                        <g:each in="${subtopics}">
-                            <option value="${it.id}">${it}</option>
-                        </g:each>
-                    </select>
+            <g:each in="${subtopics}">
+                <option value="${it.id}">${it}</option>
+            </g:each>
+            </select>
 
-                    <br/><br/><br/>
-                </div>
+            <br/><br/><br/>
+            </div>
 
-                <div class="modal-footer">
-                    <g:submitButton name="linkresource" class="btn btn-default" value="Share"/>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                </div>
+            <div class="modal-footer">
+                <g:submitButton name="linkresource" class="btn btn-default" value="Share"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
         </g:form>
     </div>
 
-</div>
+    </div>
 </div>

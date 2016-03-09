@@ -21,18 +21,23 @@
 
 <body>
 <div class="navbar navbar-default">
-    <div class="container-fluid headbgcolor" >
+    <div class="container-fluid headbgcolor">
         <div class="navbar-inner">
             <ul class="nav">
 
                 <li><span class="col-sm-6 lnkAndSrchHdr"><a href="#"><h3 style="margin:0px"><ins>Link Sharing</ins></h3>
                 </a></span></li>
 
-                <li class="col-sm-3 lnkAndSrchHdr"><form class="form-control" style="overflow:hidden" action="/topic/show">
-                    <i class="glyphicon glyphicon-remove form-control-feedback" style="overflow:hidden ;border:none; top:10px; right:10px; position: absolute;"></i>
+                <li class="col-sm-3 lnkAndSrchHdr"><form class="form-control" style="overflow:hidden"
+                                                         action="/topic/show">
+                    <i class="glyphicon glyphicon-remove form-control-feedback"
+                       style="overflow:hidden ;border:none; top:10px; right:10px; position: absolute;"></i>
+
                     <div class="inner-addon left-addon">
-                        <button type="submit" style="background-color: inherit;border: none "><i class="glyphicon glyphicon-search "></i>
-                        </button><input type="search" class="form-control" placeholder="Search" style="overflow:hidden ;border:none;background-color:inherit;height:100%;width:100%;margin-top:-25px" />
+                        <button type="submit" style="background-color: inherit;border: none "><i
+                                class="glyphicon glyphicon-search "></i>
+                        </button><input type="search" class="form-control" placeholder="Search"
+                                        style="overflow:hidden ;border:none;background-color:inherit;height:100%;width:100%;margin-top:-25px"/>
                     </div>
                 </form></li>
                 <g:if test="${session.user != null}">

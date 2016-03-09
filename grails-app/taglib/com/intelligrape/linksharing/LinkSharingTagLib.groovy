@@ -1,13 +1,11 @@
 package com.intelligrape.linksharing
 
-import java.text.SimpleDateFormat
-
 class LinkSharingTagLib {
     //  static defaultEncodeAs = [taglib: 'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static namespace = "ls"
     def read = { attr, body ->
-        User user=User.get(session.user.id)
+        User user = User.get(session.user.id)
         if (user) {
 
             ReadingItem readingItem = ReadingItem.createCriteria().get {
@@ -23,21 +21,18 @@ class LinkSharingTagLib {
                     } else {
                         out << "<div Style='background-color:red'> <a href=\"${attr.resource?.url}\" target='_blank'>View Full Website </a></div> "
                     }
-                }
-                else{
+                } else {
                     out << "<div> <a href=\"${attr.resource?.url}\" target='_blank'>View Full Website </a></div> "
                 }
 
-            }
-            else{
+            } else {
                 if ((readingItem?.user != attr.resource.createdBy) && (readingItem)) {
                     if (readingItem.isRead) {
                         out << "<div Style='background-color:limegreen'><a href=\"${attr.resource?.filePaths}\" target='_blank'>Download</a></div> "
                     } else {
                         out << "<div Style='background-color:red'> <a href=\"${attr.resource?.filePaths}\" target='_blank'>Download</a></div> "
                     }
-                }
-                else{
+                } else {
                     out << "<div> <a href=\"${attr.resource?.filePaths}\" target='_blank'>DownLoad </a></div> "
                 }
 
@@ -45,22 +40,21 @@ class LinkSharingTagLib {
         }
 
     }
-    def toptopics={
+    def toptopics = {
         List list = Resource.toppost()
-        out<<render (template: '/topic/toppost',model:[list:list] )
+        out << render(template: '/topic/toppost', model: [list: list])
     }
-    def trndngtopics={
+    def trndngtopics = {
         List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
-        render(template:'/user/trendingtopics' , model: [list: topicVOList, subtopics: session.user.subscribedTopic])
+        render(template: '/user/trendingtopics', model: [list: topicVOList, subtopics: session.user.subscribedTopic])
 
 
     }
-    def canDeleteResource={attr,body->
-       if( User.canDeleteResource(attr.resource.id,session.user))
-       {
+    def canDeleteResource = { attr, body ->
+        if (User.canDeleteResource(attr.resource.id, session.user)) {
 
-           out<< body()
-       }
+            out << body()
+        }
 
     }
 }
