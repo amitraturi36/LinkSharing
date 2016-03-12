@@ -16,8 +16,10 @@
     <div class="panel-body col-sm-12" style="border:1px solid grey">
 <g:each var="topic" in="${subtopics}">
 
-    <div class="col-sm-3" style="margin: 25px 0px;"><span
-            class="glyphicon glyphicon-user " style="font-size:70px;"></span>
+    <div class="col-sm-3" style="margin: 25px 0px;">
+        <a href="/user/profile?userId=${session.user.id}"><ls:userImage
+                user="${session.user}"></ls:userImage>
+        </a>
     </div>
     <span class="col-sm-5"></span>
     <span><a href="/topic/show?id=${topic.id}"><ins>${topic}</ins></a></span>

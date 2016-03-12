@@ -91,4 +91,15 @@ class LinkSharingTagLib {
             }
         }
     }
+    def subscription={attr, body ->
+        Topic topic = Topic.get(attr.topic)
+        if (topic.checksubscribeuser(session.user)) {
+            out << "<a onclick=\"Unsubscribe()\">Unsubscribe</a>"
+        }
+            else{
+            out << "<a onclick=\"subscribe()\">Subscribe</a>"
+            }
+
+
+    }
 }

@@ -114,11 +114,15 @@ function visiblitychange(topicId) {
 
 
 function subscriptionstatus(topicId) {
-    $('#user' + topicId).html('')
+
     jQuery.ajax({
         type: 'POST',
         url: "/topic/visiblity",
-        data: {topicId: topicId}
+        data: {topicId: topicId},
+        success: function () {
+            $('#user' + topicId).html('');
+            $('#mainmessage').text(message.message)
+    }
     })
 }
 function download(id) {
@@ -139,6 +143,16 @@ function download(id) {
             else{
                 $("#resc" + id).text("Permission dennied")
             }
+        }
+    })
+
+}
+function pagination(){
+
+    jQuery.ajax({
+        url:"/user/profile",
+        success:function(){
+           // location.refresh()
         }
     })
 

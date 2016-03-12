@@ -16,7 +16,7 @@
 
             <span class="text-muted col-sm-4">${topic.createdBy.firstName}</span><span
                 class="text-muted col-sm-3">Subscriptions</span> <span class="text-muted col-sm-2">Post</span><span
-                class="text-info col-sm-4" id="user${topic.id}" onclick="subscriptionstatus(${topic.id})">Unsubscribe</span>
+                class="text-info col-sm-4" id="user${topic.id}" onclick="subscriptionstatus(${topic.id})"></span>
             <span class="text-info col-sm-3">50</span>
             <span class="text-info col-sm-2">30</span>
             <span class="text-info col-sm-12"></span>
