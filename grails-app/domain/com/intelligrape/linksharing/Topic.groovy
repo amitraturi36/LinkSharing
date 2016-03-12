@@ -15,6 +15,7 @@ class Topic {
     }
     static mapping = {
         sort "topicName"
+        subscriptions cascade: 'all-delete-orphan'
 
     }
     static namedQueries = {

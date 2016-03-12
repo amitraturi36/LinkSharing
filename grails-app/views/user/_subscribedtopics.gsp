@@ -30,8 +30,8 @@
                     <div class="col-xs-4">
                         <ls:visiblity topic="${topic.id}"/>
                     </div>
-                    <span class=" col-xs-2 row"><ls:update topic="${topic.id}"/></span>
-                    <span class="glyphicon glyphicon-trash col-xs-1"></span>
+
+                    <span class=" row"><ls:update topic="${topic.id}"/><ls:candeletetopic topic="${topic.id}"/> </span>
                 </div>
                 <br/><br/>
             </div>

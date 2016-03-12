@@ -50,9 +50,9 @@ class LinkSharingTagLib {
     }
     def seriousness = { attr, body ->
         Topic topic = Topic.get(attr.topic)
-        User user=User.get(session.user.id)
+        User user = User.get(session.user.id)
 
-        Subscription subscription =user.getSubscription(attr.topic)
+        Subscription subscription = user.getSubscription(attr.topic)
         if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
             out << "<select class=\"form-control\" name=\"seriousness\" id=\"sub${subscription.id}\" onclick=seriousnesschange(${subscription.id})>\n" +
                     "                        <option id=\"CASUAL\"value=\"casual\">Casual</option>\n" +
@@ -86,20 +86,26 @@ class LinkSharingTagLib {
             out << " <a href=\"#\" class=\"glyphicon glyphicon-envelope\" style=\"padding:0px 7px;margin:0px 7px\"\n" +
                     "                               data-toggle=\"modal\" data-target=\"#myModal2\"></a>\n" +
                     "                            <g:render template=\"/topic/email\"></g:render>"
-            if ((topic.createdBy==session.user) || (session.user.admin)) {
+            if ((topic.createdBy == session.user) || (session.user.admin)) {
                 out << " <a href=\"/resource/show?id=${attr.topic}\" class=\"glyphicon glyphicon-pencil\" style=\"padding:0px 7px;margin:0px 7px\"></a>"
             }
         }
     }
-    def subscription={attr, body ->
-        Topic topic =Topic.get(attr.topics)
+    def subscription = { attr, body ->
+        Topic topic = Topic.get(attr.topics)
         if (topic.checksubscribeuser(session.user)) {
             out << "<a onclick=\"subscriptionstatus(${topic.id},1)\">Unsubscribe</a>"
-        }
-            else{
+        } else {
             out << "<a onclick=\"subscribe(${topic.id},0)\" id=\"user0${topic.id}\">Subscribe</a>"
-            }
+        }
 
+
+    }
+    def candeletetopic = { attr, body ->
+        Topic topic = Topic.get(attr.topic)
+        if((topic.createdBy)||(session.user.admin)){
+            out << " <span class=\"glyphicon glyphicon-trash alert-link\" style=\"padding:0px 7px;margin:0px 7px\" onclick=topicdelete(${topic.id})></span>"
+        }
 
     }
 }

@@ -1,19 +1,21 @@
 package com.intelligrape.linksharing
 
+import grails.converters.JSON
 import org.hibernate.ObjectNotFoundException
 
 
 class TopicController {
 
-    def delete(Long id) {
-        Topic topic = Topic.load(id)
+    def delete(Long topicId) {
+        def message=[message:"",error:""]
+        Topic topic = Topic.load(topicId)
         try {
-            topic.delete()
-            flash.message = "Sucessfully Deleted"
+            topic.delete(flush: true)
+            message.message = "Topic Sucessfully Deleted"
         } catch (ObjectNotFoundException e) {
-            flash.errors = e
+            message.error = e
         }
-        redirect(action: 'index')
+        render message as JSON
 
     }
 

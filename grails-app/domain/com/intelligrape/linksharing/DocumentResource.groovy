@@ -4,7 +4,7 @@ class DocumentResource extends Resource {
     String filePaths
     Date dateCreated
     Date lastUpdated
-    static belongsto = [resource: Resource]
+    static belongsto = [resource: Resource,topic: Topic]
     def contentType
     static Transient = ['contentType']
     static constraints = {

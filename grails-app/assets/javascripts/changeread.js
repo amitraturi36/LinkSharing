@@ -157,6 +157,22 @@ function download(id) {
     })
 
 }
+function topicdelete(topicId){
+    jQuery.ajax({
+        type: 'POST',
+        url: "/topic/delete",
+        data: {topicId: topicId},
+        success: function (message) {
+            if(message.message) {
+                $('#user' + status + topicId).html('');
+                $('#mainmessage').text(message.message)
+            }
+            else{
+                $('#mainerrors').text("Topic Not Deleted")
+            }
+        }
+    })
+}
 function pagination() {
 
     jQuery.ajax({
