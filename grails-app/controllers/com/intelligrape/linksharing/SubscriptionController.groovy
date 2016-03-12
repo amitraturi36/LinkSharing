@@ -1,5 +1,6 @@
 package com.intelligrape.linksharing
 
+import grails.converters.JSON
 import org.hibernate.ObjectNotFoundException
 
 
@@ -7,12 +8,14 @@ class SubscriptionController {
 
 
     def delete(Long id) {
-        Subscription subscription = Subscription.load(id)
-        try {
-            subscription.delete(flush: true)
-            render("Sucess")
-        } catch (ObjectNotFoundException error) {
-            flash.errors = error
+        Subscription subscription = Subscription.get(id)
+        if((session.user!=subscription.topic.createdBy)) {
+            try {
+                subscription.delete(flush: true)
+                render("Sucess")
+            } catch (ObjectNotFoundException error) {
+                flash.errors = error
+            }
         }
         redirect(controller:'user' , action: 'index')
     }
@@ -29,14 +32,15 @@ class SubscriptionController {
         redirect(controller:'user' , action: 'index')
     }
 
-    def update(Long id, Seriousness seriousness) {
-        Subscription subscription = Subscription.get(id)
-        subscription.seriousness = seriousness
+    def update(Long subId, String seriousness) {
+        def message=[error:"",message:""]
+        Subscription subscription = Subscription.get(subId)
+        subscription.seriousness = Seriousness.stringToEnum(seriousness)
         if (subscription.validate()) {
             subscription.save(flush: true, failOnError: true)
+           message.message="successfully changed"
         } else {
-            flash.errors = "fail to update seriousness"
+            message.error = "fail to update seriousness"
         }
-        redirect(controller:'user' , action: 'index')
     }
 }

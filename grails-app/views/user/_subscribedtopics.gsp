@@ -16,30 +16,20 @@
 
             <span class="text-muted col-sm-4">${topic.createdBy.firstName}</span><span
                 class="text-muted col-sm-3">Subscriptions</span> <span class="text-muted col-sm-2">Post</span><span
-                class="text-info col-sm-4">Unsubscribe</span>
+                class="text-info col-sm-4" id="user${topic.id}" onclick="subscriptionstatus(${topic.id})">Unsubscribe</span>
             <span class="text-info col-sm-3">50</span>
             <span class="text-info col-sm-2">30</span>
             <span class="text-info col-sm-12"></span>
 
             <div class="row">
                 <div class="col-xs-4">
-                    <select class="form-control" id="sel1">
-                        <option>Casual</option>
-                        <option>Serious</option>
-                        <option>Very Serious</option>
-                    </select>
+               <ls:seriousness topic="${topic.id}"></ls:seriousness>
                 </div>
 
                 <div class="col-xs-4">
-                    <select class="form-control" id="sel">
-                        <option>Public</option>
-                        <option>Private</option>
-                    </select>
+                 <ls:visiblity topic="${topic.id}"></ls:visiblity>
                 </div>
-
-
-                <span class="glyphicon glyphicon-envelope col-xs-1"></span>
-                <span class="glyphicon glyphicon-pencil col-xs-1"></span>
+                <span class=" col-xs-2 row"> <ls:update topic="${topic.id}"/></span>
                 <span class="glyphicon glyphicon-trash col-xs-1"></span>
             </div>
             <br/><br/>

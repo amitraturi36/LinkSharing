@@ -15,7 +15,7 @@
         <!-- Name Panel -->
         <!-- ************************************************** -->
             <g:each in="${resources}" var="resource">
-                <div class="panel panel-default">
+                <div class="panel panel-default" id="post${resource.id}">
 
                     <div class="panel-body">
 
@@ -76,10 +76,12 @@
 
                                 <div class="col-xs-4" class='readitem'><ls:read resource="${resource}">
                                 </ls:read></div>
-                                <ls:canDeleteResource resource="${resource}"><a
-                                        href="/resource/delete?id=${resource.id}"><span
-                                            class="glyphicon glyphicon-trash col-xs-1"></span>
+                                <ls:canDeleteResource resource="${resource}"><a><span
+                                        class="glyphicon glyphicon-trash col-xs-1"
+                                        onclick="deleteresource(${resource.id})"></span>
                                 </a></ls:canDeleteResource>
+                                <ls:download resource="${resource}"/>
+                                <ls:link resource="${resource}"/>
                             </div>
                         </div>
 

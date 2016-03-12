@@ -1,7 +1,7 @@
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
-
+linksharing.documents.folderPath = "/var/www/LinkSharing/"
 grails.config.locations = ["file:${userHome}/.grails/${appName}-config.groovy"]
 
 // grails.config.locations = [ "classpath:${appName}-config.properties",
@@ -65,14 +65,18 @@ grails {
     mail {
         host = "smtp.gmail.com"
         port = 465
-        username = "staging.mycroft@gmail.com"
-        password = "igdefault"
+        username = "amitTempAc@gmail.com"
+        password = "amit123456789"
         props = ["mail.smtp.auth"                  : "true",
                  "mail.smtp.socketFactory.port"    : "465",
                  "mail.smtp.socketFactory.class"   : "javax.net.ssl.SSLSocketFactory",
                  "mail.smtp.socketFactory.fallback": "false"]
     }
 }
+
+queryValidation.minified = true
+jqueryValidation.cdn = false // false or "microsoft"
+jqueryValidation.additionalMethods = false
 
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration

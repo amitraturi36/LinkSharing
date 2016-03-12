@@ -12,11 +12,27 @@ class UseService {
 
     }
 
-    def sendmail() {
+    def sendmail(SendMailVO sendMailVO) {
+        println(sendMailVO.body)
         mailService.sendMail {
-            to "myfriend@gmail.com"
-            subject "This is a test mail"
-            body "Hello, This is a test mail, how are you?"
+            to sendMailVO.email
+            subject sendMailVO.subject
+            body sendMailVO.body
         }
+    }
+
+    def forgetpassemail(String email) {
+        User user = User.findByEmail(email)
+        String password = User.randomnumbergenerator().toString()
+        user.password = password
+        user.save(flush: true)
+        SendMailVO sendMailVO = new SendMailVO([
+                email  : email,
+                subject: "Request for New Pasword",
+                body   : "your New Password is ${password}"
+        ])
+        sendmail(sendMailVO)
+
+
     }
 }

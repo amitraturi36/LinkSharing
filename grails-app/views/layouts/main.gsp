@@ -16,7 +16,6 @@
     <asset:stylesheet src="bootstrap.min.css"/>
     <asset:javascript src="application.js"/>
     <g:layoutHead/>
-
 </head>
 
 <body>
@@ -63,9 +62,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Profile</a></li>
                                     <li><a href="#">Users</a></li>
-                                    <li><a href="/user/showSubscribedTopics">$Topics</a></li>
+                                    <li><a href="/user/showSubscribedTopics">Topics</a></li>
                                     <li><a href="#">Posts</a></li>
-                                    <li><a href="#">LogOut</a></li>
+                                    <li><a href="/login/logout">LogOut</a></li>
                                 </ul></div>
 
                         </li>
@@ -75,11 +74,21 @@
             </ul></div>
     </div></div>
 
-<div class="alert-danger" style="border:1px solid lightgrey;display: block  "><g:if test="${flash.errors}">
-    ${flash.errors}
+<div class="alert-danger" id="mainerror" style="border:1px solid lightgrey;display: block  ">
+    <g:if test="${flash.errors}">
+        ${flash.errors}
 
-</g:if>
+    </g:if>
+</div>
 
+<div class="alert-danger" style="border:1px solid lightgrey;display: block  ">
+    <g:hasErrors bean="${user}">
+        <g:eachError><p><g:message error="${it}"/></p></g:eachError>
+    </g:hasErrors>
+</div>
+
+<div class="alert-success" id="mainmessage"style="border:1px solid lightgrey;display: block  "><g:if
+        test="${flash.messages}">${flash.messages}</g:if>
 </div>
 
 <div class="body"><g:layoutBody/></div>

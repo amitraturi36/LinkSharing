@@ -35,5 +35,12 @@ class ApplicationFilterFilters {
 
             }
         }
+        /*useraccessiblitycheck(controller:'Resource | readingItem |  resource| resourceRating|subscription|topic|user' ,action:'saveLinkResources|' ) {
+            before = {
+
+
+            }
+        }*/
+
     }
 }

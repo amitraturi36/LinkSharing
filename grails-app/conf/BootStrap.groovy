@@ -26,13 +26,15 @@ class BootStrap {
                     confirmPassword: Constants.PASSWORD
             ])
 
-            User admin = new User([email          : "amit@gmail.com",
-                                   password       : Constants.PASSWORD,
-                                   firstName      : "Amit",
-                                   lastName       : "Raturi",
-                                   admin          : true,
-                                   active         : true,
-                                   confirmPassword: Constants.PASSWORD])
+            User admin = new User([
+                    email          : "amit@gmail.com",
+                    password       : Constants.PASSWORD,
+                    firstName      : "Amit",
+                    lastName       : "Raturi",
+                    admin          : true,
+                    active         : true,
+                    confirmPassword: Constants.PASSWORD
+            ])
 
 
 

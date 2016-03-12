@@ -1,14 +1,11 @@
 package com.intelligrape.linksharing
 
-
-import java.sql.Blob
-
 class User {
     String email
     String password
     String firstName
     String lastName
-    Blob photo
+    byte[] photo
     Boolean admin
     Boolean active
     Date dateCreated
@@ -24,6 +21,7 @@ class User {
 
     static mapping = {
 //        subscriptions lazy: false
+        photo(sqlType: "longblob")
     }
 
     static constraints = {
@@ -50,7 +48,7 @@ class User {
         List<Topic> topicList = Topic.createCriteria().list([max: 5, offset: 0]) {
             createAlias('subscriptions', 'sp')
             eq('sp.user', this)
-//            subscription{
+//            subscriptions{
 //                eq('user', this)
 //            }
         }
@@ -67,5 +65,62 @@ class User {
     @Override
     String toString() {
         return this.name
+    }
+
+    static Long randomnumbergenerator() {
+        Random random = new Random()
+        return 100000 + random.nextInt(899999)
+    }
+
+    String getImageUrl() {
+
+        return "/user/image/${this.id}"
+    }
+
+    Subscription getSubscription(Long id) {
+        Topic topic = Topic.get(id)
+        return Subscription.findByTopicAndUser(topic, this)
+    }
+
+
+    static namedQueries = {
+        search {
+            UserSearchCO co ->
+                if (co.active == null) {
+                    if (co.firstName) {
+                        eq("firstName", co.firstName)
+                    }
+                    if (co.lastName) {
+                        eq("lastName", co.lastName)
+                    }
+                    if (co.email) {
+                        eq("email", co.email)
+                    }
+                }
+                else if(co.active){
+                    eq('active',co.active)
+                    if (co.firstName) {
+                        eq("firstName", co.firstName)
+                    }
+                    if (co.lastName) {
+                        eq("lastName", co.lastName)
+                    }
+                    if (co.email) {
+                        eq("email", co.email)
+                    }
+                }
+                else{
+                    eq('active',co.active)
+                    if (co.firstName) {
+                        eq("firstName", co.firstName)
+                    }
+                    if (co.lastName) {
+                        eq("lastName", co.lastName)
+                    }
+                    if (co.email) {
+                        eq("email", co.email)
+                    }
+                }
+        }
     }
 }

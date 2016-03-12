@@ -23,7 +23,7 @@ class TopicController {
     }
 
     def show(Topic topic) {
-        if (topic && (topic.visibility == Visibility.PUBLIC ||topic.checksubscribeuser(session.user))) {
+        if (topic && (topic.visibility == Visibility.PUBLIC || topic.checksubscribeuser(session.user))) {
             List<User> userList = topic.subscribedUser
             render view: 'show', model: [topic: topic, user: userList]
         } else if (!topic) {
@@ -58,6 +58,15 @@ class TopicController {
         render topicList.resources.description
 
     }
+
+    def visiblity(Long topicId, String visiblity) {
+        if ((topicId) && (visiblity)) {
+            Topic topic = Topic.get(topicId)
+            topic.visibility = Visibility.stringToEnum(visiblity)
+            topic.save(flush: true)
+        }
+    }
+
 
 }
 

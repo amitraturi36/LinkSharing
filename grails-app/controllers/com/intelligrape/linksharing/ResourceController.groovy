@@ -55,43 +55,26 @@ class ResourceController {
 //        }
 //
 //    }
-
-    def saveLinkResources(String url, Long topicId, String description) {
-
-        if ((url) && (topicId)) {
-            Topic topic = Topic.get(topicId)
-            LinkResource linkResource = new LinkResource([
-                    url        : url,
-                    topic      : topic,
-                    description: description,
-                    createdBy  : topic.createdBy
-            ])
-            if (linkResource.save(flush: true, failOnError: true)) {
-                flash.message = message(code: "topic.saved.message")
-                render("sucess")
-            } else {
-                flash.message = message(error: "topic.not.saved.message")
-            }
-
-        } else {
-            flash.message = message(code: "topic.not.saved.message")
-            render "fails"
-        }
-        redirect(controller: 'user', action: 'index')
-
-
-    }
-
     def delete(Long id) {
         def resources = Resource.load(id)
-        if (!resources.delete(flush: true)) {
-
-            flash.errors = "Successfully  deleted Post"
-        } else {
+        if (resources.delete(flush: true)) {
             flash.errors = "Unable to delete Post"
-            render view: "/user/index"
+            render "sucess"
+
+        } else {
+            if (resources.instanceOf(DocumentResource)) {
+                resources.deleteFile()
+            }
+            flash.messages = "Successfully  deleted Post"
+            render "fail"
         }
 
     }
 
+    protected void addToReadingItems(Resource resource) {
+        resource.topic.subscriptions.user.each {
+            new ReadingItem(user: it, resource: resource, isRead: true).save(flush: true)
+        }
+
+    }
 }

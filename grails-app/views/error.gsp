@@ -14,6 +14,9 @@
     <ul class="errors">
         <li>An error has occurred</li>
     </ul>
+    <div class=" alert-danger">
+        <h2><g:link url="/login/index">Go Back to Home</g:link> </h2>
+    </div>
 </g:else>
 </body>
 </html>

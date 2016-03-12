@@ -4,13 +4,18 @@
     <meta name="layout" content="main"/>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel="stylesheet" href="http://jqueryvalidation.org/files/demo/site-demos.css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+    <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+
 </head>
 
 <body>
 <!------------ box1 -->
 
 
-<div class="col-sm-7  ">
+<div class="col-sm-6  ">
 
     <div z>
         <div class="panel-default ">
@@ -76,7 +81,7 @@
 
 </div>
 
-<div class="col-sm-4 " style="padding:10px;">
+<div class="col-sm-5 " style="padding-left:10px;">
 
     <div class="panel-default ">
         <div class="panel-heading " style="border: 1px solid grey; background:#f2f2f2; ">Login
@@ -113,56 +118,74 @@
         <div class="panel-body " style="border:1px solid grey">
             <span class="col-sm-12"></span>
 
-            <form class="form-inline" role="form">
-                <div class="form-group col-sm-12" style="margin:5px">
-                    <label class="control-label col-sm-5" for="Fname">First Name<sup>*</sup></label>
-                    <input type="text" class="form-control col-sm-6  "
-                           style="border:1px solid grey"><br/><br/><br/><br/>
+            <g:uploadForm class="form-inline cmxform" role="form" url="/user/register" method="post" name="myregisterform">
+                <div class="form-group col-sm-12">
+                    <fieldset>
+                        <label class="control-label col-sm-5" for="Fname">First Name<sup>*</sup></label>
+                        <input type="text" name="fname" class="form-control col-sm-5 "
+                               style="border:1px solid grey" required><br/><br/><br/><br/>
 
 
 
-                    <label class="control-label col-sm-5" for="Lname">Last Name<sup>*</sup></label>
-                    <input type="text" class="form-control col-sm-6" style="border:1px solid grey"><br/><br/><br/><br/>
-                    <label class="control-label col-sm-5" for="Email">Email<sup>*</sup></label>
-                    <input type="email" class="form-control col-sm-6  "
-                           style="border:1px solid grey"><br/><br/><br/><br/>
+                        <label class="control-label col-sm-5" for="Lname">Last Name<sup>*</sup></label>
+                        <input type="text" name="lname" class="form-control col-sm-6"
+                               style="border:1px solid grey"required><br/><br/><br/><br/>
+                        <label class="control-label col-sm-5" for="Email">Email<sup>*</sup></label>
+                        <input type="email" name="email" class="form-control col-sm-6  "
+                               style="border:1px solid grey" required><br/><br/><br/><br/>
 
 
 
-                    <label class="control-label col-sm-5" for="uname">Username<sup>*</sup></label>
-                    <input type="text" class="form-control col-sm-6" style="border:1px solid grey"><br/><br/><br/><br/>
-                    <label class="control-label col-sm-5" for="pass">Password<sup>*</sup></label>
-                    <input type="password" class="form-control col-sm-6 "
-                           style="border:1px solid grey"><br/><br/><br/><br/>
+                        <label class="control-label col-sm-5" for="uname">Username<sup>*</sup></label>
+                        <input type="text" name="uname" class="form-control col-sm-6"
+                               style="border:1px solid grey" required><br/><br/><br/><br/>
+                        <label class="control-label col-sm-5"  for="pass">Password<sup>*</sup></label>
+                        <input type="password" id="passwrd" name="passwrd" class="form-control col-sm-6 "
+                               minlength="5" style="border:1px solid grey" required><br/><br/><br/><br/>
 
 
 
-                    <label class="control-label col-sm-5" for="CPassword">Confirm Password<sup>*</sup></label>
-                    <input type="password" class="form-control col-sm-6" style="border:1px solid grey"
-                           style="border:1px solid grey"><br/><br/><br/><br/>
+                        <label class="control-label col-sm-5" for="CPassword">Confirm Password<sup>*</sup></label>
+                        <input type="password" name="CnfrmPsswrd" id=" CnfrmPsswrd" class="form-control col-sm-6"
+                               style="border:1px solid grey"
+                               style="border:1px solid grey" required><br/><br/><br/><br/>
 
-                    <label class="control-label col-sm-5 text-info" for="photo">Photo</label><span class="col-sm-2 "
-                                                                                                   style="width:85px;height:20px;border:1px solid grey;"></span>
+                        <label class="control-label col-sm-5 text-info" for="photo">Photo</label><span class="col-sm-2 "
+                                                                                                       style="width:85px;height:20px;border:1px solid grey;"></span>
 
-                    <div class="form-group">
-                        <div>
-                            <label for="files"><span class="btn"
-                                                     Style="border:1px solid grey;padding:0px 30px">Browse</span>
-                            </label>
-                            <input style="visibility: hidden; position: absolute;" id="files" class="form-control"
-                                   type="file" name="files">
+                        <div class="form-group">
+                            <div>
+                                <label for="files"><span class="btn"
+                                                         Style="border:1px solid grey;padding:0px 30px">Browse</span>
+                                </label>
+                                <input style="visibility: hidden; position: absolute;" id="files" class="form-control"
+                                       type="file" name="photo">
 
-                        </div>
+                            </div>
 
-                    </div><br/><br/>
+                        </div><br/><br/>
 
 
-                    <span class="col-sm-8 text-info"></span>  <button type="file" class="btn col-sm-4"
-                                                                      style="border:1px solid grey">Register</button>
-
+                        <span class="col-sm-8 text-info"></span>  <input type="submit" value="Validate!">
+                    </fieldset>
                 </div>
-            </form></div></div>
+            </g:uploadForm></div></div>
+    <script>
+        // just for the demos, avoids form submit
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+        $("#myregisterform").validate({
+            rules: {
+                passwrd: "required",
+                CnfrmPsswrd: {
+                    equalTo: "#passwrd"
+                }
+            }
+        });
 
+    </script>
 </div>
 
 </body>

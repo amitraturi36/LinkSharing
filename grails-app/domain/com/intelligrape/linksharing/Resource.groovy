@@ -70,6 +70,17 @@ abstract class Resource {
     void resourceType() {
 
     }
+    Boolean canViewedBy(Long resourceId,Long userId){
+        Resource resource=Resource.get(resourceId)
+        Topic topic=resource.topic
+       return topic.canViewedBy(userId)
+
+
+    }
+
+    void deleteFile(){
+        log.error("this will be implemented in linkresource")
+    }
 
 
 }

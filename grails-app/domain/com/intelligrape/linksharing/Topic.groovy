@@ -79,5 +79,10 @@ class Topic {
     String toString() {
         return this.topicName;
     }
+    Boolean canViewedBy(Long userId){
+        User user=User.get(userId)
+        return this.createdBy.admin ||Subscription.countByTopicAndUser(this, user) > 0||this.visibility==Visibility.PUBLIC
+
+    }
 
 }

@@ -1,13 +1,13 @@
 package com.intelligrape.linksharing
 
+import grails.converters.JSON
+import org.springframework.web.multipart.commons.CommonsMultipartFile
+
 class UserController {
-    String confirmPassword
-    static constraints = {
-        confirmPassword
-    }
 //    def userService
 //   def myBean
 //    def    myBeanConstrctr
+    def useService
 
     def index() {
         List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
@@ -19,23 +19,36 @@ class UserController {
     }
 
 
-    def register(String email, String fname, String lname, String passwrd, String CnfrmPsswrd, String uname) {
+    def register(UserCO userCO) {
         User user = new User([
-                email          : email,
-                firstName      : fname,
-                lastName       : lname,
-                password       : passwrd,
-                confirmPassword: CnfrmPsswrd
+                email          : userCO.email,
+                firstName      : userCO.fname,
+                lastName       : userCO.lname,
+                password       : userCO.passwrd,
+                confirmPassword: userCO.CnfrmPsswrd,
+                active         : true
         ])
-        if (user.validate()) {
-            user.save(flush: true)
-            flash.message = "sucessfully registered"
+        CommonsMultipartFile file = params.list("photo")?.getAt(0)
+        user.photo = file?.bytes
+        def okContentTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', '.image/png', '.image/jpeg', '.image/jpg', '.image/gif']
+        if ((okContentTypes.contains(file?.getContentType())) || (!file)) {
 
+            if (user.validate()) {
+                println(user.email)
+                println(user.hasErrors())
+                user.save(flush: true)
+                flash.messages = "sucessfully registered"
+                session.user = user
+                redirect(controller: "user", action: "index")
+
+            } else {
+                render view: '/login/index', model: [user: user]
+            }
         } else {
-            flash.errors = message(error: user.errors.getFieldError('email')) + "," + message(error: user.errors.getFieldError('password')) + "," + message(error: user.errors.getFieldError('firstName')) + "," + message(error: user.errors.getFieldError('lastName'))
-
+            flash.errors = "Please choose valid iumage"
+            redirect(controller: 'login', action: 'index')
         }
-        render view: 'register'
+
         // render user.errors.allErrors.collect { message(error: it) }.join(',')
 
     }
@@ -55,4 +68,82 @@ class UserController {
 
     }
 
+    def sendInvitation(String email, Long topicId) {
+        if ((email) && (topicId)) {
+            Topic topic = Topic.get(topicId)
+            SendMailVO sendMailVO = new SendMailVO([
+                    email  : email,
+                    subject: " ${session.user.name} sent you a Subscription request",
+                    body   : "please subscribe to the top: ${topic.topicName}"
+            ])
+            useService.sendmail(sendMailVO)
+            flash.messages = "email sent successfully"
+            render "sucess"
+        } else {
+            flash.errors = "email is not valid"
+        }
+    }
+
+    def image(Long id) {
+        User user = User.get(id)
+        response.contentType = 'image/png' // or the appropriate image content type
+        response.outputStream << user.photo
+        response.outputStream.flush()
+    }
+
+    def changePassword(String email) {
+        def response = [data: ""]
+        try {
+            useService.forgetpassemail(email)
+            response.data = "Email sent successfully"
+        } catch (NullPointerException e) {
+            response.data = "email is not valid"
+        }
+        finally {
+            render response as JSON
+        }
+
+
+    }
+
+    def profile(ResourceSearchCO resourceSearchCO) {
+        def searchString = "${params.author}%"
+        def total = 
+        User user=resourceSearchCO.user
+        if ((session.user == user) || (session.user.admin)) {
+            render view: '/user/profile', model: [user: resourceSearchCO.user,subtopics:user.subscribedTopic]
+        }
+        else{
+            List <Topic> topicList=user.subscribedTopic
+            topicList=topicList-topicList.findAll{it.visibility==Visibility.PUBLIC}
+            render view: '/user/profile', model: [user: resourceSearchCO.user,subtopics:user.subscribedTopic]
+        }
+    }
+
+
+    def topics() {
+
+    }
+
+    def subscriptions() {
+
+    }
+
+    def list(UserSearchCO userSearchCO) {
+        if (session.user.admin) {
+
+        } else {
+            redirect(controller: 'user', action: 'index')
+        }
+    }
+
+    def toggleActive(Long id) {
+        if (session.user.admin) {
+            User user = User.get(id)
+            user.active = !user.active
+            user.save(flush: true)
+        } else {
+            redirect(controller: 'user', action: 'index')
+        }
+    }
 }
