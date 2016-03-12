@@ -65,7 +65,7 @@ class LinkSharingTagLib {
     def visiblity = { attr, body ->
         Topic topic = Topic.get(attr.topic)
         if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
-            out << "<select class=\"form-control\" id=\"topic${topic.id}\"  onclick=visiblitychange(${topic.id})>\n" +
+            out << "<select class=\"form-control\" id=\"vistopic${topic.id}\"  onclick=visiblitychange(${topic.id})>\n" +
                     "                        <option value=\"PUBLIC\">Public</option>\n" +
                     "                        <option value=\"PRIVATE\">Private</option>\n" +
                     "                    </select>"
@@ -92,12 +92,12 @@ class LinkSharingTagLib {
         }
     }
     def subscription={attr, body ->
-        Topic topic = Topic.get(attr.topic)
+        Topic topic =Topic.get(attr.topics)
         if (topic.checksubscribeuser(session.user)) {
-            out << "<a onclick=\"Unsubscribe()\">Unsubscribe</a>"
+            out << "<a onclick=\"subscriptionstatus(${topic.id},1)\">Unsubscribe</a>"
         }
             else{
-            out << "<a onclick=\"subscribe()\">Subscribe</a>"
+            out << "<a onclick=\"subscribe(${topic.id},0)\" id=\"user0${topic.id}\">Subscribe</a>"
             }
 
 

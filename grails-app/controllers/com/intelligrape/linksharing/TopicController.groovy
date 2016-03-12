@@ -64,7 +64,9 @@ class TopicController {
             Topic topic = Topic.get(topicId)
             topic.visibility = Visibility.stringToEnum(visiblity)
             topic.save(flush: true)
+            render("sucess")
         }
+
     }
 
 

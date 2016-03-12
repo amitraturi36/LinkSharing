@@ -5,10 +5,10 @@ function read(id) {
         success: function (message) {
             val = $('#' + id).html()
             $('#' + id).html("<span style='background-color:limegreen'>" + val + "</span>")
-            if(message.status==1) {
+            if (message.status == 1) {
                 $('#mainmessage').text(message.message)
             }
-            else{
+            else {
                 $('#mainerror').text(message.error)
             }
 
@@ -101,7 +101,7 @@ function seriousnesschange(subId) {
 
 
 function visiblitychange(topicId) {
-    var oData = $('#topic' + topicId).val()
+    var oData = $('#vistopic' + topicId).val()
     jQuery.ajax({
         type: 'POST',
         url: "/topic/visiblity",
@@ -113,20 +113,30 @@ function visiblitychange(topicId) {
 }
 
 
-function subscriptionstatus(topicId) {
-
+function subscriptionstatus(topicId, status) {
+    if (status == 1) {
+        url = '/subscription/delete'
+    }
+    else {
+        url = '/subscription/save'
+    }
     jQuery.ajax({
         type: 'POST',
-        url: "/topic/visiblity",
-        data: {topicId: topicId},
+        url: url,
+        data: {id: topicId},
         success: function () {
-            $('#user' + topicId).html('');
-            $('#mainmessage').text(message.message)
-    }
+            $('#user' + status + topicId).html('');
+            if (status == 1) {
+                $('#mainmessage').text("successfully unsubscribed")
+            }
+            else {
+                $('#mainmessage').text("successfully subscribed")
+            }
+        }
     })
 }
 function download(id) {
-        var a=this
+    var a = this
     jQuery.ajax({
         type: 'POST',
         url: "/documentResource/download",
@@ -136,23 +146,23 @@ function download(id) {
             if (download.download == 1) {
                 $("#resc" + id).attr("href", "file:///home/amit/projects/LinkSharing/grails-app/assets/images/user.png");
                 $("#resc" + id).attr(download)
-                $("#resc" + id+'1').text("Click Again")
+                $("#resc" + id + '1').text("Click Again")
             }
 
 
-            else{
+            else {
                 $("#resc" + id).text("Permission dennied")
             }
         }
     })
 
 }
-function pagination(){
+function pagination() {
 
     jQuery.ajax({
-        url:"/user/profile",
-        success:function(){
-           // location.refresh()
+        url: "/user/profile",
+        success: function () {
+            // location.refresh()
         }
     })
 

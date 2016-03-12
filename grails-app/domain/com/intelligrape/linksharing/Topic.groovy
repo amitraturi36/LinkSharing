@@ -30,6 +30,7 @@ class Topic {
     }
 
     Boolean checksubscribeuser(User user) {
+
         return Subscription.countByTopicAndUser(this, user) > 0
     }
 

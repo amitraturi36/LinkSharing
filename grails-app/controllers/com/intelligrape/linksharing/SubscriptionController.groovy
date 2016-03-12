@@ -8,7 +8,8 @@ class SubscriptionController {
 
 
     def delete(Long id) {
-        Subscription subscription = Subscription.get(id)
+        Topic topic=Topic.get(id)
+        Subscription subscription = Subscription.ByTopicAndUser(topic, session.user)
         if((session.user!=subscription.topic.createdBy)) {
             try {
                 subscription.delete(flush: true)
@@ -17,7 +18,7 @@ class SubscriptionController {
                 flash.errors = error
             }
         }
-        redirect(controller:'user' , action: 'index')
+        render "success"
     }
 
     def save(Long id) {
@@ -29,7 +30,7 @@ class SubscriptionController {
         } else {
             flash.errors="fail to update seriousness"
         }
-        redirect(controller:'user' , action: 'index')
+        render "success"
     }
 
     def update(Long subId, String seriousness) {
@@ -39,8 +40,10 @@ class SubscriptionController {
         if (subscription.validate()) {
             subscription.save(flush: true, failOnError: true)
            message.message="successfully changed"
+
         } else {
             message.error = "fail to update seriousness"
         }
+        render "sucess"
     }
 }
