@@ -5,11 +5,13 @@
 </head>
 
 <body>
-<g:each var="book" in="${searchResults}">
+<g:each var="topics" in="${subtopics}">
 
-
+    ${topics}
 
 </g:each>
-<g:paginate controller="displayBook" action="index" total="${total}"/>
+<g:paginate next="Forward" prev="Back"
+            maxsteps="0" controller="user"
+            action="profile" total="${subtopicscount}" params="[userId: user.id]"/>
 </body>
 </html>

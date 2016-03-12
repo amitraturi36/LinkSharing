@@ -19,7 +19,6 @@ class ResourceSearchCO extends SearchCO {
     }
 
     User getUser() {
-
         return User.get(userId)
     }
 }

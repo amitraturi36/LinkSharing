@@ -107,16 +107,20 @@ class UserController {
     }
 
     def profile(ResourceSearchCO resourceSearchCO) {
-        def searchString = "${params.author}%"
-        def total = 
-        User user=resourceSearchCO.user
+        def searchString = params.userId
+        params.max = Math.min(params.max ? params.int('max') : 1, 100)
+        params.offset = (params.offset ? params.int('offset') :0)
+        User user = User.get(searchString) //resourceSearchCO.user
+        List<Topic> topicList = user?.getSubscribedTopic(params)
         if ((session.user == user) || (session.user.admin)) {
-            render view: '/user/profile', model: [user: resourceSearchCO.user,subtopics:user.subscribedTopic]
-        }
-        else{
-            List <Topic> topicList=user.subscribedTopic
-            topicList=topicList-topicList.findAll{it.visibility==Visibility.PUBLIC}
-            render view: '/user/profile', model: [user: resourceSearchCO.user,subtopics:user.subscribedTopic]
+            render view: '/user/profile', model: [
+                    user          : resourceSearchCO.user,
+                    subtopics     : topicList,
+                    subtopicscount: topicList.size()
+            ]
+        } else {
+            topicList = topicList - topicList.findAll { it.visibility == Visibility.PUBLIC }
+            render view: '/user/profile', model: [user: resourceSearchCO.user, subtopics:topicList, subtopicscount: topicList.size() ]
         }
     }
 

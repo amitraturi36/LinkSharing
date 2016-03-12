@@ -44,7 +44,7 @@ class User {
 
     }
 
-    def getSubscribedTopic() {
+    def getSubscribedTopic(params) {
         List<Topic> topicList = Topic.createCriteria().list([max: 5, offset: 0]) {
             createAlias('subscriptions', 'sp')
             eq('sp.user', this)
