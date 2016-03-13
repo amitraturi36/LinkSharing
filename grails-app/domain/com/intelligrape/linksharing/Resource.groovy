@@ -77,7 +77,7 @@ abstract class Resource {
     }
 
     void deleteFile() {
-        this.dateCreated.after()
+
         log.error("this will be implemented in linkresource")
     }
 
@@ -94,5 +94,28 @@ abstract class Resource {
 
         return Resource.getAll(list)
     }
+    static def recentPost(Integer status){
+         Date date=new Date()
+        List list
+        if(status==1) {
+           list = Resource.createCriteria().list([max: 5, offset: 0]) {
+                gt('dateCreated', date-7)
+                order('dateCreated')
+            }
+        }
+        else if(status==2){
+            list= Resource.createCriteria().list([max: 5, offset: 0]) {
+                gt('dateCreated', date-date.date)
+                order('dateCreated')
+            }
+        }
+        else{
+            list= Resource.createCriteria().list([max: 5, offset: 0]) {
+                gt('dateCreated', date-date.date+1)
+                order('dateCreated')
+            }
+        }
+    }
+
 
 }

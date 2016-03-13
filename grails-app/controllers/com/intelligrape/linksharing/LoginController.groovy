@@ -11,7 +11,8 @@ class LoginController {
 
         } else {
             List list = Resource.toppost()
-            render view: 'index', model: [list: list]
+            List list1=Resource.recentPost(3)
+            render view: 'index', model: [list: list,recentpost:list1]
 
 
         }
