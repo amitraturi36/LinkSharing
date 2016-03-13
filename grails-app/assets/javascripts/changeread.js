@@ -4,7 +4,7 @@ function read(id) {
         data: {id: id},
         success: function (message) {
             val = $('#' + id).html()
-            $('#' + id).html("<span style='background-color:limegreen'>" + val + "</span>")
+            $('#' + id).html("<span class='alert-success'>" + val + "</span>")
             if (message.status == 1) {
                 $('#mainmessage').text(message.message)
             }
@@ -164,7 +164,7 @@ function topicdelete(topicId){
         data: {topicId: topicId},
         success: function (message) {
             if(message.message) {
-                $('#user' + status + topicId).html('');
+                $('#user'+1+ topicId).html('');
                 $('#mainmessage').text(message.message)
             }
             else{

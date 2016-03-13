@@ -27,8 +27,10 @@ class DocumentResourceController extends ResourceController {
                 //   render documentResource.errors.allErrors
             }
         } else {
-            //  render "fail"
+             render "fail"
         }
+        render "in"
+
     }
 
     def download(Long resourceId) {

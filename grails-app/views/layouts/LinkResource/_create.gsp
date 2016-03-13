@@ -3,7 +3,7 @@
     <div class="modal-dialog">
 
     <!-- Modal content-->
-        <g:form class="inline-form" url="/resource/saveLinkResources">
+        <g:form class="inline-form" url="/LinkResource/saveLinkResources">
             <div class="modal-content">
                 <div class="modal-header" style="border: 1px solid grey; background:#f2f2f2;">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>

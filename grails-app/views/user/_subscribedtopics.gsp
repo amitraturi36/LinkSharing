@@ -9,8 +9,7 @@
     <div class="panel-body col-sm-12" style="border:1px solid grey">
         <g:each in="${subtopics}" var="topic">
             <div id="user1${topic.id}">
-                <div class="col-sm-3" style="margin: 25px 0px;"><span
-                        class="glyphicon glyphicon-user " style="font-size:70px;"></span>
+                <div class="col-sm-3" style="margin: 25px 0px;"><ls:userImage user="${topic.createdBy}"/>
                 </div>
                 <span class="col-sm-5"></span>
                 <span><a href="/topic/show?id=${topic.id}"><ins>${topic}</ins></a></span>
@@ -30,11 +29,24 @@
                     <div class="col-xs-4">
                         <ls:visiblity topic="${topic.id}"/>
                     </div>
+                </div><br>
 
-                    <span class=" row"><ls:update topic="${topic.id}"/><ls:candeletetopic topic="${topic.id}"/> </span>
-                </div>
-                <br/><br/>
+                <div class=" row"><ls:update topic="${topic.id}"/><ls:candeletetopic topic="${topic.id}"/></div>
             </div>
+
+            <div class="row">
+                <div class="col-xs-1 fa fa-facebook-official" style="font-size:20px"></div>
+
+                <div class="col-xs-1 fa fa-twitter" style="font-size:20px"></div>
+
+                <div class="col-xs-1 fa fa-google-plus" style="font-size:20px"></div>
+
+                <div class="col-xs-6"></div>
+
+                <div class="col-xs-3"><a href="/resource/show?id=${topic.id}">View Post</a></div>
+            </div>
+            <br/><br/>
+
         </g:each>
         <g:paginate next="Forward" prev="Back"
                     maxsteps="0" controller="user"

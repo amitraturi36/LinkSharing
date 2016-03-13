@@ -17,8 +17,7 @@
 <g:each var="topic" in="${subtopics}">
 
     <div class="col-sm-3" style="margin: 25px 0px;">
-        <a href="/user/profile?userId=${session.user.id}"><ls:userImage
-                user="${session.user}"></ls:userImage>
+        <a href="/user/profile?userId=${session.user.id}"><ls:userImage user="${session.user}"/>
         </a>
     </div>
     <span class="col-sm-5"></span>

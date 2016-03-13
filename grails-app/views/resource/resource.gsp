@@ -48,19 +48,7 @@
                                     <div class="col-xs-6 text-muted">${resource.dateCreated}</div>
                                 </div>
 
-                                <div class="row" style="padding-bottom:15px">
-                                    <div class="col-xs-8"></div>
-
-                                    <div class="col-xs-4">
-                                        <select class="form-control" id="sel">
-                                            <option>1 Star</option>
-                                            <option>2 Star</option>
-                                            <option>3 Star</option>
-                                            <option>4 Star</option>
-                                            <option>5 Star</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                <ls:resourcerater resourceId="${resource.id}"/>
                             </div>
 
                             <p style="padding-bottom:5px">${resource.description}</p>
@@ -96,6 +84,7 @@
             <!-- ************************************************ -->
 
         </div>
-    </div></div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,26 +1,39 @@
-<div class="panel">
-    <div class="panel-heading col-sm-12 "
-         style="border: 1px solid grey; background:#f2f2f2;">Trending Topics
+<div class="panel  col-sm-9 ">
+    <div class="panel-heading col-sm-12 " style="border: 1px solid grey; background:#f2f2f2;">
+
+        <span class="col-sm-9">Trending Topics</span><a href="#" class="col-sm-3 "><ins>View all</ins></a>
     </div>
 
-    <div class="panel-body col-sm-12" style="border: 1px solid grey;">
-        <g:each in="${list}">
+    <div class="panel-body col-sm-12" style="border:1px solid grey">
+        <g:each in="${list}" var="topic">
+            <div id="trndng${topic.id}">
+                <div class="col-sm-3" style="margin: 25px 0px;"><ls:userImage user="${topic.createdBy}"/>
+                </div>
+                <span class="col-sm-5"></span>
+                <span><a href="/topic/show?id=${topic.id}"><ins>${topic.name}</ins></a></span>
 
-            <div class="col-sm-2" style="margin: 25px 0px;"><span
-                    class="glyphicon glyphicon-user " style="font-size:60px;"></span>
+                <span class="text-muted col-sm-4">${topic.createdBy.firstName}</span><span
+                    class="text-muted col-sm-3">Subscriptions</span> <span class="text-muted col-sm-2">Post</span>
+                <span class="text-info col-sm-5"><ls:subscription topics="${topic.id}"/></span>
+                <span class="text-info col-sm-3">50</span>
+                <span class="text-info col-sm-2">30</span>
+                <span class="text-info col-sm-12"></span>
+                <div class=" row"></div>
+                <div class=" row" STYLE="float: right">
+                    <ls:update topic="${topic.id}"/>
+                    <ls:candeletetopic topic="${topic.id}"/> </div>
             </div>
-            <span class=" col-sm-6 "
-                  style="font-size: 15px;padding:20px 15px;">${it.createdBy}</span>
-            <span class=" col-sm-3 text-muted " style="padding:20px 0px;"><a
-                    href="/user/showSubscribedTopics?id=${it.id}">${it.name}</a></span>
+            <div class="row">
+                <div class="col-xs-1 fa fa-facebook-official" style="font-size:20px"></div>
+                <div class="col-xs-1 fa fa-twitter" style="font-size:20px"></div>
+                <div class="col-xs-1 fa fa-google-plus" style="font-size:20px"></div>
+                <div class="col-xs-6"></div>
+                <div class="col-xs-3"><a href="#">View Post</a></div>
+            </div>
+            <br/><br/>
 
-            <p class="text-muted col-sm-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </g:each>
 
-            <div class=" col-sm-10">
-                <i class="fa fa-facebook "></i>
-                <i class="fa fa-google"></i>
-                <i class="fa fa-twitter"></i>
+    </div>
 
-                <span class="text-info col-sm-2"><a href="#"><ins>click</ins></a></span>
-
-            </div><br/><br/></g:each></div></div>
+</div>

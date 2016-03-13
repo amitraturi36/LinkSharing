@@ -2,7 +2,7 @@
     <div class="modal-dialog">
 
     <!-- Modal content-->
-        <g:uploadForm  name="myform" class="inline-form"   url="/resource/saveDocument" >
+        <g:uploadForm  name="myform" class="inline-form"   url="/documentResource/saveDocument" >
             <div class="modal-content">
                 <div class="modal-header" style="border: 1px solid grey; background:#f2f2f2;">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>

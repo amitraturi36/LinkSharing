@@ -10,9 +10,10 @@ class UserController {
     def useService
 
     def index() {
-        List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
+        List<TopicVO> topicVOList = Topic.getTrendingTopics()
         List <Topic>topicList=session.user.getSubscribedTopic(params)
-        render view: "index", model: [list: topicVOList, subtopics:topicList, subtopicscount: topicList.size() ]
+
+        render view: "index", model: [resources:Resource.inbox(session.user),list: topicVOList, subtopics:topicList, subtopicscount: topicList.size() ]
         // render view: "index", model: [list: userService.serviceMethod(), subtopics: session.user.subscribedTopic]
 //        def c= Holders.applicationContext.getBean(CustomBean)
 //        //    render myBean.firstName

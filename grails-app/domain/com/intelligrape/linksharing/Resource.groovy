@@ -23,18 +23,19 @@ abstract class Resource {
         ratingInfo
     }
 
-    static RatingInfoVO resourceRater(Resource resource) {
-        List<ResourceRating> resourceList = ResourceRating.createCriteria().list {
+    static def resourceRater(Resource resource) {
+        List<Long> resourceList = ResourceRating.createCriteria().list {
             projections {
                 sum "score"
                 avg("score")
                 count('id', "score")
             }
-            eq('resource', Resource.get(resource.id))
+            eq('resource', resource)
 
         }
 
-        return new RatingInfoVO(averageScore: resourceList[1], totalScore: resourceList[0], totalVotes: resourceList[2])
+        return new RatingInfoVO(averageScore: resourceList[0][1], totalScore: resourceList[0][0], totalVotes: resourceList[0][2])
+
     }
 
     static def toppost() {
@@ -67,20 +68,31 @@ abstract class Resource {
 
     }
 
-    void resourceType() {
-
-    }
-    Boolean canViewedBy(Long resourceId,Long userId){
-        Resource resource=Resource.get(resourceId)
-        Topic topic=resource.topic
-       return topic.canViewedBy(userId)
+    Boolean canViewedBy(Long resourceId, Long userId) {
+        Resource resource = Resource.get(resourceId)
+        Topic topic = resource.topic
+        return topic.canViewedBy(userId)
 
 
     }
 
-    void deleteFile(){
+    void deleteFile() {
+        this.dateCreated.after()
         log.error("this will be implemented in linkresource")
     }
 
+    static def inbox(User user) {
+        List list = Topic.createCriteria().list([max: 5, offset: 0]) {
+            createAlias('subscriptions', 'ts')
+            createAlias('resources', 'tr')
+            projections {
+                groupProperty('tr.id')
+            }
+            eq('ts.user', user)
+            order('tr.dateCreated')
+        }
+
+        return Resource.getAll(list)
+    }
 
 }

@@ -20,7 +20,7 @@ class LinkResourceController extends ResourceController {
               addToReadingItems(linkResource)
                 render view: "/user/index"
             } else {
-                render(linkResource.errors.allErrors)
+                render "fail"
 //                flash.errors = "Link Resource  Not Saved"
 //                render view:"/user/index"
             }
@@ -29,7 +29,6 @@ class LinkResourceController extends ResourceController {
             flash.message = message(code: "topic.not.saved.message")
             render view: '/login/index'
         }
-        redirect(controller: 'user', action: 'index')
 
 
     }

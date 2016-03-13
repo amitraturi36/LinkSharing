@@ -13,9 +13,9 @@ class LinkSharingTagLib {
             }
             if ((readingItem?.user != attr.resource.createdBy) && (readingItem)) {
                 if (readingItem.isRead) {
-                    out << "<span Style='background-color:limegreen' >Read</span> "
+                    out << "<span class=\"alert-success\" >Read</span> "
                 } else {
-                    out << "<span Style='background-color:red' > <a onclick=\"read(${attr.resource?.id})\" id=\"${attr.resource?.id}\">Read</a></span> "
+                    out << "<span class=\"alert-danger\" > <a onclick=\"read(${attr.resource?.id})\" id=\"${attr.resource?.id}\">Read</a></span> "
                 }
             }
         }
@@ -51,14 +51,15 @@ class LinkSharingTagLib {
     def seriousness = { attr, body ->
         Topic topic = Topic.get(attr.topic)
         User user = User.get(session.user.id)
-
-        Subscription subscription = user.getSubscription(attr.topic)
         if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
-            out << "<select class=\"form-control\" name=\"seriousness\" id=\"sub${subscription.id}\" onclick=seriousnesschange(${subscription.id})>\n" +
-                    "                        <option id=\"CASUAL\"value=\"casual\">Casual</option>\n" +
-                    "                        <option id=\"SERIOUS\" value=\"serious\">Serious</option>\n" +
-                    "                        <option id=\"VERY_SERIOUS\"value=\"very serious\">Very Serious</option>\n" +
-                    "                    </select>"
+            Subscription subscription = user.getSubscription(attr.topic)
+            if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
+                out << "<select class=\"form-control\" name=\"seriousness\" id=\"sub${subscription.id}\" onclick=seriousnesschange(${subscription.id})>\n" +
+                        "                        <option id=\"CASUAL\"value=\"casual\">Casual</option>\n" +
+                        "                        <option id=\"SERIOUS\" value=\"serious\">Serious</option>\n" +
+                        "                        <option id=\"VERY_SERIOUS\"value=\"very serious\">Very Serious</option>\n" +
+                        "                    </select>"
+            }
         }
 
     }
@@ -103,9 +104,42 @@ class LinkSharingTagLib {
     }
     def candeletetopic = { attr, body ->
         Topic topic = Topic.get(attr.topic)
-        if((topic.createdBy)||(session.user.admin)){
+        if ((topic.createdBy==session.user) || (session.user.admin)) {
             out << " <span class=\"glyphicon glyphicon-trash alert-link\" style=\"padding:0px 7px;margin:0px 7px\" onclick=topicdelete(${topic.id})></span>"
         }
+
+    }
+    def resourcerater = { attr, body ->
+        Resource resource = Resource.get(attr.resourceId)
+        Topic topic = resource.topic
+
+        if (Subscription.countByTopicAndUser(topic, session.user)) {
+            out << "<div class=\"row\" style=\"padding-bottom:15px\">\n" +
+                    "                                    <div class=\"col-xs-8\"></div>\n" +
+                    "\n" +
+                    "                                    <div class=\"col-xs-4\">\n" +
+                    "                                        <select class=\"form-control\" id=\"resc${resource.id}\" onclick=\"resourcerater(resourceId)\">\n" +
+                    "                                            <option>1 Star</option>\n" +
+                    "                                            <option>2 Star</option>\n" +
+                    "                                            <option>3 Star</option>\n" +
+                    "                                            <option>4 Star</option>\n" +
+                    "                                            <option>5 Star</option>\n" +
+                    "                                        </select>\n" +
+                    "                                    </div>\n" +
+                    "                                </div>"
+        } else {
+            RatingInfoVO ratingInfoVO = Resource.resourceRater(resource)
+            if(ratingInfoVO) {
+                ratingInfoVO.averageScore.times {
+                    out << "<span class=\"glyphicon glyphicon-heart\"></span>"
+                }
+            }
+                else{
+
+                out << "<span class=\"glyphicon glyphicon-heart\"></span>"
+            }
+        }
+
 
     }
 }

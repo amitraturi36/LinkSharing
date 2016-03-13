@@ -93,7 +93,7 @@ class BootStrap {
                                     topic      : topic,
                                     createdBy  : topic.createdBy,
                                     description: "description ${topic.topicName} documentResource ${it}",
-                                    filePaths  : "c:/filepath/abc${it}.txt"
+                                    filePaths  : "file:///home/amit/temp${it}.txt"
                             ])
                             if (!linkResource.save()) {
                                 log.error(linkResource.errors)

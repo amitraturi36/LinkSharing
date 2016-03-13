@@ -77,7 +77,7 @@
             </div>
 
         </div></div>
-    <g:render template="/topic/toppost"/>
+   <ls:toptopics/>
 
 </div>
 

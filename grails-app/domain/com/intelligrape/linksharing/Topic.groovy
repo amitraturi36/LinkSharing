@@ -43,8 +43,8 @@ class Topic {
         return userList*.user
     }
 
-    static List getTrendingTopics(int offst) {
-        List<Resource> topicList = Resource.createCriteria().list(max: 5, offset: offst) {
+    static List getTrendingTopics() {
+        List<Resource> topicList = Resource.createCriteria().list([max: 5, offset: 0]) {
             createAlias('topic', 't')
             projections {
                 groupProperty('topic')
@@ -56,6 +56,7 @@ class Topic {
             order('mycount')
             order('t.topicName')
         }
+        println("*********************************"+topicList)
         List<TopicVO> topicVOList = []
         topicList.each { row ->
             topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4]))

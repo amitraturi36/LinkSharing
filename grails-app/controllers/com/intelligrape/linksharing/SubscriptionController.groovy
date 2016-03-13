@@ -9,7 +9,7 @@ class SubscriptionController {
 
     def delete(Long id) {
         Topic topic=Topic.get(id)
-        Subscription subscription = Subscription.ByTopicAndUser(topic, session.user)
+        Subscription subscription = Subscription.findByTopicAndUser(topic, session.user)
         if((session.user!=subscription.topic.createdBy)) {
             try {
                 subscription.delete(flush: true)
