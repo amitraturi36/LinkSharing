@@ -96,7 +96,7 @@ abstract class Resource {
     }
     static def recentPost(Integer status){
          Date date=new Date()
-        List list
+        List <Resource>list
         if(status==1) {
            list = Resource.createCriteria().list([max: 5, offset: 0]) {
                 gt('dateCreated', date-7)
@@ -115,6 +115,7 @@ abstract class Resource {
                 order('dateCreated')
             }
         }
+        return list-list.topic.findAll {it.visibility==Visibility.PRIVATE}
     }
 
 

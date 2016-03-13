@@ -36,9 +36,9 @@
 
             <div class="panel-body col-sm-12" style="border:1px solid grey">
                <g:each in="${recentpost}" var="post">
-                <div class="col-sm-2" style="margin: 25px 0px;border: 1px solid grey;"><span
-                        class="glyphicon glyphicon-user " style="font-size:60px;"></span>
-                </div>
+                   <div class="col-sm-3" style="margin: 25px 0px;"><ls:userImage user="${post.createdBy}"/>
+                   </div>
+                   <div class="text-info" style="float: right">${post.topic}</div>
                 <span class=" col-sm-6 " style="font-size: 15px;padding:20px 15px;">${post.createdBy}</span>
                 <span class=" col-sm-3 text-muted " style="padding:20px 0px;">@${post.createdBy.firstName}<g:formatDate date="${post.dateCreated}" type="time" style="SHORT"/> </span>
 
