@@ -28,16 +28,17 @@
     <ul class="nav navbar-nav navbar-right">
 
         <li>
-            <form class="navbar-form">
+            <g:form class="navbar-form" name="globalsearch" url="/topic/search" >
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="srch-term">
 
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
                         </button>
                     </div>
                 </div>
-            </form>
+            </g:form>
+
         </li>
         <g:if test="${session.user != null}">
             <li><a href="#" class="glyphicon glyphicon-comment"

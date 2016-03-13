@@ -8,9 +8,15 @@ class TopicService {
     def serviceMethod() {
 
     }
-def search(TopicSearchCO topicSearchCO){
-     return Topic.findAllByCreatedBy(topicSearchCO.user)
-}
+
+    def search(ResourceSearchCO resourceSearchCO){
+        List<Topic>topicList = Topic.createCriteria().list {
+
+            ilike("topicName",'%'+resourceSearchCO.q+'%')
+
+        }
+        return topicList
+    }
 
 
 }

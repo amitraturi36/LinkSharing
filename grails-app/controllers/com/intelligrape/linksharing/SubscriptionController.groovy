@@ -25,7 +25,9 @@ class SubscriptionController {
         Topic topic = Topic.get(id)
         User user = session.user
         Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.SERIOUS)
+
         if (subscription.validate()) {
+
             subscription.save(flush: true, failOnError: true)
         } else {
             flash.errors="fail to update seriousness"

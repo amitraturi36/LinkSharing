@@ -27,9 +27,25 @@ function deleteresource(id) {
     });
 
 }
-function resourcerating(id) {
+function resourcerating(id,score) {
+    var oData = $('#resc' + id).val()
+    jQuery.ajax({
+        url: "/resourceRate/resourcerating",
+        data: {id: id,
+            score:score
+        },
+        success: function (message) {
+            if (message.message) {
+                $('#mainmessage').text(message.message)
+            }
+            else {
+                $('#mainerror').text(message.error)
+            }
 
 
+
+        }
+    });
 }
 
 

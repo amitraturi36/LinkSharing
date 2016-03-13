@@ -2,14 +2,38 @@ package com.intelligrape.linksharing
 
 class ResourceController {
 
+    def resourceService
 
     def search(ResourceSearchCO resourceSearchCO) {
-        if (resourceSearchCO.q) {
-            resourceSearchCO.visibilityString = "public"
+        if (session.user?.admin == true) {
+            if (resourceSearchCO.q) {
+                render view: '/resource/search', model: [resource: resourceService.search(resourceSearchCO)]
+            } else {
 
+                Topic topic = Topic.get(resourceSearchCO.topicId)
+                render view: '/resource/search', model: [resource: topic.resources]
+            }
         }
+       else if (resourceSearchCO.q) {
+            if (session?.user) {
+                Topic topic = Topic.get(resourceSearchCO.topicId)
+                if (((topic.checksubscribeuser(session.user)) || (topic.visibility == Visibility.PUBLIC)) && (resourceSearchCO.q)) {
+                    render view: '/resource/search', model: [resource: resourceService.search(resourceSearchCO)]
+                } else {
+                    redirect(controller: 'login', action: 'index')
+                }
+            } else {
+                Topic topic = Topic.get(resourceSearchCO.topicId)
+                if (topic.visibility == Visibility.PUBLIC) {
+                    render view: '/resource/search', model: [resource: resourceService.search(resourceSearchCO)]
+                } else {
+                    redirect(controller: 'login', action: 'index')
+                }
+            }
 
-
+        } else {
+            redirect(controller: 'login', action: 'index')
+        }
     }
 
     def show(Long id) {

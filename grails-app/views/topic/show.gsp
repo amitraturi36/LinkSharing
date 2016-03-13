@@ -70,9 +70,25 @@
                 <!-- Trending Topics Panel -->
                 <!-- ************************************************ -->
                 <div class="panel panel-default">
-                    <div class="panel-heading"><strong>Trending Topics</strong></div>
 
+                    <div class="panel-heading">
+                        <div class="row">
+                        <strong>Post</strong>
+                        <g:form class="form-inline" style="float: right" name="postsearch" url="/resource/search?topicId=${topic.id}">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" name="q" id="srch-term">
+
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </g:form>
+
+                    </div>
+                </div>
                     <div class="panel-body">
+                        <g:each in="${resource}">
                         <div>
                             <div class="col-xs-2">
                                 <div class="glyphicon glyphicon-user" style="font-size:60px"></div>
@@ -106,56 +122,8 @@
 
                                     <div class="col-xs-3"><a href="#">View Post</a></div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="col-xs-2">
-                                <div class="glyphicon glyphicon-user" style="font-size:60px"></div>
-                            </div>
-
-                            <div class="col-xs-10">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <span class="h5">Uday</span>
-                                        <small class="text-muted">@uday</small>
-                                    </div>
-
-                                    <div class="col-xs-3">
-                                    </div>
-
-                                    <div class="col-xs-3">
-                                        <a href="#" class="text-left">Grails</a>
-                                    </div>
-                                </div>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mi risus, mollis sit amet purus vitae, rutrum commodo erat.</p>
-
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <select class="form-control" id="sel1">
-                                            <option>Serious</option>
-                                            <option>Very Serious</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-xs-4">
-                                        <select class="form-control" id="sel1">
-                                            <option>Public</option>
-                                            <option>Private</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-xs-2"><a href="#">Edit</a></div>
-
-                                    <div class="col-xs-2"><a href="#">Delete</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div></div>
+                            </div></div></g:each>
+        </div></div></div>
 %{--________________________________________________________________________________________________________--}%
     <div class="col-sm-6">
         <div class="panel  col-sm-9 ">

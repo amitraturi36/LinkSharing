@@ -88,16 +88,17 @@ class LinkSharingTagLib {
                     "                               data-toggle=\"modal\" data-target=\"#myModal2\"></a>\n" +
                     "                            <g:render template=\"/topic/email\"></g:render>"
             if ((topic.createdBy == session.user) || (session.user.admin)) {
-                out << " <a href=\"/resource/show?id=${attr.topic}\" class=\"glyphicon glyphicon-pencil\" style=\"padding:0px 7px;margin:0px 7px\"></a>"
+                out << " <a  data-toggle=\"modal\" data-target=\"#myModal3\" class=\"glyphicon glyphicon-pencil\" style=\"padding:0px 7px;margin:0px 7px\"></a>"
+                 out<<render(template:'/topic/topicedit',model:[topic:topic]  )
             }
         }
     }
     def subscription = { attr, body ->
         Topic topic = Topic.get(attr.topics)
         if (topic.checksubscribeuser(session.user)) {
-            out << "<a onclick=\"subscriptionstatus(${topic.id},1)\">Unsubscribe</a>"
+            out << "<a onclick=\"subscriptionstatus(${topic.id},'1')\">Unsubscribe</a>"
         } else {
-            out << "<a onclick=\"subscribe(${topic.id},0)\" id=\"user0${topic.id}\">Subscribe</a>"
+            out << "<a onclick=\"subscriptionstatus(${topic.id},'0')\" id=\"user0${topic.id}\">Subscribe</a>"
         }
 
 
@@ -118,7 +119,7 @@ class LinkSharingTagLib {
                     "                                    <div class=\"col-xs-8\"></div>\n" +
                     "\n" +
                     "                                    <div class=\"col-xs-4\">\n" +
-                    "                                        <select class=\"form-control\" id=\"resc${resource.id}\" onclick=\"resourcerater(resourceId)\">\n" +
+                    "                                        <select class=\"form-control\" id=\"resc${resource.id}\"  name=\"score\"  onclick=\" resourcerating(${resource.id})\">\n" +
                     "                                            <option>1 Star</option>\n" +
                     "                                            <option>2 Star</option>\n" +
                     "                                            <option>3 Star</option>\n" +
@@ -142,4 +143,5 @@ class LinkSharingTagLib {
 
 
     }
+
 }

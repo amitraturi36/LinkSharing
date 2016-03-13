@@ -21,6 +21,10 @@ class Topic {
     static namedQueries = {
         search {
             ResourceSearchCO co ->
+                if(co.q){
+                    ilike("topicName",'%'+co.q+'%')
+
+                }
                 if (co.topicId) {
                     eq("id", co.topicId)
                 }
