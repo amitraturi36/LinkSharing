@@ -5,7 +5,7 @@
 
     <div style="padding:10px;margin:10px 0px">
         <div class="panel">
-            <div class="panel-heading col-sm-12 " style="border: 1px solid grey; background:#f2f2f2;">Top Post
+            <div class="panel-heading col-sm-12  " style="border: 1px solid grey; background-color: #040404;color:white"><h4>Top Post</h4>
             </div>
 
             <div class="panel-body col-sm-12" style="border: 1px solid grey;">
