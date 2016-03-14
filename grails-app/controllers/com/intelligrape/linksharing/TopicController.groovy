@@ -40,19 +40,22 @@ class TopicController {
 
     def save(String topicName, String visiblity) {
         if (topicName) {
+            User user = User.get(session.user.id)
             Topic topic = new Topic()
             topic.visibility = Visibility.stringToEnum(visiblity)
-            topic.createdBy = session.user
+            topic.createdBy = user
             topic.topicName = topicName
             if (topic.save(flush: true, failOnError: true)) {
-                flash.message = message(code: "topic.saved.message")
-                render("sucess")
+                flash.messages = "successfully Saved"
+                redirect(controller: 'user', action: 'index')
             } else {
-                flash.message = message(code: "topic.not.saved.message")
+                flash.messages = message(code: "topic.not.saved.message")
+                redirect(controller: 'user', action: 'index')
             }
 
         } else {
-            flash.message = message(code: "topic.not.saved.message")
+            flash.messages = message(code: "topic.not.saved.message")
+            redirect(controller: 'user', action: 'index')
         }
 
     }
@@ -61,23 +64,24 @@ class TopicController {
 
         if (resourceSearchCO.q) {
             List<Topic> topicList = topicService.search(resourceSearchCO)
-            List<Resource> resourceList = resourceService.search(resourceSearchCO)
+            List<Resource> resourceList = resourceService.globalsearch(resourceSearchCO, params)
             if (session.user) {
                 if (topicList[0]) {
                     topicList = topicList.findAll {
                         (it.checksubscribeuser(session.user)) || (it.visibility == Visibility.PUBLIC)
                     }
                 }
+
                 if (resourceList[0]) {
                     resourceList = resourceList.findAll {
                         (it.topic.checksubscribeuser(session.user)) || (it.topic.visibility == Visibility.PUBLIC)
                     }
                 }
-                render view: '/topic/search', model: [resource: resourceList, topic: topicList]
+                render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
 
             } else if (session.user) {
                 if (session.user.admin) {
-                    render view: '/topic/search', model: [resource: resourceList, topic: topicList]
+                    render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
                 }
             } else {
                 if (topicList[0]) {
@@ -88,7 +92,7 @@ class TopicController {
                     resourceList = resourceList.findAll { it.topic.visibility == Visibility.PUBLIC }
                 }
 
-                render view: '/topic/search', model: [resource: resourceList, topic: topicList]
+                render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
             }
         } else {
             redirect(controller: 'login', action: 'index')
@@ -110,6 +114,7 @@ class TopicController {
             Topic topic = Topic.get(topicId)
             topic.topicName = name
             topic.save(flush: true)
+            topic.refresh()
             flash.message = "Succesfully edited the message"
             redirect(controller: 'user', action: 'index')
         } else {

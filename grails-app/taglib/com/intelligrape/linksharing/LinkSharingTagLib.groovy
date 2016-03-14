@@ -22,7 +22,7 @@ class LinkSharingTagLib {
     }
     def download = { attr, body ->
         if ((attr.resource) && (attr.resource.instanceOf(DocumentResource))) {
-            out << "<span  onclick=download(${attr.resource?.id})>  <a id=\"resc${attr.resource?.id}\" ><span id=\"resc${attr.resource?.id}1\">DownLoad</span></a></span> "
+            out << "<span  onclick=download(${attr.resource?.id})>  <a id=\"rescdownl${attr.resource?.id}\" ><span id=\"rescdownl${attr.resource?.id}1\">DownLoad</span></a></span> "
         }
     }
     def link = { attr, body ->
@@ -95,13 +95,15 @@ class LinkSharingTagLib {
     }
     def subscription = { attr, body ->
         Topic topic = Topic.get(attr.topics)
-        if (topic.checksubscribeuser(session.user)) {
-            out << "<a onclick=\"subscriptionstatus(${topic.id},'1')\">Unsubscribe</a>"
-        } else {
-            out << "<a onclick=\"subscriptionstatus(${topic.id},'0')\" id=\"user0${topic.id}\">Subscribe</a>"
+        User user=User.get(session.user.id)
+        if(user.id!=topic.createdBy.id) {
+            if (topic.checksubscribeuser(session.user)) {
+                out << "<a onclick=\"subscriptionstatus(${topic.id},'1')\">Unsubscribe</a>"
+            } else {
+                out << "<a onclick=\"subscriptionstatus(${topic.id},'0')\" id=\"user0${topic.id}\">Subscribe</a>"
+            }
+
         }
-
-
     }
     def candeletetopic = { attr, body ->
         Topic topic = Topic.get(attr.topic)

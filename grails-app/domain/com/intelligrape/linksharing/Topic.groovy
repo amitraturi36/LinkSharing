@@ -60,7 +60,6 @@ class Topic {
             order('mycount')
             order('t.topicName')
         }
-        println("*********************************"+topicList)
         List<TopicVO> topicVOList = []
         topicList.each { row ->
             topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4]))

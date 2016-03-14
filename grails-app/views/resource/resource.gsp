@@ -9,20 +9,20 @@
 <body>
 <!-- Row 1 -->
 <!-- *************************************************** -->
-<div class="container">
-    <div class="row">
-        <div class="col-xs-6">
+<div >
+    <div class="col-xs-6">
+<div class="row">
+
         <!-- Name Panel -->
         <!-- ************************************************** -->
             <g:each in="${resources}" var="resource">
                 <div class="panel panel-default" id="post${resource.id}">
-
                     <div class="panel-body">
-
                         <div>
                             <div class="col-xs-2">
-                                <div class="glyphicon glyphicon-user" style="font-size:80px"></div>
-                            </div>
+                                <div  style="font-size:80px"> <ls:userImage user="${resource.createdBy}"/></div>
+                                </div></div>
+
 
                             <div class="col-xs-10">
                                 <div class="row" style="padding-bottom:5px">
@@ -40,7 +40,7 @@
 
                                 <div class="row" style="padding-bottom:10px">
                                     <div class="col-xs-4">
-                                        <small class="text-muted">@uday</small>
+                                        <small class="text-muted">@resource.createdBy</small>
                                     </div>
 
                                     <div class="col-xs-2"></div>

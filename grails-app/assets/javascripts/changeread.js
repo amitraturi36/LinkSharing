@@ -48,26 +48,6 @@ function resourcerating(id,score) {
     });
 }
 
-
-//$(function () {
-//    $('#myform').fileupload({
-//        dataType: 'json',
-//        done: function () {
-//            alert("sucess")
-//        }
-//    });
-//});
-//
-//
-//    $('').ajaxSubmit({
-//        async: true,
-//        url:"/resource/saveDocument",
-//        success: function () {
-//            alert("success")
-//        }
-//    });
-
-
 function sendinvitation() {
     var oData = new FormData(document.forms.namedItem('invitationform'))
     jQuery.ajax({
@@ -160,12 +140,11 @@ function download(id) {
         success: function (download) {
             console.log(download.download)
             if (download.download == 1) {
-                $("#resc" + id).attr("href", "file:///home/amit/projects/LinkSharing/grails-app/assets/images/user.png");
-                $("#resc" + id).attr(download)
-                $("#resc" + id + '1').text("Click Again")
+                console.log(download.resource)
+                $("#rescdownl" + id).attr('download',true)
+                $("#rescdownl" + id).attr("href",download.resource);
+                $("#rescdownl" + id + '1').text("Click Again")
             }
-
-
             else {
                 $("#resc" + id).text("Permission dennied")
             }

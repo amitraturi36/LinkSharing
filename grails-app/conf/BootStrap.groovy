@@ -98,7 +98,7 @@ class BootStrap {
                             if (!linkResource.save()) {
                                 log.error(linkResource.errors)
                             }
-                            if (!documentResource.save()) {
+                            if (!documentResource.save(flush: true)) {
                                 log.error(documentResource.errors)
                             }
                         }

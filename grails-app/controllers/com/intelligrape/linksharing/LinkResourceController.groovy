@@ -5,7 +5,6 @@ import grails.transaction.Transactional
 class LinkResourceController extends ResourceController {
     @Transactional
     def saveLinkResources(String url, Long topicId, String description) {
-
         if ((url) && (topicId)) {
             Topic topic = Topic.get(topicId)
             LinkResource linkResource = new LinkResource([
@@ -18,16 +17,15 @@ class LinkResourceController extends ResourceController {
                 linkResource.save(flush: true, failOnError: true)
                 flash.messages = "Saved Successfully"
               addToReadingItems(linkResource)
-                render view: "/user/index"
+               redirect(controller:'user',action:'index'  )
             } else {
-                render "fail"
-//                flash.errors = "Link Resource  Not Saved"
-//                render view:"/user/index"
+              flash.errors = "Link Resource  Not Saved"
+              redirect(controller:'user',action:'index'  )
             }
 
         } else {
             flash.message = message(code: "topic.not.saved.message")
-            render view: '/login/index'
+            redirect controller:'login',action: ' index'
         }
 
 

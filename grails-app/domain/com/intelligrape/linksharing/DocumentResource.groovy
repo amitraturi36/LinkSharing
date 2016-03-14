@@ -4,14 +4,14 @@ class DocumentResource extends Resource {
     String filePaths
     Date dateCreated
     Date lastUpdated
-    static belongsto = [resource: Resource,topic: Topic]
+    static belongsto = [resource: Resource]
     def contentType
     static Transient = ['contentType']
     static constraints = {
 
-        contentType bindable: true, validator: { def val, User obj ->
-            return val.getContentType() == Constants.DOCUMENT_CONTENT_TYPE
-        }
+//        contentType bindable: true, validator: { def val, User obj ->
+//            return val.getContentType() == Constants.DOCUMENT_CONTENT_TYPE
+//        }
     }
       @Override
     void deleteFile(){

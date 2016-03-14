@@ -8,11 +8,11 @@
                 <h4 class="modal-title">Edit Topics</h4>
             </div>
 
-            <g:form class="inline-form" url="/topic/update?topicId=${topic.id}&name=${topic.topicName}">
+            <g:form class="inline-form" url="/topic/update?topicId=${topic.id}">
                 <div class="modal-body" style="borer: 1px solid grey;background:whitesmoke; ">
 
                     <span class=" col-sm-4">Name<sup>*</sup></span>
-                    <input type="Text" class=" col-sm-6" name="topicName" placeholder="${topic}" required><br/><br/>
+                    <input type="Text" class=" col-sm-6" name="name" placeholder="${topic.topicName}" required><br/><br/>
                     <span style="margin:20px"></span>
                 </div>
 

@@ -64,11 +64,9 @@
                 <b class="caret"></b>
             </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="/user/profile?userId=${session.user.id}">Profile</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Users</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/user/showSubscribedTopics">Topics</a></li>
+                    <li><a href="/user/subTopics">Topics</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Posts</a></li>
                     <li class="divider"></li>

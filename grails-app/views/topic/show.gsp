@@ -20,20 +20,20 @@
                     <div class="panel-body">
                         <div>
                             <div class="col-xs-2">
-                                <div class="glyphicon glyphicon-user" style="font-size:80px"></div>
+    <ls:userImage user="${topic.createdBy}"/>
                             </div>
 
                             <div class="col-xs-10">
                                 <div class="row" style="padding-bottom:5px">
                                     <div class="col-xs-6">
-                                        <span class="h5">${topic.createdBy}</span>
+                                        <span class="h5">${topic?.createdBy}</span>
                                     </div>
 
                                     <div class="col-xs-3">
                                     </div>
 
                                     <div class="col-xs-3">
-                                        <a href="#" class="text-left">${topic.topicName}</a>
+                                        <a href="#" class="text-left">${topic?.topicName}</a>
                                     </div>
                                 </div>
 
@@ -58,7 +58,7 @@
 
                                 <div class="col-xs-6"></div>
 
-                                <div class="col-xs-3"><a href="/resource/show?id=${topic.id}">View Post</a></div>
+                                <div class="col-xs-3"><a href="/resource/show?id=${topic?.id}">View Post</a></div>
                             </div>
                         </div>
 
@@ -74,7 +74,7 @@
                     <div class="panel-heading">
                         <div class="row">
                         <strong>Post</strong>
-                        <g:form class="form-inline" style="float: right" name="postsearch" url="/resource/search?topicId=${topic.id}">
+                        <g:form class="form-inline" style="float: right" name="postsearch" url="/resource/search?topicId=${topic?.id}">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search" name="q" id="srch-term">
 
@@ -91,25 +91,25 @@
                         <g:each in="${resource}">
                         <div>
                             <div class="col-xs-2">
-                                <div class="glyphicon glyphicon-user" style="font-size:60px"></div>
+                                <ls:userImage user="${it.createdBy}"/>
                             </div>
 
                             <div class="col-xs-10">
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <span class="h5">Uday</span>
-                                        <small class="text-muted">@uday</small>
+                                        <span class="h5">${topic?.createdBy}</span>
+                                        <small class="text-muted">@${it?.createdBy.firstName}</small>
                                     </div>
 
                                     <div class="col-xs-3">
                                     </div>
 
                                     <div class="col-xs-3">
-                                        <a href="#" class="text-left">Grails</a>
+                                        <a href="#" class="text-left">${topic?.topicName}</a>
                                     </div>
                                 </div>
 
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mi risus, mollis sit amet purus vitae, rutrum commodo erat.</p>
+                                <p>${it?.description}</p>
 
                                 <div class="row" style="padding-bottom:10px">
                                     <div class="col-xs-1 fa fa-facebook-official"></div>
@@ -120,7 +120,6 @@
 
                                     <div class="col-xs-6"></div>
 
-                                    <div class="col-xs-3"><a href="#">View Post</a></div>
                                 </div>
                             </div></div></g:each>
         </div></div></div>
@@ -133,8 +132,7 @@
             <div class="panel-body col-sm-12" style="border:1px solid grey">
                 <g:each in="${user}">
                     <div class="col-sm-12">
-                        <div class="col-sm-3" style="margin: 25px 0px;"><span
-                                class="glyphicon glyphicon-user " style="font-size:70px;"></span>
+                        <div class="col-sm-3"> <ls:userImage user="${it}"/>
                         </div>
                         <a href="#" class=" col-sm-9 " style="font-size: 15px;padding:20px 15px;"><ins>${topic}</ins>
                         </a>

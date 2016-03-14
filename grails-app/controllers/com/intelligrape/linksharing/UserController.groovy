@@ -69,6 +69,12 @@ class UserController {
         }
 
     }
+    def subTopics(){
+        if(session.user){
+
+            render view: "/topic/show", model: [user:session.user, topics:Topic.findAllByCreatedBy(session.user)]
+        }
+    }
 
     def sendInvitation(String email, Long topicId) {
         if ((email) && (topicId)) {
