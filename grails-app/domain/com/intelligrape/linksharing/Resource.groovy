@@ -80,20 +80,6 @@ abstract class Resource {
 
         log.error("this will be implemented in linkresource")
     }
-
-    static def inbox(User user) {
-        List list = Topic.createCriteria().list([max: 5, offset: 0]) {
-            createAlias('subscriptions', 'ts')
-            createAlias('resources', 'tr')
-            projections {
-                groupProperty('tr.id')
-            }
-            eq('ts.user', user)
-            order('tr.dateCreated')
-        }
-
-        return Resource.getAll(list)
-    }
     static def recentPost(Integer status){
          Date date=new Date()
         List <Resource>list

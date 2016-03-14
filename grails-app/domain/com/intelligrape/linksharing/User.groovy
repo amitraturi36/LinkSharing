@@ -123,4 +123,30 @@ class User {
                 }
         }
     }
+
+    def getUnReadResources(SearchCO searchCO){
+        List<Resource>resourceList
+        if(searchCO.q){
+            resourceList=  ReadingItem.createCriteria().list([max: 0, offset: 0]) {
+                createAlias('resource','r')
+                projections{
+                    property('resource')
+                }
+                ilike('r.description','%'+searchCO.q+'%')
+                eq('user',this)
+                eq('isRead',false)
+
+            }
+
+        }else{
+            ReadingItem.createCriteria().list(([max: 0, offset: 0])){
+                projections{
+                    property('resource')
+                }
+                eq('user',this)
+                eq('isRead',false)
+
+            }
+        }
+    }
 }

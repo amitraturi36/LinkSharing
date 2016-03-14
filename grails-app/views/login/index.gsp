@@ -137,7 +137,7 @@
 
 
 
-                        <label class="control-label col-sm-6 h4 alert-dismissable" for="CPassword">Confirm Password<sup>*</sup></label>
+                        <label class="control-label col-sm-6 h4 " for="CPassword">Confirm Password<sup>*</sup></label>
                         <input type="password" name="CnfrmPsswrd" id=" CnfrmPsswrd" class="form-control col-sm-6"
                                style="border:1px solid grey"
                                style="border:1px solid grey" required><br/><br/><br/><br/>

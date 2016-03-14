@@ -59,7 +59,8 @@
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
             <li><a class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
-                                         href="#" style="color:white;font-size:20px; padding-top:14px;">
+                                         href="#" style="color:white;
+                    padding-top:14px;">
                 ${session.user.firstName}
                 <b class="caret"></b>
             </a>
