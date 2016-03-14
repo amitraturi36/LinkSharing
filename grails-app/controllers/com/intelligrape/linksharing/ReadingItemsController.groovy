@@ -29,6 +29,6 @@ class ReadingItemsController {
         User user1 = User.get(user.id)
         List<String> resources = user1.subscriptions.topic.resources
 
-        render view: '/resource/resource', model: [resources: resources]
+        render view: '/resource/show', model: [resources: resources]
     }
 }

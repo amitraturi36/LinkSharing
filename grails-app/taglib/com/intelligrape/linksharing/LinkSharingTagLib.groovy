@@ -14,7 +14,6 @@ class LinkSharingTagLib {
             if ((readingItem?.user != attr.resource.createdBy)
 
 
-
                     && (readingItem)) {
                 if (readingItem.isRead) {
                     out << "<span class=\"alert-success\" >Read</span> "
@@ -93,14 +92,14 @@ class LinkSharingTagLib {
                     "                            <g:render template=\"/topic/email\"></g:render>"
             if ((topic.createdBy == session.user) || (session.user.admin)) {
                 out << " <a  data-toggle=\"modal\" data-target=\"#myModal3\" class=\"glyphicon glyphicon-pencil\" style=\"padding:0px 7px;margin:0px 7px\"></a>"
-                 out<<render(template:'/topic/topicedit',model:[topic:topic]  )
+                out << render(template: '/topic/topicedit', model: [topic: topic])
             }
         }
     }
     def subscription = { attr, body ->
         Topic topic = Topic.get(attr.topics)
-        User user=User.get(session.user.id)
-        if(user.id!=topic.createdBy.id) {
+        User user = User.get(session.user.id)
+        if (user.id != topic.createdBy.id) {
             if (topic.checksubscribeuser(session.user)) {
                 out << "<a onclick=\"subscriptionstatus(${topic.id},'1')\">Unsubscribe</a>"
             } else {
@@ -111,7 +110,7 @@ class LinkSharingTagLib {
     }
     def candeletetopic = { attr, body ->
         Topic topic = Topic.get(attr.topic)
-        if ((topic.createdBy==session.user) || (session.user.admin)) {
+        if ((topic.createdBy == session.user) || (session.user.admin)) {
             out << " <span class=\"glyphicon glyphicon-trash alert-link\" style=\"padding:0px 7px;margin:0px 7px\" onclick=topicdelete(${topic.id})></span>"
         }
 
@@ -136,18 +135,44 @@ class LinkSharingTagLib {
                     "                                </div>"
         } else {
             RatingInfoVO ratingInfoVO = Resource.resourceRater(resource)
-            if(ratingInfoVO) {
+            if (ratingInfoVO) {
                 ratingInfoVO.averageScore.times {
                     out << "<span class=\"glyphicon glyphicon-heart\"></span>"
                 }
-            }
-                else{
+            } else {
 
                 out << "<span class=\"glyphicon glyphicon-heart\"></span>"
             }
         }
 
 
+    }
+    def subscriptionCount = { attr, body ->
+        if (attr.user) {
+            User user = User.get(attr.user.id)
+            if (user) {
+                out << user.subscriptions.size()
+            }
+        } else if (attr.topic) {
+            Topic topic = Topic.get(attr.topic)
+
+            if (topic) {
+                out << topic.subscriptions.size()
+            }
+        }
+    }
+    def resourceCount = { attr, body ->
+
+        Topic topic = Topic.get(attr.topic)
+        if (topic) {
+            out << Resource.countByTopic(topic)
+        }
+    }
+    def topicCount = { attr, body ->
+        User user = User.get(attr.user)
+        if (user) {
+            out << Topic.countByCreatedBy(user)
+        }
     }
 
 }

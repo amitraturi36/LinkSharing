@@ -25,9 +25,9 @@
                     </div>
                 <span class="col-sm-3"></span>
                 <span class="text-info col-sm-3"><ls:subscription topics="${topic.id}"/></span>
-                <span class="text-info col-sm-3">${topic.count}</span>
+                <span class="text-info col-sm-3"><ls:subscriptionCount topic="${topic.id}"/></span>
                 <span class="text-info col-sm-2"style="float: right">
-                        ${topic.resources.count[0]}
+                        <ls:resourceCount topic=" ${topic.id}"/>
                    </span>
                 <span class="text-info col-sm-12"></span>
 

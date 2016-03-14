@@ -43,7 +43,7 @@ class ResourceController {
 
         Topic topic = Topic.get(id)
 
-        render view: 'resource', model: [resources: topic.resources, topic: topic]
+        render view: 'show', model: [resources: topic.resources, topic: topic]
 
     }
     def delete(Long id) {

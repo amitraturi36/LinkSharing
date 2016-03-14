@@ -25,12 +25,11 @@
                         <span class="text-muted col-sm-12">@ ${session.user.firstName}</span><span
                             class="text-muted col-sm-6">Subscriptions</span> <span
                             class="text-muted col-sm-6">Topics</span>
-                        <span class="text-info col-sm-6">${subtopics.totalCount}</span>
-                        <span class="text-info col-sm-6">30</span>
+                        <span class="text-info col-sm-6"><ls:subscriptionCount user="${session.user}"/></span>
+                        <span class="text-info col-sm-6"><ls:topicCount user="${session.user.id}"/></span>
                     </div>
                 </div></div>
             <g:render template="subscribedtopics"/>
-
         </div>
 
         <div class="col-sm-6">
