@@ -24,6 +24,7 @@ class DocumentResourceController extends ResourceController {
             if (documentResource.validate()) {
                 flash.messages="successfully saved"
                 documentResource.save(flush: true, failOnError: true)
+                addToReadingItems(documentResource,session.user)
                 redirect(controller:'user',action: 'index' )
             } else {
                flash.errors="fail to upload"

@@ -74,6 +74,10 @@
                     <li><a href="/user/subTopics">Topics</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/settings">Settings</a></li>
+                    <g:if test="${session.user.admin}">
+                    <li class="divider"></li>
+                    <li><a href="/user/admin">Admin</a></li>
+                    </g:if>
                     <li class="divider"></li>
                     <li><a href="/login/logout">LogOut</a></li>
 

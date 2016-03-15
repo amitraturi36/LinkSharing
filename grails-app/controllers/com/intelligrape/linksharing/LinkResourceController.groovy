@@ -16,7 +16,7 @@ class LinkResourceController extends ResourceController {
             if (linkResource.validate()) {
                 linkResource.save(flush: true, failOnError: true)
                 flash.messages = "Saved Successfully"
-              addToReadingItems(linkResource)
+              addToReadingItems(linkResource,session.user)
                redirect(controller:'user',action:'index'  )
             } else {
               flash.errors = "Link Resource  Not Saved"

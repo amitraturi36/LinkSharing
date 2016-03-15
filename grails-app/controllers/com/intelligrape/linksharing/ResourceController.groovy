@@ -7,19 +7,18 @@ class ResourceController {
     def search(ResourceSearchCO resourceSearchCO) {
         if (session.user?.admin == true) {
             if (resourceSearchCO.q) {
-              List <Resource>  resourceList=resourceService.search(resourceSearchCO,params)
-                render view: '/resource/search', model: [resource: resourceList ,resourcecount:resourceList.size(),q:resourceSearchCO.q]
+                List<Resource> resourceList = resourceService.search(resourceSearchCO, params)
+                render view: '/resource/search', model: [resource: resourceList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
             } else {
 
                 Topic topic = Topic.get(resourceSearchCO.topicId)
-                render view: '/resource/search', model: [resource: topic.resources,resourcecount:topic.resources.size(),q:resourceSearchCO.q]
+                render view: '/resource/search', model: [resource: topic.resources, resourcecount: topic.resources.size(), q: resourceSearchCO.q]
             }
-        }
-       else if (resourceSearchCO.q) {
+        } else if (resourceSearchCO.q) {
             if (session?.user) {
                 Topic topic = Topic.get(resourceSearchCO.topicId)
                 if (((topic.checksubscribeuser(session.user)) || (topic.visibility == Visibility.PUBLIC)) && (resourceSearchCO.q)) {
-                    List <Resource>  resourceList=resourceService.search(resourceSearchCO,params)
+                    List<Resource> resourceList = resourceService.search(resourceSearchCO, params)
                     render view: '/resource/search', model: [resource: resourceList,]
                 } else {
                     redirect(controller: 'login', action: 'index')
@@ -27,8 +26,8 @@ class ResourceController {
             } else {
                 Topic topic = Topic.get(resourceSearchCO.topicId)
                 if (topic.visibility == Visibility.PUBLIC) {
-                    List <Resource>  resourceList=resourceService.search(resourceSearchCO,params)
-                    render view: '/resource/search', model: [resource: resourceList,resourcecount:topic.resources.size(),q:resourceSearchCO.q]
+                    List<Resource> resourceList = resourceService.search(resourceSearchCO, params)
+                    render view: '/resource/search', model: [resource: resourceList, resourcecount: topic.resources.size(), q: resourceSearchCO.q]
                 } else {
                     redirect(controller: 'login', action: 'index')
                 }
@@ -46,6 +45,7 @@ class ResourceController {
         render view: 'show', model: [resources: topic.resources, topic: topic]
 
     }
+
     def delete(Long id) {
         def resources = Resource.load(id)
         if (resources.delete(flush: true)) {
@@ -62,9 +62,11 @@ class ResourceController {
 
     }
 
-    protected void addToReadingItems(Resource resource) {
+    protected void addToReadingItems(Resource resource, User user) {
         resource.topic.subscriptions.user.each {
-            new ReadingItem(user: it, resource: resource, isRead: true).save(flush: true)
+            if (it.id != user.id) {
+                new ReadingItem(user: it, resource: resource, isRead: true).save(flush: true)
+            }
         }
 
     }

@@ -190,15 +190,15 @@ function activation(uid, status) {
                 $("#admin" + uid).text("Deactivate")
                 $("#admin" + uid).removeClass("text-success").addClass( "text-danger" )
                 $("#admincol"+uid).removeClass("alert-danger").addClass( "alert-success" )
-                var newclick =activation(uid,0)
-                $("#admin" + uid).attr('onclick',newclick)
+                $("#admin" + uid).attr('onclick',"activation("+uid+",0)")
+                $('#mainmessage').text(data.message)
             }
             else if (data.error) {
                 $("#admin" + uid).text("Activate")
                 $("#admin" + uid).removeClass("text-danger").addClass( "text-success" )
                 $("#admincol"+uid).removeClass("alert-success").addClass( "alert-danger" )
-                var newclick =activation(uid,1)
-                $("#admin" + uid).attr('onclick',newclick)
+                $("#admin" + uid).attr('onclick','activation('+uid+',1)')
+                $('#mainerror').text(data.error)
             }
             else {
 
