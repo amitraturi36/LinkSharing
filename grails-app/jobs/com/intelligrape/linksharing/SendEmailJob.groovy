@@ -4,11 +4,14 @@ package com.intelligrape.linksharing
 
 class SendEmailJob {
     static triggers = {
-      simple repeatInterval: 5000l // execute job once in 5 seconds
+        cron name: 'myTrigger', cronExpression: " 0 55 22 15 3 ?"
     }
-
+//    def group = "MyGroup"
+//    def description = "Example job with Cron Trigger"
+//def useService
     def execute() {
-        // execute job
+//        EmailDTO emailDTO=new EmailDTO(body:"hello",subject: "my job",email:"amitraturi36@gmail.com" )
+//       useService.sendmail(emailDTO)
     }
 }
 
