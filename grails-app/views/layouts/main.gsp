@@ -54,10 +54,12 @@
                    data-toggle="modal" data-target="#createlink"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
+            <g:render template="/LinkResource/create"/>
             <li><a href="#" class="glyphicon glyphicon-file"
                    data-toggle="modal" data-target="#createDoc"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
+            <g:render template="/documentResource/create"/>
             <li><a class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
                                          href="#" style="color:white;
                     padding-top:14px;">
@@ -67,9 +69,11 @@
                 <ul class="dropdown-menu">
                     <li><a href="/user/profile?userId=${session.user.id}">Profile</a></li>
                     <li class="divider"></li>
+                    <li><a href="/user/index">Inbox</a></li>
+                    <li class="divider"></li>
                     <li><a href="/user/subTopics">Topics</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Posts</a></li>
+                    <li><a href="/user/settings">Settings</a></li>
                     <li class="divider"></li>
                     <li><a href="/login/logout">LogOut</a></li>
 
@@ -77,8 +81,6 @@
             </li></ul>
             <g:render template="/topic/createTopicTemplate"/>
             <g:render template="/topic/email"/>
-            <g:render template="/layouts/LinkResource/create"/>
-            <g:render template="/layouts/documentResource/create"/>
         </g:if>
     </div></nav>
 

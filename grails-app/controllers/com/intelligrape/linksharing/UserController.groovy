@@ -11,9 +11,9 @@ class UserController {
 
     def index(SearchCO searchCO) {
         List<TopicVO> topicVOList = Topic.getTrendingTopics()
-        List <Topic>topicList=session.user.getSubscribedTopic(params)
-        User user=User.get(session.user.id)
-        render view: "index", model: [resources:user.getUnReadResources(searchCO),list: topicVOList, subtopics:topicList, subtopicscount: topicList.size() ]
+        List<Topic> topicList = session.user.getSubscribedTopic(params)
+        User user = User.get(session.user.id)
+        render view: "index", model: [resources: user.getUnReadResources(searchCO), list: topicVOList, subtopics: topicList, subtopicscount: topicList.size()]
         // render view: "index", model: [list: userService.serviceMethod(), subtopics: session.user.subscribedTopic]
 //        def c= Holders.applicationContext.getBean(CustomBean)
 //        //    render myBean.firstName
@@ -69,17 +69,18 @@ class UserController {
         }
 
     }
-    def subTopics(){
-        if(session.user){
 
-            render view: "/topic/show", model: [user:session.user, topics:Topic.findAllByCreatedBy(session.user)]
+    def subTopics() {
+        if (session.user) {
+
+            render view: "/topic/show", model: [user: session.user, topics: Topic.findAllByCreatedBy(session.user)]
         }
     }
 
     def sendInvitation(String email, Long topicId) {
         if ((email) && (topicId)) {
             Topic topic = Topic.get(topicId)
-            SendMailVO sendMailVO = new SendMailVO([
+            EmailDTO sendMailVO = new EmailDTO([
                     email  : email,
                     subject: " ${session.user.name} sent you a Subscription request",
                     body   : "please subscribe to the top: ${topic.topicName}"
@@ -117,28 +118,26 @@ class UserController {
     def profile(ResourceSearchCO resourceSearchCO) {
         def searchString = params.userId
         params.max = Math.min(params.max ? params.int('max') : 1, 100)
-        params.offset = (params.offset ? params.int('offset') :0)
+        params.offset = (params.offset ? params.int('offset') : 0)
         User user = User.get(searchString) //resourceSearchCO.user
         List<Topic> topicList = user?.getSubscribedTopic(params)
+        List<Topic> userTopics = Topic.findAllByCreatedBy(user, [max: 5])
         if ((session.user == user) || (session.user.admin)) {
             render view: '/user/profile', model: [
-                    user          : resourceSearchCO.user,
-                    subtopics     : topicList,
-                    subtopicscount: topicList.size()
+                    user           : resourceSearchCO.user,
+                    subtopics      : topicList,
+                    subtopicscount : topicList.size(),
+                    usertopics     : userTopics,
+                    usertopicscount: userTopics.size()
             ]
         } else {
-            topicList = topicList - topicList.findAll { it.visibility == Visibility.PUBLIC }
-            render view: '/user/profile', model: [user: resourceSearchCO.user, subtopics:topicList, subtopicscount: topicList.size() ]
+            topicList = topicList.findAll { it.visibility == Visibility.PUBLIC }
+            userTopics = userTopics.findAll { it.visibility == Visibility.PUBLIC }
+            render view: '/user/profile', model: [user           : resourceSearchCO.user,
+                                                  subtopics      : topicList, subtopicscount: topicList.size(),
+                                                  usertopics     : userTopics,
+                                                  usertopicscount: userTopics.size()]
         }
-    }
-
-
-    def topics() {
-
-    }
-
-    def subscriptions() {
-
     }
 
     def list(UserSearchCO userSearchCO) {
@@ -157,5 +156,93 @@ class UserController {
         } else {
             redirect(controller: 'user', action: 'index')
         }
+    }
+
+    def settings() {
+        if (session.user) {
+            render view: '/user/setting', model: [user: session.user]
+        }
+    }
+
+    def update(UserCO userCO) {
+        if (session.user) {
+            User user = session.user
+            if ((userCO.fname)) {
+                user.firstName = userCO.fname
+            }
+            if ((userCO.lname)) {
+                user.lastName = userCO.lname
+            }
+            CommonsMultipartFile file = params.list("photo")?.getAt(0)
+            def okContentTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', '.image/png', '.image/jpeg', '.image/jpg', '.image/gif']
+            if ((okContentTypes.contains(file?.getContentType())) || (!file)) {
+                println user.photo
+                user.photo = file?.bytes
+                if (user.validate()) {
+                    user.merge(flush: true)
+                    flash.messages = "sucessfully Updated"
+                    session.user = user
+                    redirect(controller: "user", action: "settings")
+
+                } else {
+                    render view: '/login/index', model: [user: user]
+                }
+            } else {
+                flash.errors = "Please choose valid iumage"
+                redirect(controller: 'login', action: 'index')
+            }
+        }
+
+
+    }
+
+    def admin(Integer selector, String search) {
+        List<User> user
+        if (selector==1){
+            user=User.createCriteria().list {
+
+                or {
+                    ilike('firstName',"%${search}%")
+                    ilike('lastName',"%${search}%")
+                    ilike('email',"%${search}%")
+
+                }
+                eq('active',true)
+            }
+        }else if(selector==0){
+            user=User.createCriteria().list {
+
+                or {
+                    ilike('firstName',"%${search}%")
+                    ilike('lastName',"%${search}%")
+                    ilike('email',"%${search}%")
+
+                }
+                eq('active',false)
+            }
+        }else {
+            user = User.getAll()
+        }
+        user = user.findAll { it.admin != true }
+        render view: '/user/admin', model: [users: user]
+    }
+
+    def changeActivation(Long uId, Integer status) {
+
+        def message = [message: "", error: ""]
+        if ((uId) && (session.user.admin)) {
+            User user = User.get(uId)
+            if (status == 1) {
+                user.active = true
+                user.save(flush: true)
+                message.message = "Succefully Activated The User"
+            } else {
+                user.active = false
+                message.error = "Succefully Deactivated The User"
+                user.save(flush: true)
+            }
+            render message as JSON
+        }
+
     }
 }

@@ -11,9 +11,8 @@
 
     <!-- Row 1 -->
     <!-- *************************************************** -->
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-6">
+<div class="col-sm-6">
+            <div class="col-sm-12">
                 <!-- Name Panel -->
                 <!-- ************************************************** -->
                 <div class="panel panel-default">
@@ -21,122 +20,61 @@
                         <div>
                             <div class="col-xs-2">
     <ls:userImage user="${topic.createdBy}"/>
-                            </div>
+    </div>
 
-                            <div class="col-xs-10">
-                                <div class="row" style="padding-bottom:5px">
-                                    <div class="col-xs-6">
-                                        <span class="h5">${topic?.createdBy}</span>
-                                    </div>
+    <div class="col-xs-10">
+        <div class="row" style="padding-bottom:5px">
 
-                                    <div class="col-xs-3">
-                                    </div>
+            <div class="col-sm-6">
+                <span class="text-left h3">${topic?.topicName}</span>
+            </div>
+        </div>
 
-                                    <div class="col-xs-3">
-                                        <a href="#" class="text-left">${topic?.topicName}</a>
-                                    </div>
-                                </div>
+        <div class="col-xs-6">
+            <span class="h5"><b>Author:</b>    ${topic?.createdBy}</span>
+        </div>
 
-                                <div class="row" style="padding-bottom:10px">
-                                    <div class="col-xs-4">
-                                    </div>
-
-                                    <div class="col-xs-2"></div>
-                                </div>
-
-                                <div class="row" style="padding-bottom:15px">
-                                    <div class="col-xs-8"></div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-1 fa fa-facebook-official" style="font-size:20px"></div>
-
-                                <div class="col-xs-1 fa fa-twitter" style="font-size:20px"></div>
-
-                                <div class="col-xs-1 fa fa-google-plus" style="font-size:20px"></div>
-
-                                <div class="col-xs-6"></div>
-
-                                <div class="col-xs-3"><a href="/resource/show?id=${topic?.id}">View Post</a></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+        <div class="row" style="padding-bottom:10px">
+            <div class="col-sm-4 text-info">
+                Subscribed Users
             </div>
 
-            <div class="col-xs-6">
-                <!-- Trending Topics Panel -->
-                <!-- ************************************************ -->
-                <div class="panel panel-default">
+            <div class="col-sm-2 text-info right">Post</div>
 
-                    <div class="panel-heading">
-                        <div class="row">
-                        <strong>Post</strong>
-                        <g:form class="form-inline" style="float: right" name="postsearch" url="/resource/search?topicId=${topic?.id}">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search" name="q" id="srch-term">
+        </div>
+        <span class="col-sm-7"></span>
+        <span class="col-sm-4 right"><ls:subscriptionCount topic="${topic.id}"/></span>
+        <span class="col-sm-1" style="float: left"><ls:resourceCount topic="${topic.id}"/></span>
 
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </g:form>
+        <div class="row" style="padding-bottom:15px">
+            <div class="col-xs-8"></div>
+        </div>
+    </div>
 
-                    </div>
-                </div>
-                    <div class="panel-body">
-                        <g:each in="${resource}">
-                        <div>
-                            <div class="col-xs-2">
-                                <ls:userImage user="${it.createdBy}"/>
-                            </div>
+    <div class="row">
+        <div class="col-sm-3 right h5" style="float: right"><a href="/resource/show?id=${topic?.id}">View All Post</a></div>
+    </div>
+    </div>
 
-                            <div class="col-xs-10">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <span class="h5">${topic?.createdBy}</span>
-                                        <small class="text-muted">@${it?.createdBy.firstName}</small>
-                                    </div>
+</div>
+</div>
+</div>
 
-                                    <div class="col-xs-3">
-                                    </div>
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading col-sm-12 " style="border: 1px solid grey;background-color: black">
 
-                                    <div class="col-xs-3">
-                                        <a href="#" class="text-left">${topic?.topicName}</a>
-                                    </div>
-                                </div>
-
-                                <p>${it?.description}</p>
-
-                                <div class="row" style="padding-bottom:10px">
-                                    <div class="col-xs-1 fa fa-facebook-official"></div>
-
-                                    <div class="col-xs-1 fa fa-twitter"></div>
-
-                                    <div class="col-xs-1 fa fa-google-plus"></div>
-
-                                    <div class="col-xs-6"></div>
-
-                                </div>
-                            </div></div></g:each>
-        </div></div></div>
-%{--________________________________________________________________________________________________________--}%
-    <div class="col-sm-6">
-        <div class="panel  col-sm-9 ">
-            <div class="panel-heading col-sm-12 " style="border: 1px solid grey; background:#f2f2f2;">Subscribed User
+                <span class="col-sm-9" style="color:white"><h4>Subscribed Users</h4></span><a href="#"
+                                                                                              class="col-sm-3 "><ins><h4>View all</h4>
+                </ins></a>
             </div>
 
             <div class="panel-body col-sm-12" style="border:1px solid grey">
                 <g:each in="${user}">
-                    <div class="col-sm-12">
-                        <div class="col-sm-3"> <ls:userImage user="${it}"/>
-                        </div>
-                        <a href="#" class=" col-sm-9 " style="font-size: 15px;padding:20px 15px;"><ins>${topic}</ins>
-                        </a>
-                        <span class="text-muted ">${it.name}</span>
+                    <div class="col-sm-12"style="margin-bottom: 10%">
+                        <div class="col-sm-3"><ls:userImage user="${it}"/>
+                        </div><br/>
+                        <span class="h4"style="float: right"><a href="#">${it.name}</a></span>
                     </div>
                 </g:each>
                 <br/><br/>
@@ -144,6 +82,68 @@
 
         </div>
     </div>
+</div>
+%{--________________________________________________________________________________________________________--}%
+
+    <div class="col-xs-6">
+        <!-- Topics Post Panel -->
+        <!-- ************************************************ -->
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <div class="row">
+                    <strong>Post</strong>
+                    <g:form class="form-inline" style="float: right" name="postsearch"
+                            url="/resource/search?topicId=${topic?.id}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="q" id="srch-term">
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </g:form>
+
+                </div>
+            </div>
+            <div class="panel-body">
+                <g:each in="${resource}">
+                    <div>
+                        <div class="col-xs-2">
+                            <ls:userImage user="${it.createdBy}"/>
+                        </div>
+
+                        <div class="col-xs-10">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <span class="h4">${it.createdBy}</span><br>
+                                    <small class="text-muted">@${it?.createdBy.firstName}</small>
+                                </div>
+                            </div>
+
+                            <p>${it?.description}</p>
+
+                            <div class="row col-sm-12">
+                                <a href="http://www.facebook.com"><i class="fa fa-facebook "
+                                                                     style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
+                                </a>
+                                <a href="http://www.google.com"><i class="fa fa-google"
+                                                                   style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
+                                </a>
+                                <a href="http://www.twitter.com"><i class="fa fa-twitter"
+                                                                    style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
+                                </a>
+                                <span style=" padding-top:20px;padding-right:20px;"><ls:download resource="${it}"/>
+                                </span>
+                                <span style=" padding-top:20px;padding-right:20px;"><ls:link resource="${it}"/>
+                                </span>
+                                <a href="/resource/show?id=${it.topic.id}"
+                                   style="float: right;padding-top:20px;padding-right:20px">View Post</a>
+                            </div>
+                        </div></div>   <div class="col-sm-12" style="margin-top:20px;padding-top: 20px"></div>
+                    <br/><br/><br/><br/></g:each>
+            </div></div></div>
 </g:if>
 
 </body>

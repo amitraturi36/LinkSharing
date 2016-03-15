@@ -1,5 +1,5 @@
 package com.intelligrape.linksharing
-class SendMailVO {
+class EmailDTO {
     String email
     String subject
     String body

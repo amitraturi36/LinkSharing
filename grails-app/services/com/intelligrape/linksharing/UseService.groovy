@@ -12,7 +12,7 @@ class UseService {
 
     }
 
-    def sendmail(SendMailVO sendMailVO) {
+    def sendmail(EmailDTO sendMailVO) {
         println(sendMailVO.body)
         mailService.sendMail {
             to sendMailVO.email
@@ -26,7 +26,7 @@ class UseService {
         String password = User.randomnumbergenerator().toString()
         user.password = password
         user.save(flush: true)
-        SendMailVO sendMailVO = new SendMailVO([
+        EmailDTO sendMailVO = new EmailDTO([
                 email  : email,
                 subject: "Request for New Pasword",
                 body   : "your New Password is ${password}"

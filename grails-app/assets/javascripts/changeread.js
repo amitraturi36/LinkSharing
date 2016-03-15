@@ -27,12 +27,13 @@ function deleteresource(id) {
     });
 
 }
-function resourcerating(id,score) {
+function resourcerating(id, score) {
     var oData = $('#resc' + id).val()
     jQuery.ajax({
-        url: "/resourceRate/resourcerating",
-        data: {id: id,
-            score:score
+        url: "/resourceRating/resourcerating",
+        data: {
+            id: id,
+            score: score
         },
         success: function (message) {
             if (message.message) {
@@ -41,7 +42,6 @@ function resourcerating(id,score) {
             else {
                 $('#mainerror').text(message.error)
             }
-
 
 
         }
@@ -141,8 +141,8 @@ function download(id) {
             console.log(download.download)
             if (download.download == 1) {
                 console.log(download.resource)
-                $("#rescdownl" + id).attr('download',true)
-                $("#rescdownl" + id).attr("href",download.resource);
+                $("#rescdownl" + id).attr('download', true)
+                $("#rescdownl" + id).attr("href", download.resource);
                 $("#rescdownl" + id + '1').text("Click Again")
             }
             else {
@@ -152,17 +152,17 @@ function download(id) {
     })
 
 }
-function topicdelete(topicId){
+function topicdelete(topicId) {
     jQuery.ajax({
         type: 'POST',
         url: "/topic/delete",
         data: {topicId: topicId},
         success: function (message) {
-            if(message.message) {
-                $('#user'+1+ topicId).html('');
+            if (message.message) {
+                $('#user' + 1 + topicId).html('');
                 $('#mainmessage').text(message.message)
             }
-            else{
+            else {
                 $('#mainerrors').text("Topic Not Deleted")
             }
         }
@@ -177,4 +177,32 @@ function pagination() {
         }
     })
 
+}
+function activation(uid, status) {
+    jQuery.ajax({
+        type: 'POST',
+        url: "/user/changeActivation",
+
+        data: {uId: uid, status: status},
+        success: function (data) {
+            if (data.message) {
+
+                $("#admin" + uid).text("Deactivate")
+                $("#admin" + uid).removeClass("text-success").addClass( "text-danger" )
+                $("#admincol"+uid).removeClass("alert-danger").addClass( "alert-success" )
+                var newclick =activation(uid,0)
+                $("#admin" + uid).attr('onclick',newclick)
+            }
+            else if (data.error) {
+                $("#admin" + uid).text("Activate")
+                $("#admin" + uid).removeClass("text-danger").addClass( "text-success" )
+                $("#admincol"+uid).removeClass("alert-success").addClass( "alert-danger" )
+                var newclick =activation(uid,1)
+                $("#admin" + uid).attr('onclick',newclick)
+            }
+            else {
+
+            }
+        }
+    })
 }

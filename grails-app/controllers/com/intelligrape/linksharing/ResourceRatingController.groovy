@@ -2,7 +2,7 @@ package com.intelligrape.linksharing
 
 import grails.converters.JSON
 
-class ResourceRateController {
+class ResourceRatingController {
 
     def resourcerating(Long id,Integer score) {
         def message=[message:"",errors:""]

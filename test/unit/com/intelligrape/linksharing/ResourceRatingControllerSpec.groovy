@@ -6,8 +6,8 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(ResourceRateController)
-class ResourceRateControllerSpec extends Specification {
+@TestFor(ResourceRatingController)
+class ResourceRatingControllerSpec extends Specification {
 
     def setup() {
     }

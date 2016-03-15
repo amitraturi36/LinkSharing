@@ -25,6 +25,7 @@ class ApplicationFilterFilters {
             before = {
 //                if (!session.user) {
 //                    redirect(controller: 'login', action: 'index')
+//                    return;
 //                }
 
             }
@@ -35,12 +36,22 @@ class ApplicationFilterFilters {
 
             }
         }
-        /*useraccessiblitycheck(controller:'Resource | readingItem |  resource| resourceRating|subscription|topic|user' ,action:'saveLinkResources|' ) {
+        useraccessiblitycheck(controller: 'resource | readingItem | resourceRating|subscription|topic|user', action: 'saveLinkResources|saveDocument|delete|save|index') {
             before = {
-
-
+                if (!session.user) {
+                    redirect(controller: 'login', action: 'index')
+                    return;
+                }
             }
-        }*/
 
+        }
+        admincheck(controller: 'user', action: 'admin|changeActivation') {
+            before = {
+                if (!session.user.admin) {
+                    redirect(controller: 'login', action: 'index')
+                    return;
+                }
+            }
+        }
     }
 }
