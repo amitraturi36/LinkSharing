@@ -68,13 +68,13 @@ grails.project.dependency.resolution = {
         compile ":asset-pipeline:2.2.3"
         compile "org.grails.plugins:twitter-bootstrap:3.3.4"
         compile "org.grails.plugins:jquery-validation:1.9"
+        compile "org.grails.plugins:codenarc:0.25.1"
         runtime "org.grails.plugins:console:1.5.7"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.10" // or ":hibernate:3.6.10.18"
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
-        test "org.grails.plugins:code-coverage:2.0.3-3"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"
