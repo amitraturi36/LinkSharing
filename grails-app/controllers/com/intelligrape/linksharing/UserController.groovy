@@ -200,7 +200,7 @@ class UserController {
     def admin(Integer selector, String search) {
         List<User> user
         if (selector==1){
-            user=User.createCriteria().list {
+            user=User.createCriteria().list(params) {
 
                 or {
                     ilike('firstName',"%${search}%")
@@ -211,7 +211,7 @@ class UserController {
                 eq('active',true)
             }
         }else if(selector==0){
-            user=User.createCriteria().list {
+            user=User.createCriteria().list() {
 
                 or {
                     ilike('firstName',"%${search}%")
@@ -225,7 +225,7 @@ class UserController {
             user = User.getAll()
         }
         user = user.findAll { it.admin != true }
-        render view: '/user/admin', model: [users: user]
+        render view: '/user/admin', model: [users: user,usercount:user.size() ]
     }
 
     def changeActivation(Long uId, Integer status) {

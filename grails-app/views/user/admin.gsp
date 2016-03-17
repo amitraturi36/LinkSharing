@@ -27,7 +27,6 @@
                     </div>
                 </div>
             </g:form>
-
         </div>
     </div>
 </div>
@@ -44,7 +43,7 @@
                 <th>Active</th>
                 <th>Manage</th>
             </tr>
-            <tbody>
+            <tbody id="tablecontent">
             <g:each in="${users}" var="user">
                 <g:if test="${user.active}">
                     <tr class="alert-success">
@@ -73,8 +72,11 @@
                 </g:else>
             </g:each>
             </tbody>
-
         </table>
+        <div>
+
+            <util:remotePaginate maxsteps="5" max="20" update="#tablecontent" controller="user" action="admin" total="${usercount}"/>
+        </div>
     </div>
 </div>
 </body>
