@@ -3,7 +3,7 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header" style="border: 1px solid grey; background:#f2f2f2;">
+            <div class="modal-header alert-success" style="border: 1px solid grey;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Forget Password</h4>
             </div>
@@ -17,8 +17,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <g:submitButton name="submitemail" value="Send Email" class="btn btn-default"/>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <g:submitButton name="submitemail" value="Send Email" class="btn btn-success"/>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </g:form>
         </div>
