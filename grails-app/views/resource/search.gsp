@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -7,53 +6,88 @@
 </head>
 
 <body>
-<div class="col-sm-6">
-    <div class="panel panel-default">
+<g:if test="${!flag}">
+    <g:if test="${resource}">
+        <div class="alert-success h3"
+             style="padding:5% ">Search RESULTS FOR TOPIC    <b>${resource.topic.topicName[0]}</b></div>
+    </g:if>
 
-        <div class="panel-heading">
-            <strong>Post</strong>
-        </div>
+    <g:else>
+        <div class="alert-warning h3" style="padding:5% "><b>No Resources Founded</b></div>
+    </g:else>
+</g:if>
+<g:else>
+
+    <div class="alert-success h3" style="padding:5% "><b>${resource.topic.topicName}</b></div>
+
+</g:else>
+<g:each in="${resource}" var="res">
+    <div class="panel panel-default" id="post${res.id}">
         <div class="panel-body">
-            <g:each in="${resource}">
-                <div>
-                    <div class="col-xs-2">
-                        <div class="glyphicon glyphicon-user" style="font-size:60px"></div>
+            <div>
+                <div class="col-xs-2">
+                    <a href="/user/profile?userId=${res.createdBy.id}">       <ls:userImage user="${res.createdBy}"/></a>
+                </div></div>
+
+
+            <div class="col-xs-10">
+                <div class="row" style="padding-bottom:5px">
+                    <div class="col-xs-6">
+                        <span class="h4">
+                            <a href="/user/profile?userId=${res.createdBy.id}" style="text-decoration: none">     ${res.createdBy}</a>
+                        </span>
                     </div>
 
-                    <div class="col-xs-10">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <span class="h5">Uday</span>
-                                <small class="text-muted">@uday</small>
-                            </div>
+                    <div class="col-xs-3">
+                    </div>
 
-                            <div class="col-xs-3">
-                            </div>
 
-                            <div class="col-xs-3">
-                                <a href="#" class="text-left">Grails</a>
-                            </div>
-                        </div>
+                </div>
 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mi risus, mollis sit amet purus vitae, rutrum commodo erat.</p>
+                <div class="row" style="padding-bottom:10px">
+                    <div class="col-xs-4">
+                        <span class="text-muted h5">@res.createdBy</span>
+                    </div>
 
-                        <div class="row" style="padding-bottom:10px">
-                            <div class="col-xs-1 fa fa-facebook-official"></div>
+                    <div class=" text-muted h5" style="float: right">${res.dateCreated}</div>
+                </div>
 
-                            <div class="col-xs-1 fa fa-twitter"></div>
+                <ls:resourcerater resourceId="${res.id}"/>
+            </div>
 
-                            <div class="col-xs-1 fa fa-google-plus"></div>
+            <p style="padding-bottom:5px">${res.description}</p>
 
-                            <div class="col-xs-6"></div>
+            <div class="row">
+                <a href="http://www.facebook.com"><div class="col-xs-1 fa fa-facebook-official"
+                                                       style="font-size:20px"></div>
+                </a>
+                <a href="http://www.twitter.com"><div class="col-xs-1 fa fa-twitter"
+                                                      style="font-size:20px"></div>
+                </a>
+                <a href="http://www.google.com"><div class="col-xs-1 fa fa-google-plus"
+                                                     style="font-size:20px"></div>
+                </a>
 
-                            <div class="col-xs-3"><a href="#">View Post</a></div>
-                        </div>
-                    </div></div></g:each>
-            <g:paginate next="Forward" prev="Back"
-                        maxsteps="0" controller="resource"
-                        action="search" total="${resourcecount}" params="[q:q]"/>
-        </div></div></div>
+                <div class="col-xs-6"></div>
 
+                <div class="col-xs-4" class='readitem'><ls:read resource="${res}">
+                </ls:read></div>
+                <ls:canDeleteResource resource="${res}"><span
+                        class="glyphicon glyphicon-trash col-xs-1 text-info"
+                        onclick="deleteresource(${res.id})" style="cursor: pointer"></span>
+                </ls:canDeleteResource>
+                <ls:download resource="${res}"/>
+                <ls:link resource="${res}"/>
+            </div>
+        </div>
+
+    </div>
+</g:each>
+<g:if test="${!flag}">
+    <g:paginate next="Forward" prev="Back"
+                maxsteps="0" controller="resource"
+                action="search" total="${resourcecount}" params="[q: q]"/>
+</g:if>
 
 </body>
 </html>

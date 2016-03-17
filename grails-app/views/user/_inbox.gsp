@@ -3,7 +3,7 @@
 <!-- ************************************************** -->
 <div class="panel ">
     <div class="panel-heading col-sm-12 "
-         style="border: 1px solid grey;background-color: black;margin-top:-30px;padding-top:-30px">
+         style="border: 1px solid grey;background-color: black;">
         <div class="row">
             <span class="h4" style="color:white">Inbox
                 <g:form class="form-inline" style="float: right" name="inboxsearchform" url="/user/index">
@@ -24,6 +24,7 @@
         <g:if test="!${resources}">
 
             <span class="alert-warning">Inbox Is Empty</span>
+            <span class="col-sm-12"></span>
         </g:if>
         <g:else>
             <g:each in="${resources}" var="resource">

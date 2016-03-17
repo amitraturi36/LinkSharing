@@ -2,7 +2,7 @@
     <div class="panel-heading col-sm-12 " style="border: 1px solid grey;background-color: black">
 
         <span class="col-sm-9" style="color:white"><h4>Topics Created</h4></span><a href="#"
-                                                                                       class="col-sm-3 "><ins><h4>View all</h4>
+                                                                                       class="col-sm-3 "><ins><h4></h4>
         </ins></a>
     </div>
 
@@ -10,10 +10,12 @@
         <g:each in="${usertopics}" var="topic">
             <div id="user1${topic.id}" class="container  col-sm-12">
 
-                <span class="col-sm-3"><ls:userImage user="${topic.createdBy}"/>
+                <span class="col-sm-3">
+                    <a href="/user/profile?userId=${topic.createdBy.id}" style="text-decoration: none"> <ls:userImage user="${topic.createdBy}"/></a>
                 </span>
-                <span class="text-muted col-sm-8">${topic.createdBy.name}
-                    <span  style="float: right"><a href="/topic/show?id=${topic.id}"><ins>${topic.toString()}</ins></a></span>
+                <span class="text-muted col-sm-8">
+                    <a href="/user/profile?userId=${topic.createdBy.id}" style="text-decoration: none">  ${topic.createdBy.name}</a>
+                    <span  style="float: right"><a href="/topic/show?id=${topic.id}" style="text-decoration: none">${topic.toString()}</a></span>
                     <span class="col-sm-12"></span></span>
 
                 <div class="row" style="margin-top:10px;padding-top:20px  ">

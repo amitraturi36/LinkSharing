@@ -26,23 +26,26 @@
                    Today
                     <span class="caret" style="color:white"></span>
                 </a>
-                    <ul class="dropdown-menu">
-                        <li value="1"><a href="#">Week</a></li>
-                        <li class="divider"></li>
-                        <li value="2"><a href="#">Month</a></li>
-                        <li class="divider"></li>
-                        <li value="3"><a href="#">Year</a></li>
-                    </ul></div>
+                    %{--<ul class="dropdown-menu">--}%
+                        %{--<li value="1"><a href="#">Week</a></li>--}%
+                        %{--<li class="divider"></li>--}%
+                        %{--<li value="2"><a href="#">Month</a></li>--}%
+                        %{--<li class="divider"></li>--}%
+                        %{--<li value="3"><a href="#">Year</a></li>--}%
+                    %{--</ul>--}%
+                </div>
 
             </div>
 
             <div class="panel-body col-sm-12" style="border:1px solid grey">
                 <g:each in="${recentpost}" var="post">
-                    <div class="col-sm-3" style="margin: 25px 0px;"><ls:userImage user="${post.createdBy}"/>
+                    <div class="col-sm-3" style="margin: 25px 0px;">
+                        <a href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none"><ls:userImage user="${post.createdBy}"/></a>
                     </div>
 
                     <div class="text-info" style="float: right">${post.topic}</div>
-                    <span class=" col-sm-6 " style="font-size: 15px;padding:20px 15px;">${post.createdBy}</span>
+                    <span class=" col-sm-6 " style="font-size: 15px;padding:20px 15px;">
+                        <a href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none">${post.createdBy}</a></span>
                     <span class=" col-sm-3 text-muted "
                           style="padding:20px 0px;">@${post.createdBy.firstName}<g:formatDate date="${post.dateCreated}"
                                                                                               type="time"

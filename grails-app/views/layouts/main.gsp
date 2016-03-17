@@ -7,6 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="refresh" content="60">
     <title><g:layoutTitle default="Grails"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
@@ -45,21 +46,23 @@
                    data-toggle="modal" data-target="#myModal1"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
+            <g:if test="${subtopics||topic}">
             <li><a href="#" class="glyphicon glyphicon-envelope"
                    data-toggle="modal" data-target="#myModal2"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
-
             <li><a href="#" class="glyphicon glyphicon-link"
                    data-toggle="modal" data-target="#createlink"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
+
             <g:render template="/LinkResource/create"/>
             <li><a href="#" class="glyphicon glyphicon-file"
                    data-toggle="modal" data-target="#createDoc"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
             </li>
             <g:render template="/documentResource/create"/>
+            </g:if>
             <li><a class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
                                          href="#" style="color:white;
                     padding-top:14px;">

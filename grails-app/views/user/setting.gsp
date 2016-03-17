@@ -7,10 +7,9 @@
 
 <body>
 <div class="panel-default col-sm-10">
-    <div class="panel-heading " style="border: 1px solid grey; background:black;color: white"><h4>Update Info</h4>
-    </div>
+   <div class="alert-info h3">Update Info</div>
 
-    <div class="panel-body " style="border:1px solid grey">
+    <div class="panel-body ">
         <span class="col-sm-12"></span>
 
         <g:uploadForm class="form-inline cmxform" role="form" url="/user/update" method="post"
@@ -54,7 +53,7 @@
                 </fieldset>
             </div>
         </g:uploadForm></div></div>
-<div class="col-sm-12" ><h4><span data-toggle="modal" data-target="#changepassword" style="cursor: pointer">Change Password</span></h4>
+<div class="col-sm-12" ><h4><span class="text-info"data-toggle="modal" data-target="#changepassword" style="cursor: pointer;margin-left: 3%">Change Password</span></h4>
 
     <g:render template="changepassword"/>
 </div>

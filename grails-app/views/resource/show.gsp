@@ -7,10 +7,11 @@
 </head>
 
 <body>
+<div class="alert-success h2 center-block" style="padding:5% "><b>${resources.topic[0]}</b></div>
 <!-- Row 1 -->
 <!-- *************************************************** -->
 <div>
-    <div class="col-xs-6">
+    <div>
 
     <!-- Name Panel -->
     <!-- ************************************************** -->
@@ -19,21 +20,23 @@
                 <div class="panel-body">
                     <div>
                         <div class="col-xs-2">
-                            <div style="font-size:80px"><ls:userImage user="${resource.createdBy}"/></div>
+
+                            <a href="/user/profile?userId=${resource.createdBy.id}">     <ls:userImage user="${resource.createdBy}"/>
+                       </a>
                         </div></div>
 
 
                     <div class="col-xs-10">
                         <div class="row" style="padding-bottom:5px">
                             <div class="col-xs-6">
-                                <span class="h5">${resource.createdBy}</span>
+                                <span class="h5"><a href="/user/profile?userId=${resource.createdBy.id}" style="text-decoration: none">  ${resource.createdBy}</a></span>
                             </div>
 
                             <div class="col-xs-3">
                             </div>
 
                             <div class="col-xs-3">
-                                <a href="#" class="text-left">${resource.topic}</a>
+                                <a href="#" class="text-left" style="text-decoration: none">${resource.topic}</a>
                             </div>
                         </div>
 
@@ -53,20 +56,24 @@
                     <p style="padding-bottom:5px">${resource.description}</p>
 
                     <div class="row">
-                        <div class="col-xs-1 fa fa-facebook-official" style="font-size:20px"></div>
-
-                        <div class="col-xs-1 fa fa-twitter" style="font-size:20px"></div>
-
-                        <div class="col-xs-1 fa fa-google-plus" style="font-size:20px"></div>
+                        <a href="http://www.facebook.com"><div class="col-xs-1 fa fa-facebook-official"
+                                                               style="font-size:20px"></div>
+                        </a>
+                        <a href="http://www.twitter.com"><div class="col-xs-1 fa fa-twitter"
+                                                              style="font-size:20px"></div>
+                        </a>
+                        <a href="http://www.google.com"><div class="col-xs-1 fa fa-google-plus"
+                                                             style="font-size:20px"></div>
+                        </a>
 
                         <div class="col-xs-6"></div>
 
                         <div class="col-xs-4" class='readitem'><ls:read resource="${resource}">
                         </ls:read></div>
-                        <ls:canDeleteResource resource="${resource}"><a><span
-                                class="glyphicon glyphicon-trash col-xs-1"
-                                onclick="deleteresource(${resource.id})"></span>
-                        </a></ls:canDeleteResource>
+                        <ls:canDeleteResource resource="${resource}"><span
+                                class="glyphicon glyphicon-trash col-xs-1 text-info"
+                                onclick="deleteresource(${resource.id})" style="cursor: pointer"></span>
+                        </ls:canDeleteResource>
                         <ls:download resource="${resource}"/>
                         <ls:link resource="${resource}"/>
                     </div>

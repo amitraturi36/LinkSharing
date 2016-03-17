@@ -38,11 +38,17 @@ class ResourceController {
         }
     }
 
-    def show(Long id) {
-
-        Topic topic = Topic.get(id)
-
-        render view: 'show', model: [resources: topic.resources, topic: topic]
+    def show(Long id,Integer status) {
+        if((status==1)&&(id)){
+            Resource resource=Resource.get(id)
+            if(resource) {
+                render view:'/resource/search', model: [resource: resource, flag: 1]
+            }
+        }
+        else {
+            Topic topic = Topic.get(id)
+            render view:'show' , model: [resources: topic.resources, topic: topic]
+        }
 
     }
 

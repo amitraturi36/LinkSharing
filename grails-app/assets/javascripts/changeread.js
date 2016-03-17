@@ -27,13 +27,13 @@ function deleteresource(id) {
     });
 
 }
-function resourcerating(id, score) {
+function resourcerating(id) {
     var oData = $('#resc' + id).val()
     jQuery.ajax({
         url: "/resourceRating/resourcerating",
         data: {
             id: id,
-            score: score
+            score: oData
         },
         success: function (message) {
             if (message.message) {
@@ -121,12 +121,17 @@ function subscriptionstatus(topicId, status) {
         url: url,
         data: {id: topicId},
         success: function () {
-            $('#user' + status + topicId).html('');
+            $('#user'+status +topicId).html('');
+
             if (status == 1) {
                 $('#mainmessage').text("successfully unsubscribed")
+                $('.usersub1'+topicId).text('subscribe')
+                $('.usersub1'+topicId).attr('onclick','subscriptionstatus('+topicId+',0)')
             }
             else {
                 $('#mainmessage').text("successfully subscribed")
+                $('.usersub0'+topicId).text("UnSubscribe")
+                $('.usersub0'+topicId).attr('onclick','subscriptionstatus('+topicId+',1)')
             }
         }
     })

@@ -10,6 +10,7 @@ class UserController {
     def useService
 
     def index(SearchCO searchCO) {
+        params.max = Math.min(params.max ? params.int('max') : 1, 100)
         List<TopicVO> topicVOList = Topic.getTrendingTopics()
         List<Topic> topicList = session.user.getSubscribedTopic(params)
         User user = User.get(session.user.id)
@@ -122,7 +123,7 @@ class UserController {
         User user = User.get(searchString) //resourceSearchCO.user
         List<Topic> topicList = user?.getSubscribedTopic(params)
         List<Topic> userTopics = Topic.findAllByCreatedBy(user, [max: 5])
-        if ((session.user == user) || (session.user.admin)) {
+        if ((session.user?.id == user.id) || (session.user?.admin)) {
             render view: '/user/profile', model: [
                     user           : resourceSearchCO.user,
                     subtopics      : topicList,

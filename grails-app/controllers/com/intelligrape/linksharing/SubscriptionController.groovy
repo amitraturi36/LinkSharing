@@ -6,12 +6,18 @@ class SubscriptionController {
 
 
     def delete(Long id) {
+
         Topic topic = Topic.get(id)
-        if (topic.createdBy == session.user) {
+        if (topic?.createdBy?.id == session?.user?.id) {
             flash.errors = "creator of topic cnnot unsubscribe"
 
         } else {
             Subscription subscription = Subscription.findByTopicAndUser(topic, session.user)
+            User user=session.user
+                   topic.resources.each {
+                ReadingItem readingItem=ReadingItem.findByResourceAndUser(it,user)
+                readingItem?.delete(flush:  true)
+            }
             try {
                 subscription.delete(flush: true)
                 render("Sucess")
