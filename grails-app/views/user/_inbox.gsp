@@ -21,7 +21,7 @@
     </div>
 
     <div class="panel-body col-sm-12" style="border: 1px solid grey;">
-        <g:if test="!${resources}">
+        <g:if test="${!resources}">
 
             <span class="alert-warning">Inbox Is Empty</span>
             <span class="col-sm-12"></span>

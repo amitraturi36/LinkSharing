@@ -12,6 +12,7 @@ class LinkSharingTagLib {
                     eq('resource', attr.resource)
                     eq('user', user)
                 }
+                println(readingItem)
                 if ((readingItem?.user?.id != attr.resource.createdBy.id) && (readingItem)) {
                     if (readingItem.isRead) {
                         out << "<span class=\"alert-success\" >Read</span> "

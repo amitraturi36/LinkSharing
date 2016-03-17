@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <meta http-equiv="refresh" content="15">
+    %{--<meta http-equiv="refresh" content="15">--}%
     <title></title>
 </head>
 
