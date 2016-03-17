@@ -4,7 +4,7 @@ class ForgotpasswordController {
 
    def changePassword(String passwrd,String CnfrmPsswrd ){
 
-       if(sesion.user)
+       if(session.user)
        {
            User user=User.get(session.user.id)
            if(passwrd==CnfrmPsswrd){
@@ -13,11 +13,11 @@ class ForgotpasswordController {
                if(user.validate()) {
                    user.save(flush: true)
                    flash.messages="Password Save sucessfully"
-                   render "sucess"
-                  // redirect(controller:'user',action: 'profile' )
+
+                   redirect(controller:'user',action: 'profile' )
                }else{
                    flash.errors="Password not save Please try again"
-                  // redirect(controller:'user',action: 'profile' )
+                   redirect(controller:'user',action: 'profile' )
                    render "fail"
                }
            }

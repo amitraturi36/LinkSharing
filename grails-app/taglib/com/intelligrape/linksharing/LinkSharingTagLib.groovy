@@ -93,91 +93,11 @@ class LinkSharingTagLib {
             Topic topic = Topic.get(attr.topic)
             if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
                 out << " <a href=\"#\" class=\"glyphicon glyphicon-envelope\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"\n" +
-                        "                               data-toggle=\"modal\" data-target=\"#myModalinvite${topic.id}\"></a>"
-
-                out << "<div id=\"myModalinvite${topic.id}\" class=\"modal fade\" role=\"dialog\">\n" +
-                        "    <div class=\"modal-dialog\">\n" +
-                        "\n" +
-                        "        <!-- Modal content-->\n" +
-                        "        <div class=\"modal-content\">\n" +
-                        "            <div class=\"modal-header alert-success\" style=\"border: 1px solid grey;\">\n" +
-                        "                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" >&times;</button>\n" +
-                        "\n" +
-                        "                <div class=\"modal-title  h4 \">Send Invitations</div>\n" +
-                        "            </div>\n" +
-                        "\n" +
-                        "            <div class=\"modal-body\">\n" +
-                        "                <g:form class=\"inline-form\" style=\"padding-bottom:15%\" name=\"invitationform\"\n" +
-                        "                        onsubmit=\"return sendinvitation()\">\n" +
-                        "                    <div>\n" +
-                        "                   <span class=\" col-sm-4 h4\">Email<sup>*</sup></span>\n" +
-                        "                   <input type=\"Text\" class=\" form-control col-sm-4\" name=\"email\" style=\"width:50%; \"><br/><br/>\n" +
-                        "                   <span class=\" col-sm-4 h4\">Topics<sup>*</sup></span>\n" +
-                        "                        <select class=\"form-control col-sm-5\" style=\"background:white;width:50%\" name=\"topicId\">\n" +
-                        "\n" +
-                        "                            <option value=\"${topic.id}\">${topic.topicName}</option>\n" +
-                        "\n" +
-                        "                        </select>\n" +
-                        "                    <div class=\"col-sm-12\"></div>\n" +
-                        "                    <div class=\"row col-sm-12\">\n" +
-                        "                        <span class=\"col-sm-7\"></span>\n" +
-                        "                        <button type=\"submit\" class=\"btn btn-success  col-sm-2 \">Invite</button>\n" +
-                        "                        <span class=\"col-sm-1\"></span>\n" +
-                        "                        <button type=\"reset\" class=\"btn btn-warning col-sm-2\">Reset</button>\n" +
-                        "                    </div>\n" +
-                        "     <div class=\"col-span-12\"> <br><br><br></div>                         "+
-                        "                </g:form>\n" +
-                        "            </div>\n" +
-                        "\n" +
-                        "            </div>\n" +
-                        "        </div></div></div>"
-
-
-
-
-
-
-
-
-
-
-
-//        ___________________________________________________________________________________________________________
-                if ((topic.createdBy.id == session.user.id) || (session.user.admin)) {
-                    out << " <a  data-toggle=\"modal\" data-target=\"#mymodeledit${topic.id}\" class=\"glyphicon glyphicon-pencil\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"></a>"
-                    out <<"<div id=\"mymodeledit${topic.id}\" class=\"modal fade\" role=\"dialog\">\n" +
-                            "    <div class=\"modal-dialog\">\n" +
-                            "\n" +
-                            "        <!-- Modal content-->\n" +
-                            "        <div class=\"modal-content\">\n" +
-                            "            <div class=\"modal-header alert-success\" style=\"border: 1px solid grey; background:#f2f2f2;\">\n" +
-                            "                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n" +
-                            "                <h4 class=\"modal-title\">Edit Topics</h4>\n" +
-                            "            </div>\n" +
-                            "\n" +
-                            "            <g:form class=\"inline-form\" url=\"/topic/update?topicId=${topic.id}\">\n" +
-                            "                <div class=\"modal-body\" style=\"borer: 1px solid grey; \">\n" +
-                            "\n" +
-                            "                    <span class=\" col-sm-4\">Name<sup>*</sup></span>\n" +
-                            "                    <input type=\"Text\" class=\" col-sm-6\" name=\"name\" placeholder=\"${topic.topicName}\" required><br/><br/>\n" +
-                            "                    <span style=\"margin:20px\"></span>\n" +
-                            "                </div>\n" +
-                            "\n" +
-                            "                <br/><br/><br/>\n" +
-                            "                <div class=\"col-sm-12\" style=\"float: right\">\n" +
-                            "                  <span class=\"col-sm-4\">  <Button type=\"submit\" name=\"save\" class=\"btn btn-success\" value=\"Share\"/> Share</button></span>\n" +
-                            "                   <span class=\"col-sm-4\" ><button type=\"reset\" class=\"btn btn-warning\">Reset</button></span>\n" +
-                            "                </div>\n" +
-                            "                <div class=\"col-sm-12\">\n" +
-                            "                    <br/><br/><br/> <br/><br/><br/>\n" +
-                            "\n" +
-                            "                </div> <br/><br/><br/>\n" +
-                            "            </g:form>\n" +
-                            "        </div>\n" +
-                            "\n" +
-                            "    </div>\n" +
-                            "</div>"
-
+                        "                               data-toggle=\"modal\" data-target=\"#myModal23\"></a>"
+                out<< render(template:'/topic/email2',model:[topic: topic] )
+                if ((topic.createdBy == session.user) || (session.user.admin)) {
+                    out << " <a  data-toggle=\"modal\" data-target=\"#myModal3\" class=\"glyphicon glyphicon-pencil\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"></a>"
+                    out << render(template: '/topic/topicedit', model: [topic: topic])
                 }
             }
         }

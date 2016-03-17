@@ -2,7 +2,7 @@ package com.intelligrape.linksharing
 
 import grails.validation.Validateable
 
-//@Validateable
+@Validateable
 class ResourceSearchCO extends SearchCO {
     Long topicId
     String visibilityString

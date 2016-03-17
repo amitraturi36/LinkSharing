@@ -9,9 +9,9 @@ class DocumentResource extends Resource {
     static Transient = ['contentType']
     static constraints = {
 
-        contentType bindable: true, validator: { def val, User obj ->
-            return val.getContentType() == Constants.DOCUMENT_CONTENT_TYPE
-        }
+//        contentType bindable: true, validator: { def val, User obj ->
+//            return val.getContentType() == Constants.DOCUMENT_CONTENT_TYPE
+//        }
     }
 
     @Override
