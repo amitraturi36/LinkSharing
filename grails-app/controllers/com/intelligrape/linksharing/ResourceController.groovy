@@ -5,7 +5,8 @@ class ResourceController {
     def resourceService
 
     def search(ResourceSearchCO resourceSearchCO) {
-        if (session.user?.admin == true) {
+        User user = User.get(session.user)
+        if (user?.admin) {
             if (resourceSearchCO.q) {
                 List<Resource> resourceList = resourceService.search(resourceSearchCO, params)
                 render view: '/resource/search', model: [resource: resourceList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
@@ -15,9 +16,9 @@ class ResourceController {
                 render view: '/resource/search', model: [resource: topic.resources, resourcecount: topic.resources.size(), q: resourceSearchCO.q]
             }
         } else if (resourceSearchCO.q) {
-            if (session?.user) {
+            if (user) {
                 Topic topic = Topic.get(resourceSearchCO.topicId)
-                if (((topic.checksubscribeuser(session.user)) || (topic.visibility == Visibility.PUBLIC)) && (resourceSearchCO.q)) {
+                if (((topic.checksubscribeuser(user)) || (topic.visibility == Visibility.PUBLIC)) && (resourceSearchCO.q)) {
                     List<Resource> resourceList = resourceService.search(resourceSearchCO, params)
                     render view: '/resource/search', model: [resource: resourceList,]
                 } else {
@@ -35,6 +36,26 @@ class ResourceController {
 
         } else {
             redirect(controller: 'login', action: 'index')
+        }
+    }
+    def postSearch(ResourceSearchCO resourceSearchCO) {
+        println(resourceSearchCO.topicId)
+        User  user=User.get(session.user)
+        if((resourceSearchCO.topicId)){
+            Topic topic=Topic.get(resourceSearchCO.topicId)
+            if(topic) {
+               def resourceList
+                if (resourceSearchCO.q) {
+                    resourceList = resourceService.search(resourceSearchCO, params)
+
+
+                }else{
+                   resourceList=topic.resources
+
+
+                }
+                render template: "/topic/post", model: [topic: topic, resource: resourceList]
+            }
         }
     }
 

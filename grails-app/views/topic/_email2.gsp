@@ -1,4 +1,4 @@
-<div id="myModal23" class="modal fade" role="dialog">
+<div id="mytopic${topic.id}" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->

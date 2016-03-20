@@ -29,21 +29,9 @@
                     <input type="email" name="email" value="${user.email}" class="form-control col-sm-6  "
                            style="border:1px solid grey" disabled><br/><br/><br/><br/>
 
-                    <label class="control-label col-sm-6 h4 text-info" for="photo">Photo</label><span class="col-sm-2 "
-                                                                                                      style="width:85px;height:20px;border:1px solid grey;"></span>
-
-                    <div class="form-group">
-                        <div>
-                            <label for="files"><span class="btn "
-                                                     Style="border:1px solid grey;padding:0px 30px">Browse</span>
-                            </label>
-                            <input style="visibility: hidden; position: absolute;" id="files" class="form-control"
-                                   type="file" name="photo">
-
-
-                        </div>
-
-                    </div><br/><br/>
+                    <label class="control-label col-sm-6 h4 text-info" for="photo">Photo</label>
+                    <input  id="files" style="width: 35%" class="form-control btn-info" type="file" name="photo"   accept="image/*" required>
+                    <br/><br/>
 
                     <span class="col-sm-8 text-info"></span>  <g:submitButton name="submit" class="btn btn-success form-control"
                                                                               type="submit"  value="Update"/>

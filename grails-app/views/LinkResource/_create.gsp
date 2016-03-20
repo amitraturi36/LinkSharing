@@ -1,4 +1,4 @@
-<%@ page import="com.intelligrape.linksharing.ResourceController" %>
+
 <div id="createlink" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
@@ -10,10 +10,12 @@
                     <h4 class="modal-title">Share Link</h4>
                 </div>
 
-                <div class="modal-body" style="borer: 1px solid grey;background:whitesmoke; ">
-                    <g:form class="inline-form" url="/LinkResource/saveLinkResources">
+                <div class="modal-body" style="border: 1px solid grey;background:whitesmoke; ">
+                    <span id="linkspan"> </span><br/>
+                    <form class="inline-form"   id="linkresourceform" onSubmit="return linkresource() " >
                     <span class=" col-sm-4">Link<sup>*</sup></span>
-                    <input type="Text" class=" form-control" style="width: 50%" name="url"><br/><br/>
+                    <input type="Text" class=" form-control" style="width: 50%" name="url"><br/>
+                        <br/>
 
                     <span class=" col-sm-4" >Description<sup>*</sup></span>
                     <textarea rows="4" cols="50" class=" form-control" style="width: 50%" name="description"></textarea><br/><br/>
@@ -38,7 +40,7 @@
 
             <br/><br/><br/>
 <span style="float: right">
-                <g:submitButton name="linkresource" class="btn btn-success" value="Share"/>
+                <button type="submit"  class="btn btn-success" value="Share"/>Submit </button>
                 <button type="reset" class="btn btn-warning">Reset</button>
                         </span>
                         <div class="col-sm-12">
@@ -46,7 +48,7 @@
 
                         </div> <br/><br/><br/>
 
-        </g:form>
+        </form>
 
     </div>
     </div>

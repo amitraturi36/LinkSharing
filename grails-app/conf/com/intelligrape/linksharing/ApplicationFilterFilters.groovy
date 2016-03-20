@@ -47,7 +47,8 @@ class ApplicationFilterFilters {
         }
         admincheck(controller: 'user', action: 'admin|changeActivation') {
             before = {
-                if (!session.user.admin) {
+                Boolean isAdmin=User.get(session.user)
+                if (!isAdmin) {
                     redirect(controller: 'login', action: 'index')
                     return;
                 }

@@ -11,8 +11,8 @@ class LoginController {
 
         } else {
             List list = Resource.toppost()
-            List list1=Resource.recentPost(3)
-            render view: 'index', model: [list: list,recentpost:list1]
+            List list1 = Resource.recentPost(3)
+            render view: 'index', model: [list: list, recentpost: list1]
 
 
         }
@@ -25,13 +25,16 @@ class LoginController {
             flash.errors = "Please enter valid user or password"
             redirect(action: "index")
         } else {
-            User user = User.findByEmailAndPassword(username, password)
+            User user = User.findByUserNameAndPassword(username, password)
+            if (!user) {
+                user = User.findByEmailAndPassword(username, password)
+            }
             if (user) {
                 if (!user.active) {
                     flash.errors = "Your accoutn is not active"
                     redirect(action: "index")
                 } else {
-                    session.user = user
+                    session.user = user.id
                     redirect(action: "index")
                 }
             } else {

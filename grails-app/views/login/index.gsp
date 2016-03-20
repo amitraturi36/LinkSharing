@@ -75,7 +75,7 @@
 
 </div>
 
-<div class="col-sm-6 " style="padding-left:10px;">
+<div class="col-sm-6 " style="padding-left:3%;">
 
     <div class="panel-default  ">
         <div class="panel-heading" style="border: 1px solid grey;background:black;color:white "><h4>Login</h4>
@@ -85,96 +85,47 @@
 
             <g:form class="form-inline" role="form" url="[action: 'loginHandler']">
                 <div class="form-group">
-                    <label class="control-label col-sm-4 h4" for="Email">Email/UserName<sup>*</sup></label>
-                    <input type="email" class="form-control col-sm-4" id="inputEmail" placeholder="Email"
+                    <label class="control-label col-sm-4 h4" for="inputEmail">Email/UserName<sup>*</sup></label>
+                    <input type="text" class="form-control col-sm-4 " id="inputEmail" placeholder="Email"
                            name="username"
-                           style="border: 1px solid grey; margin-left:40px ">
+                           style="border: 1px solid grey; margin-left:40px " required><br>
+                    <div class="col-sm-12">
+                    <span id="loginformemail"></span></div>
                     <br/><br/><br/><br/>
-
 
                     <label class="control-label col-sm-5 h4" for="inputPassword">Password<sup>*</sup></label>
                     <input type="password" class="form-control col-sm-6" id="inputPassword" name="password"
                            placeholder="Password"
-                           style="border: 1px solid grey;"><br/><br/><br/><br/>
+                           style="border: 1px solid grey;" required><br/><br/><br/><br/>
                     <a href="#" data-toggle="modal"
-                       data-target="#forgetpassword "><span class="col-sm-8 text-info h4">Forgot Password</span></a>
-                    <g:submitButton name="Login" class="btn col-sm-4 btn-default form-control" value="Login" style="border:1px solid grey;background-color: black;color: white  "/>
+                       data-target="#forgetpassword "><span class="col-sm-6 text-info h4">Forgot Password</span></a>
+                    <a href="#" data-toggle="modal"
+                       data-target="#registerationform2">
+                        <span>
+                            <span class="col-sm-3 text-info h4">Register</span>
+                        </span>
+
+                    </a>
+                    <g:submitButton name="Login" class="btn col-sm-3 btn-default form-control" value="Login" style="border:1px solid grey;background-color: black;color: white  "/>
                 </div>
             </g:form>
-            <g:render template="/login/forgetPassword"></g:render>
+            <g:render template="/login/forgetPassword"/>
+            <g:render template="registerform"/>
         </div></div><br/><br/><br/><br/>
 
 
-    <div class="panel-default ">
-        <div class="panel-heading " style="border: 1px solid grey; background:black;color: white"><h4>Register</h4>
-        </div>
 
-        <div class="panel-body " style="border:1px solid grey">
-            <span class="col-sm-12"></span>
-
-            <g:uploadForm class="form-inline cmxform" role="form" url="/user/register" method="post"
-                          name="myregisterform">
-                <div class="form-group col-sm-12">
-                    <fieldset>
-                        <label class="control-label col-sm-6 h4" for="Fname">First Name<sup>*</sup></label>
-                        <input type="text" name="fname" class="form-control col-sm-5 "
-                               style="border:1px solid grey" required><br/><br/><br/><br/>
-
-
-
-                        <label class="control-label col-sm-6 h4" for="Lname">Last Name<sup>*</sup></label>
-                        <input type="text" name="lname" class="form-control col-sm-6"
-                               style="border:1px solid grey" required><br/><br/><br/><br/>
-                        <label class="control-label col-sm-6 h4" for="Email">Email<sup>*</sup></label>
-                        <input type="email" name="email" class="form-control col-sm-6  "
-                               style="border:1px solid grey" required><br/><br/><br/><br/>
-
-
-
-                        <label class="control-label col-sm-6 h4" for="uname">Username<sup>*</sup></label>
-                        <input type="text" name="uname" class="form-control col-sm-6"
-                               style="border:1px solid grey" required><br/><br/><br/><br/>
-                        <label class="control-label col-sm-6 h4" for="pass">Password<sup>*</sup></label>
-                        <input type="password" id="passwrd" name="passwrd" class="form-control col-sm-6 "
-                               minlength="5" style="border:1px solid grey" required><br/><br/><br/><br/>
-
-
-
-                        <label class="control-label col-sm-6 h4 " for="CPassword">Confirm Password<sup>*</sup></label>
-                        <input type="password" name="CnfrmPsswrd" id=" CnfrmPsswrd" class="form-control col-sm-6"
-                               style="border:1px solid grey"
-                               style="border:1px solid grey" required><br/><br/><br/><br/>
-
-                        <label class="control-label col-sm-6 h4 text-info" for="photo">Photo</label><span class="col-sm-2 "
-                                                                                                       style="width:85px;height:20px;border:1px solid grey;"></span>
-
-                        <div class="form-group">
-                            <div>
-                                <label for="files"><span class="btn"
-                                                         Style="border:1px solid grey;padding:0px 30px">Browse</span>
-                                </label>
-                                <input style="visibility: hidden; position: absolute;" id="files" class="form-control"
-                                       type="file" name="photo">
-
-
-                            </div>
-
-                        </div><br/><br/>
-
-
-                        <span class="col-sm-8 text-info"></span>  <g:submitButton name="submit" class="form-control"
-                                                                                  type="submit" style="background-color: black;color: white" value="Register"/>
-                    </fieldset>
-                </div>
-            </g:uploadForm></div></div>
     <script>
-        // just for the demos, avoids form submit
-
         $("#myregisterform").validate({
             rules: {
                 passwrd: "required",
                 CnfrmPsswrd: {
                     equalTo: "#passwrd"
+                },
+                fname:{
+                    required: true,
+                    pattern: /^[A-Za-z0-9\w]{4,20}/
+
                 }
             }
         });

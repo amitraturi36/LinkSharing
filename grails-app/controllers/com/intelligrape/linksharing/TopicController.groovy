@@ -27,7 +27,8 @@ class TopicController {
     }
 
     def show(Topic topic) {
-        if (topic && (topic.visibility == Visibility.PUBLIC || topic.checksubscribeuser(session.user))) {
+        User user = User.get(session.user)
+        if (topic && (topic.visibility == Visibility.PUBLIC || topic.checksubscribeuser(user))) {
             List<User> userList = topic.subscribedUser
             render view: 'show', model: [topic: topic, user: userList, resource: topic.resources]
         } else if (!topic) {
@@ -40,7 +41,7 @@ class TopicController {
 
     def save(String topicName, String visiblity) {
         if (topicName) {
-            User user = User.get(session.user.id)
+            User user = User.get(session.user)
             Topic topic = new Topic()
             topic.visibility = Visibility.stringToEnum(visiblity)
             topic.createdBy = user
@@ -61,26 +62,26 @@ class TopicController {
     }
 
     def search(ResourceSearchCO resourceSearchCO) {
-
+        User user = User.get(session.user)
         if (resourceSearchCO.q) {
             List<Topic> topicList = topicService.search(resourceSearchCO)
             List<Resource> resourceList = resourceService.globalsearch(resourceSearchCO, params)
-            if (session.user) {
+            if (user) {
                 if (topicList[0]) {
                     topicList = topicList.findAll {
-                        (it.checksubscribeuser(session.user)) || (it.visibility == Visibility.PUBLIC)
+                        (it.checksubscribeuser(user)) || (it.visibility == Visibility.PUBLIC)
                     }
                 }
 
                 if (resourceList[0]) {
                     resourceList = resourceList.findAll {
-                        (it.topic.checksubscribeuser(session.user)) || (it.topic.visibility == Visibility.PUBLIC)
+                        (it.topic.checksubscribeuser(user)) || (it.topic.visibility == Visibility.PUBLIC)
                     }
                 }
                 render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
 
-            } else if (session.user) {
-                if (session.user.admin) {
+            } else if (user) {
+                if (user.admin) {
                     render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
                 }
             } else {
@@ -110,7 +111,8 @@ class TopicController {
     }
 
     def update(Long topicId, String name) {
-        if (session.user) {
+        User user = User.get(session.user)
+        if (user) {
             Topic topic = Topic.get(topicId)
             topic.topicName = name
             topic.save(flush: true)

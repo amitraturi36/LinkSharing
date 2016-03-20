@@ -11,7 +11,7 @@ class ResourceService {
 
     def search(ResourceSearchCO resourceSearchCO,Params){
         Topic topic=Topic.get(resourceSearchCO.topicId)
-       List<Resource>resourceList = Resource.createCriteria().list {
+      def resourceList = Resource.createCriteria().list {
             eq('topic',topic)
            ilike('description','%'+resourceSearchCO.q+'%')
 
@@ -19,7 +19,7 @@ class ResourceService {
         return resourceList
     }
     def globalsearch(ResourceSearchCO resourceSearchCO,params){
-        List<Resource>resourceList = Resource.createCriteria().list([max: 0, offset: 0]) {
+        def resourceList = Resource.createCriteria().list([max: 0, offset: 0]) {
             ilike('description','%'+resourceSearchCO.q+'%')
 
         }

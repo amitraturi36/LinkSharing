@@ -3,11 +3,9 @@ package com.intelligrape.linksharing
 class ForgotpasswordController {
 
    def changePassword(String passwrd,String CnfrmPsswrd ){
-
-       if(session.user)
-       {
-           User user=User.get(session.user.id)
-           if(passwrd==CnfrmPsswrd){
+       User user = User.get(session.user)
+       if(user)
+       {if(passwrd==CnfrmPsswrd){
                user.confirmPassword=CnfrmPsswrd
                user.password=passwrd
                if(user.validate()) {

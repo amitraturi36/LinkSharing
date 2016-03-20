@@ -6,7 +6,7 @@ class LinkSharingTagLib {
     static namespace = "ls"
     def read = { attr, body ->
         if (session.user) {
-            User user = User.get(session.user.id)
+            User user = User.get(session.user)
             if (user) {
                 ReadingItem readingItem = ReadingItem.createCriteria().get {
                     eq('resource', attr.resource)
@@ -17,7 +17,7 @@ class LinkSharingTagLib {
                     if (readingItem.isRead) {
                         out << "<span class=\"alert-success\" >Read</span> "
                     } else {
-                        out << "<span class=\"alert-danger\" > <a onclick=\"read(${attr.resource?.id})\" id=\"${attr.resource?.id}\" style=\"cursor:pointer \">Read</a></span> "
+                        out << "<span class=\"alert-danger\" > <a onclick=\"read(${attr.resource?.id})\" id=\"${attr.resource?.id}\" style=\"cursor:pointer;text-decoration: none \">Read</a></span> "
                     }
                 }
             }
@@ -29,7 +29,7 @@ class LinkSharingTagLib {
         }
     }
     def link = { attr, body ->
-        if ((attr.resource?.canViewedBy(attr.resource.id, session.user.id) && (attr.resource.instanceOf(LinkResource)))) {
+        if ((attr.resource?.canViewedBy(attr.resource.id, session.user) && (attr.resource.instanceOf(LinkResource)))) {
             out << "<span><a href=\"${attr.resource?.url}\" target='_blank' style=\"cursor:pointer;text-decoration: none \">View Full Website</a></span>"
         }
     }
@@ -40,24 +40,29 @@ class LinkSharingTagLib {
     }
     def trndngtopics = {
         List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
-        render(template: '/user/trendingtopics', model: [list: topicVOList, subtopics: session.user.subscribedTopic])
-
+        User user = User.get(session.user)
+        if (user) {
+            render(template: '/user/trendingtopics', model: [list: topicVOList, subtopics: user.subscribedTopic])
+        }
 
     }
     def canDeleteResource = { attr, body ->
-        if (User.canDeleteResource(attr.resource.id, session.user)) {
+        User user = User.get(session.user)
+        if (user) {
+            if (User.canDeleteResource(attr.resource.id, user)) {
 
-            out << body()
+                out << body()
+            }
         }
 
     }
     def seriousness = { attr, body ->
         if (session.user) {
             Topic topic = Topic.get(attr.topic)
-            User user = User.get(session.user.id)
-            if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
+            User user = User.get(session.user)
+            if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                 Subscription subscription = user.getSubscription(attr.topic)
-                if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
+                if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                     out << "<select class=\"form-control\" name=\"seriousness\" id=\"sub${subscription.id}\" onclick=seriousnesschange(${subscription.id})>\n" +
                             "                        <option id=\"CASUAL\"value=\"casual\">Casual</option>\n" +
                             "                        <option id=\"SERIOUS\" value=\"serious\">Serious</option>\n" +
@@ -70,8 +75,9 @@ class LinkSharingTagLib {
     }
     def visiblity = { attr, body ->
         if (session.user) {
+            User user = User.get(session.user)
             Topic topic = Topic.get(attr.topic)
-            if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
+            if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                 out << "<select class=\"form-control\" id=\"vistopic${topic.id}\"  onclick=visiblitychange(${topic.id})>\n" +
                         "                        <option value=\"PUBLIC\">Public</option>\n" +
                         "                        <option value=\"PRIVATE\">Private</option>\n" +
@@ -90,13 +96,14 @@ class LinkSharingTagLib {
     }
     def update = { attr, body ->
         if (session.user) {
+            User user = User.get(session.user)
             Topic topic = Topic.get(attr.topic)
-            if ((topic.subscribedUser.contains(session.user)) || (session.user.admin)) {
+            if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                 out << " <a href=\"#\" class=\"glyphicon glyphicon-envelope\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"\n" +
-                        "                               data-toggle=\"modal\" data-target=\"#myModal23\"></a>"
-                out<< render(template:'/topic/email2',model:[topic: topic] )
-                if ((topic.createdBy == session.user) || (session.user.admin)) {
-                    out << " <a  data-toggle=\"modal\" data-target=\"#myModal3\" class=\"glyphicon glyphicon-pencil\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"></a>"
+                        "                               data-toggle=\"modal\" data-target=\"#mytopic${topic.id}\"></a>"
+                out << render(template: '/topic/email2', model: [topic: topic])
+                if ((topic.createdBy == user) || (user.admin)) {
+                    out << " <a  data-toggle=\"modal\" data-target=\"#myedittopic${topic.id}\" class=\"glyphicon glyphicon-pencil\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"></a>"
                     out << render(template: '/topic/topicedit', model: [topic: topic])
                 }
             }
@@ -105,13 +112,12 @@ class LinkSharingTagLib {
     def subscription = { attr, body ->
         if (session.user) {
             Topic topic = Topic.get(attr.topics)
-            User user = User.get(session.user.id)
+            User user = User.get(session.user)
             if (user.id != topic.createdBy.id) {
-                println(topic.checksubscribeuser(session.user))
-                if (topic.checksubscribeuser(session.user)) {
-                    out << "<a onclick=\"subscriptionstatus(${topic.id},'1')\"  class=\"usersub1${topic.id}\" style=\"text-decoration: none;cursor:pointer\">Unsubscribe</a>"
+                if (topic.checksubscribeuser(user)) {
+                    out << "<span onclick=\"subscriptionstatus(${topic.id},'1')\"  class=\"usersub1${topic.id} text-info\" style=\"text-decoration: none;cursor:pointer\">Unsubscribe</span>"
                 } else {
-                    out << "<a onclick=\"subscriptionstatus(${topic.id},'0')\"  class=\"usersub0${topic.id}\"  style=\"text-decoration: none;cursor:pointer\">Subscribe</a>"
+                    out << "<span onclick=\"subscriptionstatus(${topic.id},'0')\"  class=\"usersub0${topic.id} text-info\"  style=\"text-decoration: none;cursor:pointer\">Subscribe</span>"
                 }
 
             }
@@ -120,7 +126,8 @@ class LinkSharingTagLib {
     def candeletetopic = { attr, body ->
         if (session.user) {
             Topic topic = Topic.get(attr.topic)
-            if ((topic.createdBy == session.user) || (session.user.admin)) {
+            User user = User.get(session.user)
+            if ((topic.createdBy == user) || (user.admin)) {
                 out << " <span class=\"glyphicon glyphicon-trash alert-link\" style=\"cursor:pointer;padding:0px 7px;margin:0px 7px\" onclick=topicdelete(${topic.id})></span>"
             }
 
@@ -129,6 +136,7 @@ class LinkSharingTagLib {
     def resourcerater = { attr, body ->
         Resource resource = Resource.get(attr.resourceId)
         Topic topic = resource.topic
+        User user = User.get(session.user)
         String cssClass
         Integer score = resource.ratingInfo.averageScore
         if (score < 3) {
@@ -138,8 +146,8 @@ class LinkSharingTagLib {
         } else {
             cssClass = "alert-success"
         }
-        if (session.user) {
-            if (Subscription.countByTopicAndUser(topic, session.user)) {
+        if (user) {
+            if (Subscription.countByTopicAndUser(topic, user)) {
                 out << "<div class=\"row\" style=\"padding-bottom:15px\">\n" +
                         "                                    <div class=\"col-xs-8\"></div>\n" +
                         "\n" +
@@ -165,7 +173,7 @@ class LinkSharingTagLib {
                     out << "<span class=\"glyphicon glyphicon-heart\" style=\"float:right\"></span>"
                 }
             }
-        }else{
+        } else {
             RatingInfoVO ratingInfoVO = Resource.resourceRater(resource)
             if (ratingInfoVO) {
                 ratingInfoVO.averageScore.times {

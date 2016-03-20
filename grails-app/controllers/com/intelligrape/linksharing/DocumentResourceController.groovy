@@ -7,7 +7,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile
 class DocumentResourceController extends ResourceController {
     @Transactional
     def saveDocument(String description, Long topicId) {
-        println(params.doc)
+        println(topicId)
+        def message=[message:"",errors:""]
+        User user = User.get(session.user)
         if ((topicId) && (params.doc)) {
             CommonsMultipartFile file = params.list("doc")?.getAt(0)
              String filePath = getGrailsApplication().config.LinkSharing.documents.folderPath
@@ -19,29 +21,30 @@ class DocumentResourceController extends ResourceController {
                     filePaths  : fileName,
                     topic      : Topic.get(topicId),
                     description: description,
-                    createdBy  : session.user
+                    createdBy  : user
             ])
             if (documentResource.validate()) {
-                flash.messages="successfully saved"
+                message.message="successfully saved"
                 documentResource.save(flush: true, failOnError: true)
-                addToReadingItems(documentResource,session.user)
-                redirect(controller:'user',action: 'index' )
+                addToReadingItems(documentResource,user)
+                render message as JSON
             } else {
-               flash.errors="fail to upload"
-                redirect(controller:'user',action: 'index' )
+               message.errors="Please Select Valid file "
+                render message as JSON
             }
         } else {
-            flash.errors="fail to upload"
-            redirect(controller:'user',action: 'index' )
+            message.errors="Fail to upload Please select atleast a file "
+            render message as JSON
         }
 
 
     }
 
     def download(Long resourceId) {
+        User user = User.get(session.user)
         def download = [download: "", resource: ""]
         DocumentResource resource = Resource.get(resourceId)
-        if ((resource?.canViewedBy(resourceId, session.user.id) && (resource))) {
+        if ((resource?.canViewedBy(resourceId,user.id) && (resource))) {
             download.download = 1
             download.resource = "http://localhost:8080/"+resource.filePaths
             render download as JSON

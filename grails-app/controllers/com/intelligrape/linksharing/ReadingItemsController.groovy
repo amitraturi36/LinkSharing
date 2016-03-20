@@ -8,8 +8,7 @@ class ReadingItemsController {
 
         if (id) {
             def message=[status:"",error:"",message:""]
-          int s= ReadingItem.executeUpdate("update ReadingItem set isRead=${true} where resource=${id} AND user=${session.user.id}")
-       println s
+          int s= ReadingItem.executeUpdate("update ReadingItem set isRead=${true} where resource=${id} AND user=${session.user}")
             if(s) {
                 message.status = 1
                 message.message="successfully changed the status"
@@ -25,9 +24,9 @@ class ReadingItemsController {
         }
     }
     def show() {
-        def user = session.user
-        User user1 = User.get(user.id)
-        List<String> resources = user1.subscriptions.topic.resources
+        User user = User.get(session.user)
+
+        List<String> resources = user.subscriptions.topic.resources
 
         render view: '/resource/show', model: [resources: resources]
     }

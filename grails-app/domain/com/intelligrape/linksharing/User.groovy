@@ -5,6 +5,7 @@ class User {
     String password
     String firstName
     String lastName
+    String userName
     byte[] photo
     Boolean admin
     Boolean active
@@ -25,6 +26,7 @@ class User {
     }
 
     static constraints = {
+        userName(unique: true,blank: false)
         email(unique: true, blank: false, email: true)
         password(blank: false, size: 5..15)
         firstName(blank: false)
@@ -126,7 +128,7 @@ class User {
 
     def getUnReadResources(SearchCO searchCO){
         List<Resource>resourceList
-        if(searchCO.q){
+        if(searchCO?.q){
             resourceList=  ReadingItem.createCriteria().list([max: 0, offset: 0]) {
                 createAlias('resource','r')
                 projections{
@@ -139,7 +141,7 @@ class User {
             }
 
         }else{
-            ReadingItem.createCriteria().list(([max: 0, offset: 0])){
+            resourceList=  ReadingItem.createCriteria().list(([max: 0, offset: 0])){
                 projections{
                     property('resource')
                 }
@@ -148,5 +150,6 @@ class User {
 
             }
         }
+        return resourceList
     }
 }

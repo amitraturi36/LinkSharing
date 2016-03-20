@@ -5,11 +5,11 @@ import grails.converters.JSON
 class ResourceRatingController {
 
     def resourcerating(Long id,Integer score) {
+        User user = User.get(session.user)
         def message=[message:"",errors:""]
         if(score) {
             Resource resource = Resource.get(id)
             if (resource) {
-                User user = session.user
                 ResourceRating rating = ResourceRating.findByResourceAndCreatedBy(resource, user)
                 println(rating)
                 if (rating) {
@@ -18,7 +18,7 @@ class ResourceRatingController {
 
                     rating.save(flush: true)
                 } else {
-                    rating = new ResourceRating(createdBy: session.user, resource: resource, score: score)
+                    rating = new ResourceRating(createdBy: user, resource: resource, score: score)
                     rating.save(flush: true)
                     resource.addToRatings(rating)
 

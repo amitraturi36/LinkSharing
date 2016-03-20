@@ -1,3 +1,4 @@
+<%@ page import="com.intelligrape.linksharing.User" %>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -19,7 +20,7 @@
     <g:layoutHead/>
 </head>
 
-<body>
+<body class="body">
 <nav class="navbar navbar-inverse">
     <div class="container-fluid ">
         <div class="navbar-header">
@@ -40,7 +41,7 @@
             </g:form>
 
         </li>
-        <g:if test="${session.user != null}">
+        <g:if test="${session.user}">
             <li><a href="#" class="glyphicon glyphicon-comment"
                    data-toggle="modal" data-target="#myModal1"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
@@ -63,20 +64,19 @@
             <g:render template="/documentResource/create"/>
             </g:if>
             <li><a class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
-                                         href="#" style="color:white;
-                    padding-top:14px;">
-                ${session.user.firstName}
+                                         href="#" style="color:white;padding-top:14px;">
+                ${User.get(session.user).firstName}
                 <b class="caret"></b>
             </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/user/profile?userId=${session.user.id}">Profile</a></li>
+                    <li><a href="/user/profile?userId=${session.user}">Profile</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/index">Inbox</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/subTopics">Topics</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/settings">Settings</a></li>
-                    <g:if test="${session.user.admin}">
+                    <g:if test="${User.get(session.user).admin}">
                     <li class="divider"></li>
                     <li><a href="/user/admin">Admin</a></li>
                     </g:if>
@@ -103,8 +103,8 @@
     </g:hasErrors>
 </div>
 
-<div class="alert-success" id="mainmessage"><g:if
-        test="${flash.messages}">${flash.messages}</g:if>
+<div class="alert-success" id="mainmessage">
+    <g:if test="${flash.messages}">${flash.messages}</g:if>
 </div>
 
 <div class="body"><g:layoutBody/></div>

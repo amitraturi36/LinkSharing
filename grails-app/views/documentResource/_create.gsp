@@ -10,7 +10,8 @@
                 </div>
 
                 <div class="modal-body" style="borer: 1px solid grey; ">
-        <g:uploadForm name="myform" class="inline-form" url="/documentResource/saveDocument">
+        <span id="docspan"> </span><br/>
+        <g:uploadForm name="mydocform" class="inline-form" onSubmit="return docresource()">
                     <span class=" col-sm-4">Document<sup>*</sup></span>
                     <input type="file" class="form-control text-info" style="width: 50%" name="doc"><br/><br/>
 

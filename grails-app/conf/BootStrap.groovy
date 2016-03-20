@@ -21,6 +21,7 @@ class BootStrap {
                     password       : Constants.PASSWORD,
                     firstName      : "Bhuwan",
                     lastName       : "brijwasi",
+                    userName       : "bhu123",
                     admin          : false,
                     active         : false,
                     confirmPassword: Constants.PASSWORD
@@ -31,6 +32,7 @@ class BootStrap {
                     password       : Constants.PASSWORD,
                     firstName      : "Amit",
                     lastName       : "Raturi",
+                    userName       : "amy123",
                     admin          : true,
                     active         : true,
                     confirmPassword: Constants.PASSWORD

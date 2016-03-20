@@ -7,39 +7,44 @@ class SubscriptionController {
 
     def delete(Long id) {
 
+        User user = User.get(session.user)
         Topic topic = Topic.get(id)
-        if (topic?.createdBy?.id == session?.user?.id) {
+
+        if (topic?.createdBy?.id == user?.id) {
             flash.errors = "creator of topic cnnot unsubscribe"
 
         } else {
-            Subscription subscription = Subscription.findByTopicAndUser(topic, session.user)
-            User user=session.user
+            Subscription subscription = Subscription.findByTopicAndUser(topic, user)
                    topic.resources.each {
                 ReadingItem readingItem=ReadingItem.findByResourceAndUser(it,user)
                 readingItem?.delete(flush:  true)
             }
             try {
                 subscription.delete(flush: true)
-                render("Sucess")
             } catch (ObjectNotFoundException error) {
                 flash.errors = error
             }
         }
-        render "success"
+        render template:"/user/inbox",  model: [resources: user.getUnReadResources(new SearchCO()),user: user]
     }
 
     def save(Long id) {
         Topic topic = Topic.get(id)
-        User user = session.user
+        User user = User.get(session.user)
         Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.SERIOUS)
-
-        if (subscription.validate()) {
+        if (subscription.validate()&&(!topic?.subscriptions?.contains(subscription))) {
 
             subscription.save(flush: true, failOnError: true)
+            ReadingItem readingItem
+            topic?.resources?.each {
+              new ReadingItem(user: user,resource: it,isRead: false).save(flush: true)
+            }
+
         } else {
-            flash.errors = "fail to update seriousness"
+            flash.errors = "fail to update Subscription"
         }
-        render "success"
+
+        render template:"/user/inbox",  model: [resources: user.getUnReadResources(new SearchCO()),user: user]
     }
 
     def update(Long subId, String seriousness) {

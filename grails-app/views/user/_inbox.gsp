@@ -1,26 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!-- Name Panel -->
 <!-- ************************************************** -->
-<div class="panel ">
-    <div class="panel-heading col-sm-12 "
-         style="border: 1px solid grey;background-color: black;">
-        <div class="row">
-            <span class="h4" style="color:white">Inbox
-                <g:form class="form-inline" style="float: right" name="inboxsearchform" url="/user/index">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="q" id="srch-inbox">
 
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </g:form>
-            </span>
-        </div>
-    </div>
 
-    <div class="panel-body col-sm-12" style="border: 1px solid grey;">
+   <div id="inboxpanel">
         <g:if test="${!resources}">
 
             <span class="alert-warning">Inbox Is Empty</span>
@@ -74,7 +57,7 @@
                         <span style="font-size:20px; padding-top:20px;padding-right:20px;"><ls:read
                                 resource="${resource}"/>
                         </span>
-                        <a href="/resource/show?id=${resource.topic.id}"
+                        <a href="/resource/show?id=${resource.id}&status=1"
                            style="float: right;padding-top:20px;padding-right:20px">View Post</a>
                     </div>
                 </div>
@@ -86,4 +69,5 @@
         </g:else>
     </div>
 
+</div>
 </div>

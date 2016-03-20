@@ -8,13 +8,12 @@ class UserController {
 //   def myBean
 //    def    myBeanConstrctr
     def useService
-
     def index(SearchCO searchCO) {
+        User user = User.get(session.user)
         params.max = Math.min(params.max ? params.int('max') : 1, 100)
         List<TopicVO> topicVOList = Topic.getTrendingTopics()
-        List<Topic> topicList = session.user.getSubscribedTopic(params)
-        User user = User.get(session.user.id)
-        render view: "index", model: [resources: user.getUnReadResources(searchCO), list: topicVOList, subtopics: topicList, subtopicscount: topicList.size()]
+        List<Topic> topicList = user.getSubscribedTopic(params)
+        render view: "index", model: [resources: user.getUnReadResources(searchCO), list: topicVOList, subtopics: topicList, subtopicscount: topicList.size(), user: user]
         // render view: "index", model: [list: userService.serviceMethod(), subtopics: session.user.subscribedTopic]
 //        def c= Holders.applicationContext.getBean(CustomBean)
 //        //    render myBean.firstName
@@ -27,6 +26,7 @@ class UserController {
                 email          : userCO.email,
                 firstName      : userCO.fname,
                 lastName       : userCO.lname,
+                userName       : userCO.uname,
                 password       : userCO.passwrd,
                 confirmPassword: userCO.CnfrmPsswrd,
                 active         : true
@@ -41,7 +41,7 @@ class UserController {
                 println(user.hasErrors())
                 user.save(flush: true)
                 flash.messages = "sucessfully registered"
-                session.user = user
+                session.user = user.id
                 redirect(controller: "user", action: "index")
 
             } else {
@@ -73,17 +73,19 @@ class UserController {
 
     def subTopics() {
         if (session.user) {
+            User user = User.get(session.user)
 
-            render view: "/topic/show", model: [user: session.user, topics: Topic.findAllByCreatedBy(session.user)]
+            render view: "/topic/show", model: [user: user, topics: Topic.findAllByCreatedBy(user)]
         }
     }
 
     def sendInvitation(String email, Long topicId) {
         if ((email) && (topicId)) {
+            User user = User.get(session.user)
             Topic topic = Topic.get(topicId)
             EmailDTO sendMailVO = new EmailDTO([
                     email  : email,
-                    subject: " ${session.user.name} sent you a Subscription request",
+                    subject: " ${user.name} sent you a Subscription request",
                     body   : "please subscribe to the top: ${topic.topicName}"
             ])
             useService.sendmail(sendMailVO)
@@ -102,12 +104,14 @@ class UserController {
     }
 
     def changePassword(String email) {
-        def response = [data: ""]
+        def response = [data: "",status:""]
         try {
             useService.forgetpassemail(email)
             response.data = "Email sent successfully"
+            response.status=1
         } catch (NullPointerException e) {
             response.data = "email is not valid"
+            response.status=0;
         }
         finally {
             render response as JSON
@@ -117,13 +121,14 @@ class UserController {
     }
 
     def profile(ResourceSearchCO resourceSearchCO) {
+        User sessionUser = User.get(session.user)
         def searchString = params.userId
         params.max = Math.min(params.max ? params.int('max') : 1, 100)
         params.offset = (params.offset ? params.int('offset') : 0)
         User user = User.get(searchString) //resourceSearchCO.user
         List<Topic> topicList = user?.getSubscribedTopic(params)
         List<Topic> userTopics = Topic.findAllByCreatedBy(user, [max: 5])
-        if ((session.user?.id == user.id) || (session.user?.admin)) {
+        if ((sessionUser?.id == user.id) || (sessionUser?.admin)) {
             render view: '/user/profile', model: [
                     user           : resourceSearchCO.user,
                     subtopics      : topicList,
@@ -141,16 +146,10 @@ class UserController {
         }
     }
 
-    def list(UserSearchCO userSearchCO) {
-        if (session.user.admin) {
-
-        } else {
-            redirect(controller: 'user', action: 'index')
-        }
-    }
 
     def toggleActive(Long id) {
-        if (session.user.admin) {
+        Boolean isAdmin = User.get(session.user).admin
+        if (isAdmin) {
             User user = User.get(id)
             user.active = !user.active
             user.save(flush: true)
@@ -160,14 +159,15 @@ class UserController {
     }
 
     def settings() {
-        if (session.user) {
-            render view: '/user/setting', model: [user: session.user]
+        User user = User.get(session.user)
+        if (user) {
+            render view: '/user/setting', model: [user: user]
         }
     }
 
     def update(UserCO userCO) {
-        if (session.user) {
-            User user = session.user
+        User user = User.get(session.user)
+        if (user) {
             if ((userCO.fname)) {
                 user.firstName = userCO.fname
             }
@@ -182,7 +182,7 @@ class UserController {
                 if (user.validate()) {
                     user.merge(flush: true)
                     flash.messages = "sucessfully Updated"
-                    session.user = user
+                    session.user = user.id
                     redirect(controller: "user", action: "settings")
 
                 } else {
@@ -199,39 +199,39 @@ class UserController {
 
     def admin(Integer selector, String search) {
         List<User> user
-        if (selector==1){
-            user=User.createCriteria().list(params) {
+        if (selector == 1) {
+            user = User.createCriteria().list(params) {
 
                 or {
-                    ilike('firstName',"%${search}%")
-                    ilike('lastName',"%${search}%")
-                    ilike('email',"%${search}%")
+                    ilike('firstName', "%${search}%")
+                    ilike('lastName', "%${search}%")
+                    ilike('email', "%${search}%")
 
                 }
-                eq('active',true)
+                eq('active', true)
             }
-        }else if(selector==0){
-            user=User.createCriteria().list() {
+        } else if (selector == 0) {
+            user = User.createCriteria().list() {
 
                 or {
-                    ilike('firstName',"%${search}%")
-                    ilike('lastName',"%${search}%")
-                    ilike('email',"%${search}%")
+                    ilike('firstName', "%${search}%")
+                    ilike('lastName', "%${search}%")
+                    ilike('email', "%${search}%")
 
                 }
-                eq('active',false)
+                eq('active', false)
             }
-        }else {
+        } else {
             user = User.getAll()
         }
-        user = user.findAll { it.admin != true }
-        render view: '/user/admin', model: [users: user,usercount:user.size() ]
+        user = user.findAll { (!it.admin) }
+        render view: '/user/admin', model: [users: user, usercount: user.size()]
     }
 
     def changeActivation(Long uId, Integer status) {
-
+        Boolean isAdmin = User.get(session.user)
         def message = [message: "", error: ""]
-        if ((uId) && (session.user.admin)) {
+        if ((uId) && (isAdmin)) {
             User user = User.get(uId)
             if (status == 1) {
                 user.active = true
@@ -245,5 +245,38 @@ class UserController {
             render message as JSON
         }
 
+    }
+
+    def checkUniqueUser(String userName,Integer status) {
+        def message = [form1: "", form2: ""]
+        if(status!=null) {
+
+            if (status == 1) {
+                int user = User.countByUserName(userName)
+                if (user) {
+                    message.form2 = "User Already exits"
+                }
+            } else {
+                int user = User.countByEmail(userName)
+                if (user) {
+                    message.form2 = "Email Already exits"
+                }
+            }
+        }
+        else {
+            int user = User.countByEmail(userName)
+            if(!user){
+                user = User.countByUserName(userName)
+            }
+            if (!user) {
+                message.form1 = "User Does Not Exits"
+            }
+        }
+        render message as JSON
+    }
+
+    def inbox(SearchCO searchCO){
+        User user = User.get(session.user)
+        render template:"/user/inbox",  model: [resources: user.getUnReadResources(searchCO),user: user]
     }
 }

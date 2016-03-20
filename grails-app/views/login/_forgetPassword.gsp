@@ -9,16 +9,16 @@
             </div>
 
             <g:form name="forgetpassform" class="inline-form" method="post" url="[controller: 'topic', action: 'save']" onsubmit="return passwordchange()">
-                <div class="modal-body" style="borer: 1px solid grey;background:whitesmoke; ">
-
-                    <span class=" col-sm-4">Email<sup>*</sup></span>
-                    <input type="email" class=" col-sm-6" name="email" required><br/><br/>
+                <div class="modal-body" style="border: 1px solid grey;background:inherit; ">
+                         <div id="forgetpasswordmessage" ></div>
+                    <span class=" col-sm-4 h3">Email<sup>*</sup></span>
+                    <input type="email" class=" form-control col-sm-6" style="width: 50%;margin-top:4% " id="forgetPass" name="email" required><br/><br/>
                     <span style="margin:20px"></span>
                 </div>
 
                 <div class="modal-footer">
                     <g:submitButton name="submitemail" value="Send Email" class="btn btn-success"/>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="reset" class="btn btn-danger" >Reset</button>
                 </div>
             </g:form>
         </div>

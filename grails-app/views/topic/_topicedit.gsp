@@ -1,4 +1,4 @@
-<div id="myModal3" class="modal fade" role="dialog">
+<div id="myedittopic${topic.id}" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->

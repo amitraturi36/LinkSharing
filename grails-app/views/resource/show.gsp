@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<div class="alert-success h2 center-block" style="padding:5% "><b>${resources.topic[0]}</b></div>
+<div class="alert-success h2 center-block" style="padding:5% "><b>${resources?.topic[0]}</b></div>
 <!-- Row 1 -->
 <!-- *************************************************** -->
 <div>

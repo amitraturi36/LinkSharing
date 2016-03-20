@@ -1,10 +1,12 @@
 package com.intelligrape.linksharing
 
+import grails.converters.JSON
 import grails.transaction.Transactional
 
 class LinkResourceController extends ResourceController {
     @Transactional
     def saveLinkResources(String url, Long topicId, String description) {
+        def message=[message:"",errors:""]
         if ((url) && (topicId)) {
             Topic topic = Topic.get(topicId)
             LinkResource linkResource = new LinkResource([
@@ -14,18 +16,20 @@ class LinkResourceController extends ResourceController {
                     createdBy  : topic.createdBy
             ])
             if (linkResource.validate()) {
+                User user = User.get(session.user)
                 linkResource.save(flush: true, failOnError: true)
-                flash.messages = "Saved Successfully"
-              addToReadingItems(linkResource,session.user)
-               redirect(controller:'user',action:'index'  )
+                message.message = "Link Resource Saved Successfully"
+              addToReadingItems(linkResource,user)
+                render message as JSON
+
             } else {
-              flash.errors = "Link Resource  Not Saved"
-              redirect(controller:'user',action:'index'  )
+              message.errors = "Link Resource  Not Saved"
+                render message as JSON
             }
 
         } else {
-            flash.message = message(code: "topic.not.saved.message")
-            redirect controller:'login',action: ' index'
+            message.errors = "Link URL can't be blank "
+            render message as JSON
         }
 
 
