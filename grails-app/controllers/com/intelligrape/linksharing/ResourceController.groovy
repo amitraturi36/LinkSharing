@@ -92,7 +92,8 @@ class ResourceController {
     protected void addToReadingItems(Resource resource, User user) {
         resource.topic.subscriptions.user.each {
             if (it.id != user.id) {
-                new ReadingItem(user: it, resource: resource, isRead: true).save(flush: true)
+                new ReadingItem(user: it, resource: resource, isRead: false).save(flush: true)
+                new ResourceRating(createdBy:it,resource: resource,score:1).save(flush: true)
             }
         }
 

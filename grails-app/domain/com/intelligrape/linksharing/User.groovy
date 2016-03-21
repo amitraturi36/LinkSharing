@@ -137,17 +137,20 @@ class User {
                 ilike('r.description','%'+searchCO.q+'%')
                 eq('user',this)
                 eq('isRead',false)
+                order('r.lastUpdated','desc')
+
 
             }
 
         }else{
             resourceList=  ReadingItem.createCriteria().list(([max: 0, offset: 0])){
+                createAlias('resource','r')
                 projections{
                     property('resource')
                 }
                 eq('user',this)
                 eq('isRead',false)
-
+                order('r.lastUpdated','desc')
             }
         }
         return resourceList

@@ -17,6 +17,7 @@
     <asset:stylesheet src="application.css"/>
     <asset:stylesheet src="bootstrap.min.css"/>
     <asset:javascript src="application.js"/>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <g:layoutHead/>
 </head>
 
@@ -105,6 +106,7 @@
 
 <div class="alert-success" id="mainmessage">
     <g:if test="${flash.messages}">${flash.messages}</g:if>
+    <button type="button" class="close" data-dismiss="mainmessage">&times;</button>
 </div>
 
 <div class="body"><g:layoutBody/></div>
@@ -113,5 +115,6 @@
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt"
                                                                    default="Loading&hellip;"/></div>
+
 </body>
 </html>

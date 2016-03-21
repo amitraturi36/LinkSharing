@@ -297,14 +297,18 @@ $("document").ready(function () {
         }
     });
     $("#srch-inbox").keyup(function () {
+        $("#loader").animate({
+            top: -200
+        }, 1500);
         $("#inboxpanel").load("/user/inbox",{"q":$("#srch-inbox").val()})
 
     })
     $("#srch-post").keyup(function () {
+
         $("#postwithintopic").load("/resource/postSearch",{"q":$("#srch-post").val(),topicId:$("#post-topicId").val()})
 
     })
-
+    setInterval(function(){ $("#inboxpanel").load("/user/inbox",{"q":$("#srch-inbox").val(),status:1}); }, 5000);
 
 });
 function linkresource() {

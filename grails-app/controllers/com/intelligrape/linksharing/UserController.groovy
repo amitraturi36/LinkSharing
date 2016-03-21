@@ -1,12 +1,11 @@
 package com.intelligrape.linksharing
 
 import grails.converters.JSON
+import grails.util.Holders
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class UserController {
 //    def userService
-//   def myBean
-//    def    myBeanConstrctr
     def useService
     def index(SearchCO searchCO) {
         User user = User.get(session.user)
@@ -15,9 +14,6 @@ class UserController {
         List<Topic> topicList = user.getSubscribedTopic(params)
         render view: "index", model: [resources: user.getUnReadResources(searchCO), list: topicVOList, subtopics: topicList, subtopicscount: topicList.size(), user: user]
         // render view: "index", model: [list: userService.serviceMethod(), subtopics: session.user.subscribedTopic]
-//        def c= Holders.applicationContext.getBean(CustomBean)
-//        //    render myBean.firstName
-//        render   c.firstName
     }
 
 
@@ -37,8 +33,6 @@ class UserController {
         if ((okContentTypes.contains(file?.getContentType())) || (!file)) {
 
             if (user.validate()) {
-                println(user.email)
-                println(user.hasErrors())
                 user.save(flush: true)
                 flash.messages = "sucessfully registered"
                 session.user = user.id
@@ -177,7 +171,6 @@ class UserController {
             CommonsMultipartFile file = params.list("photo")?.getAt(0)
             def okContentTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', '.image/png', '.image/jpeg', '.image/jpg', '.image/gif']
             if ((okContentTypes.contains(file?.getContentType())) || (!file)) {
-                println user.photo
                 user.photo = file?.bytes
                 if (user.validate()) {
                     user.merge(flush: true)
@@ -275,8 +268,38 @@ class UserController {
         render message as JSON
     }
 
-    def inbox(SearchCO searchCO){
+    def inbox(SearchCO searchCO,Integer status) {
         User user = User.get(session.user)
-        render template:"/user/inbox",  model: [resources: user.getUnReadResources(searchCO),user: user]
+        if (status == 1) {
+            Date d=new Date()
+            d.seconds=d.seconds-5
+            def resourceList=  ReadingItem.createCriteria().list([max: 0, offset: 0]) {
+                createAlias('resource','r')
+                eq('user',user)
+                eq('isRead',false)
+                gt('r.dateCreated',d)
+                order('r.dateCreated')
+            }
+             if(resourceList){
+                 render template: "/user/inbox", model: [resources: user.getUnReadResources(searchCO), user: user]
+             }
+
+        } else {
+
+            render template: "/user/inbox", model: [resources: user.getUnReadResources(searchCO), user: user]
+
+        }
+    }
+//    def myBean
+//    def    myBeanConstrctr
+//    def beanTest(){
+//
+//        def c= Holders.applicationContext.getBean(CustomBean)
+//            render myBean.firstName
+//            render   c.firstName
+//    }
+
+    def test(){
+        render view: '/user/test'
     }
 }
