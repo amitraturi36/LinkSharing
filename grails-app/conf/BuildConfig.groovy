@@ -54,11 +54,6 @@ grails.project.dependency.resolution = {
 
     }
 
-    grails.project.dependency.resolution = {
-        plugins {
-            compile ":functional-test:2.0.0"
-        }
-    }
     plugins {
         // plugins for the build system only
         build ":tomcat:7.0.55.3" // or ":tomcat:8.0.22"
@@ -75,7 +70,7 @@ grails.project.dependency.resolution = {
         compile "org.grails.plugins:codenarc:0.25.1"
         runtime "org.grails.plugins:console:1.5.7"
         compile "org.grails.plugins:remote-pagination:0.4.8"
-//        compile "org.grails.plugins:spring-security-core:2.0.0"
+        compile "org.grails.plugins:spring-security-core:2.0.0"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.10" // or ":hibernate:3.6.10.18"
@@ -87,5 +82,8 @@ grails.project.dependency.resolution = {
         //compile ":less-asset-pipeline:1.10.0"
         //compile ":coffee-asset-pipeline:1.8.0"
         //compile ":handlebars-asset-pipeline:1.3.0.3"
+
+        compile ":functional-test:2.0.0"
+
     }
 }

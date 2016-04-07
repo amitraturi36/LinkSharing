@@ -6,4 +6,5 @@ class TopicVO {
     Visibility visibility
     Integer count
     User createdBy
+    String description
 }

@@ -14,11 +14,14 @@
                     <span class=" col-sm-4 h3">Email<sup>*</sup></span>
                     <input type="email" class=" form-control col-sm-6" style="width: 50%;margin-top:4% " id="forgetPass" name="email" required><br/><br/>
                     <span style="margin:20px"></span>
-                </div>
 
-                <div class="modal-footer">
-                    <g:submitButton name="submitemail" value="Send Email" class="btn btn-success"/>
-                    <button type="reset" class="btn btn-danger" >Reset</button>
+
+                <div class="row col-sm-12">
+                    <g:submitButton name="submitemail" value="Send Email" class="btn btn-success col-sm-4"/>
+                    <span class="col-sm-4"></span>
+                    <button type="reset" class="btn btn-danger col-sm-4" >Reset</button>
+                </div>
+                    <br/><br/><br/>
                 </div>
             </g:form>
         </div>

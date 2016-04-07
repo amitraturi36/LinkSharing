@@ -1,15 +1,18 @@
 package com.intelligrape.linksharing
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class DocumentResourceController extends ResourceController {
+    def   springSecurityService
+    @Secured(['ROLE_USER','ROLE_ADMIN'])
     @Transactional
     def saveDocument(String description, Long topicId) {
         println(topicId)
         def message=[message:"",errors:""]
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         if ((topicId) && (params.doc)) {
             CommonsMultipartFile file = params.list("doc")?.getAt(0)
              String filePath = getGrailsApplication().config.LinkSharing.documents.folderPath
@@ -39,9 +42,9 @@ class DocumentResourceController extends ResourceController {
 
 
     }
-
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def download(Long resourceId) {
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         def download = [download: "", resource: ""]
         DocumentResource resource = Resource.get(resourceId)
         if ((resource?.canViewedBy(resourceId,user.id) && (resource))) {

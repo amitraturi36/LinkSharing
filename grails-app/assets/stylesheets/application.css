@@ -13,5 +13,9 @@
 *= require_bootstrap.min
 *= require linkSharingHeader
 *= require linksharingbody
-*
+*= require normalize
+*= require style
+*= require default.css
+*= require fonts.css
+
 */

@@ -22,10 +22,24 @@
 <body>
 <div id="fb-root"></div>
 
-%{--<div class="fb-share-button" style="transform: scale(3);" data-href="http://www.linksharing.com" data-layout="icon"></div>--}%
+%{--<div class="fb-share-button" style="transform: scale(3);margin-left: 2%" data-href="http://www.sumitraturi.com" data-layout="icon"></div>--}%
 %{--<a class="twitter-share-button btn fa fa-twitter" onclick="twitter()">--}%
     %{--</a>--}%
-<div class="g-plusone" data-annotation="inline" data-width="300"></div>
+%{--<div class="g-plusone" data-annotation="inline" data-width="300"></div>--}%
+%{--<script src="https://apis.google.com/js/platform.js" async defer></script>--}%
+%{--<div class="g-follow" data-href="https://plus.google.com/{pageId}" data-rel="{relationshipType}"></div>--}%
+<!-- Place this tag in your head or just before your close body tag. -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<!-- Place this tag where you want the share button to render. -->
+<div class="g-plus" data-action="share"></div>
+<script type="text/javascript">
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/platform.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+</script>
 
 
 </body>

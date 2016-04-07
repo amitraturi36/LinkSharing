@@ -14,7 +14,7 @@ class UserCO {
     static constraints = {
 //        photo(nullable: true, validator: { def val, User obj ->
 //                def okContentTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', '.image/png', '.image/jpeg', '.image/jpg', '.image/gif']
-//                return okContentTypes.contains(val.getContentType())
+//                return  okContentTypes.contains(obj?.getContentType())
 //        })
     }
 }

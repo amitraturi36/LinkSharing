@@ -1,14 +1,19 @@
 package com.intelligrape.linksharing
 
 import grails.converters.JSON
-import grails.util.Holders
+import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class UserController {
 //    def userService
     def useService
+    def springSecurityService
+
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def index(SearchCO searchCO) {
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
+        println(user.authorities)
         params.max = Math.min(params.max ? params.int('max') : 1, 100)
         List<TopicVO> topicVOList = Topic.getTrendingTopics()
         List<Topic> topicList = user.getSubscribedTopic(params)
@@ -16,15 +21,16 @@ class UserController {
         // render view: "index", model: [list: userService.serviceMethod(), subtopics: session.user.subscribedTopic]
     }
 
-
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def register(UserCO userCO) {
         User user = new User([
                 email          : userCO.email,
                 firstName      : userCO.fname,
                 lastName       : userCO.lname,
-                userName       : userCO.uname,
+                username       : userCO.uname,
                 password       : userCO.passwrd,
                 confirmPassword: userCO.CnfrmPsswrd,
+                enabled        : true,
                 active         : true
         ])
         CommonsMultipartFile file = params.list("photo")?.getAt(0)
@@ -33,23 +39,27 @@ class UserController {
         if ((okContentTypes.contains(file?.getContentType())) || (!file)) {
 
             if (user.validate()) {
-                user.save(flush: true)
+                user.save(flush: true,validate: false)
+                def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
+                new UserRole(user, userRole).save()
                 flash.messages = "sucessfully registered"
-                session.user = user.id
-                redirect(controller: "user", action: "index")
+                springSecurityService.reauthenticate(user.username,user.password)
+              //  springSecurityService.currentUser=user
+                redirect (controller: 'login',action: 'auth')
 
             } else {
-                render view: '/login/index', model: [user: user]
+                render view: '/login/auth', model: [user: user]
             }
         } else {
             flash.errors = "Please choose valid iumage"
-            redirect(controller: 'login', action: 'index')
+            redirect(controller: 'login', action: 'auth')
         }
 
         // render user.errors.allErrors.collect { message(error: it) }.join(',')
 
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def showSubscribedTopics(Long id) {
 
         if (id) {
@@ -65,17 +75,19 @@ class UserController {
 
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def subTopics() {
-        if (session.user) {
-            User user = User.get(session.user)
+        if (springSecurityService.isLoggedIn()) {
+            User user = springSecurityService.currentUser
 
             render view: "/topic/show", model: [user: user, topics: Topic.findAllByCreatedBy(user)]
         }
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def sendInvitation(String email, Long topicId) {
         if ((email) && (topicId)) {
-            User user = User.get(session.user)
+            User user = springSecurityService.currentUser
             Topic topic = Topic.get(topicId)
             EmailDTO sendMailVO = new EmailDTO([
                     email  : email,
@@ -90,6 +102,7 @@ class UserController {
         }
     }
 
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def image(Long id) {
         User user = User.get(id)
         response.contentType = 'image/png' // or the appropriate image content type
@@ -97,15 +110,16 @@ class UserController {
         response.outputStream.flush()
     }
 
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def changePassword(String email) {
-        def response = [data: "",status:""]
+        def response = [data: "", status: ""]
         try {
             useService.forgetpassemail(email)
             response.data = "Email sent successfully"
-            response.status=1
+            response.status = 1
         } catch (NullPointerException e) {
             response.data = "email is not valid"
-            response.status=0;
+            response.status = 0;
         }
         finally {
             render response as JSON
@@ -114,35 +128,58 @@ class UserController {
 
     }
 
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def profile(ResourceSearchCO resourceSearchCO) {
-        User sessionUser = User.get(session.user)
+        def sessionUser = springSecurityService.currentUser
         def searchString = params.userId
-        params.max = Math.min(params.max ? params.int('max') : 1, 100)
+        params.max = Math.min(params.max ? params.int('max') : 5, 100)
         params.offset = (params.offset ? params.int('offset') : 0)
+
         User user = User.get(searchString) //resourceSearchCO.user
         List<Topic> topicList = user?.getSubscribedTopic(params)
-        List<Topic> userTopics = Topic.findAllByCreatedBy(user, [max: 5])
+        List<Topic> userTopics = Topic.findAllByCreatedBy(user, [max: 5, offset: params.offset])
+
         if ((sessionUser?.id == user.id) || (sessionUser?.admin)) {
-            render view: '/user/profile', model: [
-                    user           : resourceSearchCO.user,
-                    subtopics      : topicList,
-                    subtopicscount : topicList.size(),
-                    usertopics     : userTopics,
-                    usertopicscount: userTopics.size()
-            ]
+            if (resourceSearchCO.status) {
+                if (resourceSearchCO.status == 1) {
+                    render template: 'profilesub', model: [
+                            user          : resourceSearchCO.user,
+                            subtopics     : topicList,
+                            subtopicscount: topicList.size()
+                    ]
+                } else {
+                    render view: '/user/profile', model: [
+                            user           : resourceSearchCO.user,
+                            usertopics     : userTopics,
+                            usertopicscount: userTopics.size()
+                    ]
+                }
+
+            } else {
+
+                render view: '/user/profile', model: [
+                        user           : resourceSearchCO.user,
+                        subtopics      : topicList,
+                        subtopicscount : topicList.size(),
+                        usertopics     : userTopics,
+                        usertopicscount: userTopics.size()
+                ]
+            }
+
         } else {
-            topicList = topicList.findAll { it.visibility == Visibility.PUBLIC }
-            userTopics = userTopics.findAll { it.visibility == Visibility.PUBLIC }
+            topicList = topicList.findAll { it.visibility.PUBLIC }
+            userTopics = userTopics.findAll { it.visibility.PUBLIC }
             render view: '/user/profile', model: [user           : resourceSearchCO.user,
-                                                  subtopics      : topicList, subtopicscount: topicList.size(),
+                                                  subtopics      : topicList,
+                                                  subtopicscount : topicList.size(),
                                                   usertopics     : userTopics,
                                                   usertopicscount: userTopics.size()]
         }
     }
 
-
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def toggleActive(Long id) {
-        Boolean isAdmin = User.get(session.user).admin
+        Boolean isAdmin = springSecurityService.currentUser.admin
         if (isAdmin) {
             User user = User.get(id)
             user.active = !user.active
@@ -152,15 +189,17 @@ class UserController {
         }
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def settings() {
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         if (user) {
             render view: '/user/setting', model: [user: user]
         }
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def update(UserCO userCO) {
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         if (user) {
             if ((userCO.fname)) {
                 user.firstName = userCO.fname
@@ -175,7 +214,6 @@ class UserController {
                 if (user.validate()) {
                     user.merge(flush: true)
                     flash.messages = "sucessfully Updated"
-                    session.user = user.id
                     redirect(controller: "user", action: "settings")
 
                 } else {
@@ -190,6 +228,7 @@ class UserController {
 
     }
 
+    @Secured(['ROLE_ADMIN'])
     def admin(Integer selector, String search) {
         List<User> user
         if (selector == 1) {
@@ -221,8 +260,9 @@ class UserController {
         render view: '/user/admin', model: [users: user, usercount: user.size()]
     }
 
+    @Secured(['ROLE_ADMIN'])
     def changeActivation(Long uId, Integer status) {
-        Boolean isAdmin = User.get(session.user)
+        Boolean isAdmin = springSecurityService.currentUser.admin
         def message = [message: "", error: ""]
         if ((uId) && (isAdmin)) {
             User user = User.get(uId)
@@ -240,12 +280,13 @@ class UserController {
 
     }
 
-    def checkUniqueUser(String userName,Integer status) {
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def checkUniqueUser(String userName, Integer status) {
         def message = [form1: "", form2: ""]
-        if(status!=null) {
+        if (status != null) {
 
             if (status == 1) {
-                int user = User.countByUserName(userName)
+                int user = User.countByUsername(userName)
                 if (user) {
                     message.form2 = "User Already exits"
                 }
@@ -255,11 +296,10 @@ class UserController {
                     message.form2 = "Email Already exits"
                 }
             }
-        }
-        else {
+        } else {
             int user = User.countByEmail(userName)
-            if(!user){
-                user = User.countByUserName(userName)
+            if (!user) {
+                user = User.countByUsername(userName)
             }
             if (!user) {
                 message.form1 = "User Does Not Exits"
@@ -268,21 +308,22 @@ class UserController {
         render message as JSON
     }
 
-    def inbox(SearchCO searchCO,Integer status) {
-        User user = User.get(session.user)
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
+    def inbox(SearchCO searchCO, Integer status) {
+        User user = springSecurityService.currentUser
         if (status == 1) {
-            Date d=new Date()
-            d.seconds=d.seconds-5
-            def resourceList=  ReadingItem.createCriteria().list([max: 0, offset: 0]) {
-                createAlias('resource','r')
-                eq('user',user)
-                eq('isRead',false)
-                gt('r.dateCreated',d)
+            Date d = new Date()
+            d.seconds = d.seconds - 5
+            def resourceList = ReadingItem.createCriteria().list([max: 0, offset: 0]) {
+                createAlias('resource', 'r')
+                eq('user', user)
+                eq('isRead', false)
+                gt('r.dateCreated', d)
                 order('r.dateCreated')
             }
-             if(resourceList){
-                 render template: "/user/inbox", model: [resources: user.getUnReadResources(searchCO), user: user]
-             }
+            if (resourceList) {
+                render template: "/user/inbox", model: [resources: user.getUnReadResources(searchCO), user: user]
+            }
 
         } else {
 
@@ -298,8 +339,20 @@ class UserController {
 //            render myBean.firstName
 //            render   c.firstName
 //    }
+//    @Autowired(required = true)
+//    CustomBean  myBean
 
-    def test(){
-        render view: '/user/test'
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def test(User user) {
+     //   render view: '/user/test'
+       // render myBean.firstName
+            // render customBean.firstName
+//        UserSearchCO co=new UserSearchCO(firstName: "Amit")
+//        render(User.search(co).listDistinct())
+
+    //render myBean.properties
+
     }
+
+
 }

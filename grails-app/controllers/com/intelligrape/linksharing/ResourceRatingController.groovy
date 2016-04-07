@@ -1,11 +1,13 @@
 package com.intelligrape.linksharing
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 
 class ResourceRatingController {
-
+    def   springSecurityService
+    @Secured(['ROLE_USER','ROLE_ADMIN'])
     def resourcerating(Long id,Integer score) {
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         def message=[message:"",errors:""]
         if(score) {
             Resource resource = Resource.get(id)

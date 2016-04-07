@@ -43,6 +43,7 @@ class Topic {
         List<Subscription> userList = Subscription.createCriteria().list {
             eq('topic', this)
 
+
         }
         return userList*.user
     }

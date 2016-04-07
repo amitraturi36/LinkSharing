@@ -57,9 +57,9 @@
             <br/><br/><br/><br/>
 
         </g:each>
-        <g:paginate next="Forward" prev="Back"
-                    maxsteps="0" controller="user"
-                    action="profile" total="${usertopicscount}" params="[userId: user.id]"/>
+        %{--<g:paginate next="Forward" prev="Back"--}%
+                    %{--maxsteps="0" controller="user"--}%
+                    %{--action="profile" total="${usertopicscount}" params="[userId: user.id]"/>--}%
     </div>
 
 </div>

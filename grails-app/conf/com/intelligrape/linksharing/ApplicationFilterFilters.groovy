@@ -1,11 +1,11 @@
 package com.intelligrape.linksharing
 
 class ApplicationFilterFilters {
-
+    def springSecurityService
     def filters = {
         all(controller: '*', action: '*') {
             before = {
-
+                log.info("springSecurityService.isLoggedIn(): ${springSecurityService.isLoggedIn()}")
             }
             after = { Map model ->
 
@@ -38,7 +38,7 @@ class ApplicationFilterFilters {
         }
         useraccessiblitycheck(controller: 'resource | readingItem | resourceRating|subscription|topic|user', action: 'saveLinkResources|saveDocument|delete|save|index') {
             before = {
-                if (!session.user) {
+                if (!springSecurityService.isLoggedIn()) {
                     redirect(controller: 'login', action: 'index')
                     return;
                 }
@@ -46,8 +46,9 @@ class ApplicationFilterFilters {
 
         }
         admincheck(controller: 'user', action: 'admin|changeActivation') {
+
             before = {
-                Boolean isAdmin=User.get(session.user)
+                Boolean isAdmin = springSecurityService.currentUser.admin
                 if (!isAdmin) {
                     redirect(controller: 'login', action: 'index')
                     return;

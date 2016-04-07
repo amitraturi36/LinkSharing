@@ -1,8 +1,10 @@
 import com.intelligrape.linksharing.*
 
 class BootStrap {
-    def grailsApplication
+    def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
+    def adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
     def init = {
+
         createUser()
         createTopics()
         createResources()
@@ -21,10 +23,11 @@ class BootStrap {
                     password       : Constants.PASSWORD,
                     firstName      : "Bhuwan",
                     lastName       : "brijwasi",
-                    userName       : "bhu123",
+                    username       : "bhu123",
                     admin          : false,
                     active         : false,
-                    confirmPassword: Constants.PASSWORD
+                    confirmPassword: Constants.PASSWORD,
+                    enabled        : true
             ])
 
             User admin = new User([
@@ -32,15 +35,20 @@ class BootStrap {
                     password       : Constants.PASSWORD,
                     firstName      : "Amit",
                     lastName       : "Raturi",
-                    userName       : "amy123",
+                    username       : "amy123",
                     admin          : true,
                     active         : true,
-                    confirmPassword: Constants.PASSWORD
+                    confirmPassword: Constants.PASSWORD,
+                    enabled        : true
             ])
 
 
+            if ((user.validate()) && (admin.validate())) {
+                user.save(validate: false)
+                admin.save(validate: false)
+                new UserRole(user, userRole).save()
+                new UserRole(admin, adminRole).save()
 
-            if (user.save(failOnError: true, flush: true) && (admin.save(failOnError: true, flush: true))) {
                 log.info("save is successfull")
             } else {
                 log.error("save failed")

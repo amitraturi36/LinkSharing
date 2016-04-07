@@ -3,8 +3,8 @@ function read(id) {
         url: "/readingItems/changeIsRead",
         data: {id: id},
         success: function (message) {
-            val = $('#' + id).html()
-            $('#' + id).html("<span class='alert-success'>" + val + "</span>")
+            val1 = $('#' + id).html()
+            $('#' + id).html("<span class='alert-success'>" + val1 + "</span>")
             if (message.status == 1) {
                 $('#mainmessage').text(message.message)
             }
@@ -220,7 +220,7 @@ function activation(uid, status) {
 $("document").ready(function () {
     $("#inputEmail").keyup(function () {
         userval = $("#inputEmail").val();
-        if(userval=="") {
+        if((userval=="")||(userval==null)||(userval==' ')) {
             $("#loginformemail").html("<span id='loginformemail' class='alert-danger ' style='float: right;margin-right:10% '>" + "Email can not be empty" + "</span>")
         }else {
             jQuery.ajax({
@@ -243,7 +243,7 @@ $("document").ready(function () {
 
     $("#form2Email").keyup(function () {
         userval = $("#form2Email").val();
-        if(userval=="") {
+        if((userval=="")||(userval==null)||(userval==' ')) {
             $("#loginform2email").html("<span id='loginform2email' class='alert-danger ' style='float: right;margin-right:10% '>" + "Email can not be empty" + "</span>")
         }
         else {
@@ -271,7 +271,7 @@ $("document").ready(function () {
 
     $("#form2Username").keyup(function () {
         userval = $("#form2Username").val();
-        if(userval=="")
+        if((userval=="")||(userval==null)||(userval==' '))
         {
             $("#loginform2username").html("<span id='loginform2username' class='alert-danger ' style='float: right;margin-right:10% '>" + "User name cannot be Null" + "</span>")
         }
@@ -296,13 +296,19 @@ $("document").ready(function () {
             })
         }
     });
+    $("#resetregistrationform").click(function(){
+        $("#loginform2username").html("<span id='loginform2username'></span>")
+        $("#loginform2email").html("<span id='loginform2email'></span>")
+
+
+    });
     $("#srch-inbox").keyup(function () {
         $("#loader").animate({
             top: -200
         }, 1500);
         $("#inboxpanel").load("/user/inbox",{"q":$("#srch-inbox").val()})
 
-    })
+    });
     $("#srch-post").keyup(function () {
 
         $("#postwithintopic").load("/resource/postSearch",{"q":$("#srch-post").val(),topicId:$("#post-topicId").val()})
@@ -320,7 +326,7 @@ function linkresource() {
         processData: false,  // tell jQuery not to process the data
         contentType: false,
         success: function (data) {
-            console.log(data)
+
           if(data.message){
               $("#linkspan").html("<div class='alert-success'>"+data.message+"</div>")
           }else{
@@ -340,7 +346,7 @@ function docresource() {
         processData: false,  // tell jQuery not to process the data
         contentType: false,
         success: function (data) {
-            console.log(data)
+
             if(data.message){
                 $("#docspan").html("<div class='alert-success'>"+data.message+"</div>")
             }else{
@@ -349,4 +355,8 @@ function docresource() {
         }
     });
     return false
+}
+function recentshare(status){
+$("#recentshare").load("/resource/recentPost",{"status":status})
+
 }

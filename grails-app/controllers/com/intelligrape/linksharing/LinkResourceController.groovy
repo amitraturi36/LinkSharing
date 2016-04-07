@@ -1,9 +1,11 @@
 package com.intelligrape.linksharing
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-
+@Secured(['ROLE_USER','ROLE_ADMIN'])
 class LinkResourceController extends ResourceController {
+    def   springSecurityService
     @Transactional
     def saveLinkResources(String url, Long topicId, String description) {
         def message=[message:"",errors:""]
@@ -16,7 +18,7 @@ class LinkResourceController extends ResourceController {
                     createdBy  : topic.createdBy
             ])
             if (linkResource.validate()) {
-                User user = User.get(session.user)
+                User user = springSecurityService.currentUser
                 linkResource.save(flush: true, failOnError: true)
                 message.message = "Link Resource Saved Successfully"
               addToReadingItems(linkResource,user)

@@ -7,7 +7,7 @@
 
 <body>
 
-<g:if test="session.user!=null">
+<g:if test="${sec.loggedInUserInfo(field:'id')}">
 
     <!-- Row 1 -->
     <!-- *************************************************** -->

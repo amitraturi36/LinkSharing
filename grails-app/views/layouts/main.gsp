@@ -8,16 +8,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta itemprop="description" content=" This Topic  have awesome resources please check them out at">
     <title>LinkSharing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
     <link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
     <link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'apple-touch-icon-retina.png')}">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="canonical" href="https://dev.twitter.com/web/tweet-button">
     <asset:stylesheet src="application.css"/>
     <asset:stylesheet src="bootstrap.min.css"/>
     <asset:javascript src="application.js"/>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+
     <g:layoutHead/>
 </head>
 
@@ -32,7 +35,7 @@
         <li>
             <g:form class="navbar-form" name="globalsearch" url="/topic/search" >
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" name="q" id="srch-term">
+                    <input type="search" class="form-control" placeholder="Search" name="q" id="srch-term">
 
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
@@ -42,7 +45,7 @@
             </g:form>
 
         </li>
-        <g:if test="${session.user}">
+        <g:if test="${sec.loggedInUserInfo(field:'id')}">
             <li><a href="#" class="glyphicon glyphicon-comment"
                    data-toggle="modal" data-target="#myModal1"
                    style="color:white;font-size:30px; padding-top:14px;"></a>
@@ -66,23 +69,23 @@
             </g:if>
             <li><a class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
                                          href="#" style="color:white;padding-top:14px;">
-                ${User.get(session.user).firstName}
+                ${sec.loggedInUserInfo(field:'username')}
                 <b class="caret"></b>
             </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/user/profile?userId=${session.user}">Profile</a></li>
+                    <li><a href="/user/profile?userId=${sec.loggedInUserInfo(field:'id')}">Profile</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/index">Inbox</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/subTopics">Topics</a></li>
                     <li class="divider"></li>
                     <li><a href="/user/settings">Settings</a></li>
-                    <g:if test="${User.get(session.user).admin}">
+                    <g:if test="${User.get(sec.loggedInUserInfo(field:'id')).admin}">
                     <li class="divider"></li>
                     <li><a href="/user/admin">Admin</a></li>
                     </g:if>
                     <li class="divider"></li>
-                    <li><a href="/login/logout">LogOut</a></li>
+                    <li><g:link controller='logout' action="">LogOut</g:link></li>
 
                 </ul>
             </li></ul>
@@ -106,12 +109,42 @@
 
 <div class="alert-success" id="mainmessage">
     <g:if test="${flash.messages}">${flash.messages}</g:if>
-    <button type="button" class="close" data-dismiss="mainmessage">&times;</button>
+    %{--<button type="button" class="close" data-dismiss="mainmessage">&times;</button>--}%
 </div>
 
 <div class="body"><g:layoutBody/></div>
 
-<div class="footer" role="contentinfo"></div>
+<div class="footer" role="contentinfo">
+
+    <div id="copyright" class="container">
+        <div style="text-align: center;    margin-left: 20%;">
+            <img src="${assetPath(src: 'tothe newdigital.jpeg')}" width="120px" height="120px"
+                 class="pull-left colsm-3">
+
+            <p class="h3 col-sm-8"
+               style="color: #45443B;text-decoration: blink">&copy; All rights reserved by <a
+                    href="http://ToTheNew.com/" style="color: black" class="h2">To the New Digital</a> .</p>
+        </div>
+    </div>
+
+    <div id="wrapper4">
+        <div id="footer" class="container">
+            <div id="loginfooter" style="margin-left:-10%;margin-right:-10%;padding-bottom: 5% ;padding-top: 5%">
+                <header class="title">
+                    <h2>Get in touch</h2>
+                    <span class="byline">Like Us</span></header>
+                <ul class="contact">
+                    <li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
+                    <li><a href="#" class="icon icon-facebook"><span></span></a></li>
+                    <li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
+                    <li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
+                    <li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt"
                                                                    default="Loading&hellip;"/></div>

@@ -39,7 +39,7 @@ abstract class Resource {
     }
 
     static def toppost() {
-        List<Topic> topicList = ResourceRating.createCriteria().list {
+       def topicList = ResourceRating.createCriteria().list {
             createAlias('resource', 'resc')
             createAlias('resource.topic', 'resctp')
             projections {
@@ -48,13 +48,14 @@ abstract class Resource {
                 property('resc.createdBy')
                 property('resctp.visibility')
                 property('resc.topic.id')
+                property('resc.description')
 
             }
             order('score')
         }
         List<TopicVO> topicVOList = []
         topicList.each { row ->
-            topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4]))
+            topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4],description: row[5]))
 
         }
 
@@ -80,28 +81,29 @@ abstract class Resource {
 
         log.error("this will be implemented in linkresource")
     }
-    static def recentPost(Integer status){
-         Date date=new Date()
-        List <Resource>list
-        if(status==1) {
-           list = Resource.createCriteria().list([max: 5, offset: 0]) {
-                gt('dateCreated', date-7)
+
+    static def recentPost(Integer status) {
+        Date date = new Date()
+        List<Resource> list
+        if (status == 1) {
+            list = Resource.createCriteria().list([max: 5, offset: 0]) {
+                gt('dateCreated', date - 7)
+                order('dateCreated')
+            }
+        } else if (status == 2) {
+            list = Resource.createCriteria().list([max: 5, offset: 0]) {
+                gt('dateCreated', date - date.date)
+                order('dateCreated')
+            }
+        } else {
+            date.date=1
+            date.month=0
+            list = Resource.createCriteria().list([max: 5, offset: 0]) {
+                gt('dateCreated', date - date.date + 1)
                 order('dateCreated')
             }
         }
-        else if(status==2){
-            list= Resource.createCriteria().list([max: 5, offset: 0]) {
-                gt('dateCreated', date-date.date)
-                order('dateCreated')
-            }
-        }
-        else{
-            list= Resource.createCriteria().list([max: 5, offset: 0]) {
-                gt('dateCreated', date-date.date+1)
-                order('dateCreated')
-            }
-        }
-        return list-list.topic.findAll {it.visibility==Visibility.PRIVATE}
+        return list.findAll { it.topic.visibility.PUBLIC }
     }
 
 

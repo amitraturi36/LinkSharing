@@ -3,10 +3,11 @@ package com.intelligrape.linksharing
 class LinkSharingTagLib {
     //  static defaultEncodeAs = [taglib: 'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
+    def   springSecurityService
     static namespace = "ls"
     def read = { attr, body ->
-        if (session.user) {
-            User user = User.get(session.user)
+        if (springSecurityService.isLoggedIn()) {
+            User user = springSecurityService.currentUser
             if (user) {
                 ReadingItem readingItem = ReadingItem.createCriteria().get {
                     eq('resource', attr.resource)
@@ -29,8 +30,10 @@ class LinkSharingTagLib {
         }
     }
     def link = { attr, body ->
-        if ((attr.resource?.canViewedBy(attr.resource.id, session.user) && (attr.resource.instanceOf(LinkResource)))) {
-            out << "<span><a href=\"${attr.resource?.url}\" target='_blank' style=\"cursor:pointer;text-decoration: none \">View Full Website</a></span>"
+        if(springSecurityService.isLoggedIn()) {
+            if ((attr.resource?.canViewedBy(attr.resource.id, springSecurityService.currentUser.id) && (attr.resource.instanceOf(LinkResource)))) {
+                out << "<span><a href=\"${attr.resource?.url}\" target='_blank' style=\"cursor:pointer;text-decoration: none \">View Full Website</a></span>"
+            }
         }
     }
     def toptopics = {
@@ -40,14 +43,19 @@ class LinkSharingTagLib {
     }
     def trndngtopics = {
         List<TopicVO> topicVOList = Topic.getTrendingTopics(0)
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         if (user) {
             render(template: '/user/trendingtopics', model: [list: topicVOList, subtopics: user.subscribedTopic])
         }
 
     }
+    def recentshare={
+        List list1 = Resource.recentPost(3)
+        out << render(template:'/topic/recentshares',model: [recentpost: list1] )
+
+    }
     def canDeleteResource = { attr, body ->
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         if (user) {
             if (User.canDeleteResource(attr.resource.id, user)) {
 
@@ -57,9 +65,9 @@ class LinkSharingTagLib {
 
     }
     def seriousness = { attr, body ->
-        if (session.user) {
+        if (springSecurityService.isLoggedIn()) {
             Topic topic = Topic.get(attr.topic)
-            User user = User.get(session.user)
+            User user = springSecurityService.currentUser
             if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                 Subscription subscription = user.getSubscription(attr.topic)
                 if ((topic.subscribedUser.contains(user)) || (user.admin)) {
@@ -74,8 +82,8 @@ class LinkSharingTagLib {
         }
     }
     def visiblity = { attr, body ->
-        if (session.user) {
-            User user = User.get(session.user)
+        if (springSecurityService.isLoggedIn()) {
+            User user = springSecurityService.currentUser
             Topic topic = Topic.get(attr.topic)
             if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                 out << "<select class=\"form-control\" id=\"vistopic${topic.id}\"  onclick=visiblitychange(${topic.id})>\n" +
@@ -87,7 +95,7 @@ class LinkSharingTagLib {
     }
     def userImage = { attrs, body ->
         if (attrs.user.photo) {
-            out << "<img src=\"${attrs.user.imageUrl}\" alt=\"${attrs.alt}\" width=\"60px\" height=\"60px\"/>"
+            out << "<img src=\"${attrs.user.imageUrl}\" alt=\"${attrs.alt}\" width=\"120px\" height=\"120px\"/>"
         } else {
             out << "<img src=${assetPath(src: 'user.png')} width=\"60px\" height=\"60px\"/>"
         }
@@ -95,8 +103,8 @@ class LinkSharingTagLib {
 
     }
     def update = { attr, body ->
-        if (session.user) {
-            User user = User.get(session.user)
+        if (springSecurityService.isLoggedIn()) {
+            User user = springSecurityService.currentUser
             Topic topic = Topic.get(attr.topic)
             if ((topic.subscribedUser.contains(user)) || (user.admin)) {
                 out << " <a href=\"#\" class=\"glyphicon glyphicon-envelope\" style=\"text-decoration: none;cursor:pointer;padding:0px 7px;margin:0px 7px\"\n" +
@@ -110,9 +118,9 @@ class LinkSharingTagLib {
         }
     }
     def subscription = { attr, body ->
-        if (session.user) {
+        if (springSecurityService.isLoggedIn()) {
             Topic topic = Topic.get(attr.topics)
-            User user = User.get(session.user)
+            User user =springSecurityService.currentUser
             if (user.id != topic.createdBy.id) {
                 if (topic.checksubscribeuser(user)) {
                     out << "<span onclick=\"subscriptionstatus(${topic.id},'1')\"  class=\"usersub1${topic.id} text-info\" style=\"text-decoration: none;cursor:pointer\">Unsubscribe</span>"
@@ -124,9 +132,9 @@ class LinkSharingTagLib {
         }
     }
     def candeletetopic = { attr, body ->
-        if (session.user) {
+        if (springSecurityService.isLoggedIn()) {
             Topic topic = Topic.get(attr.topic)
-            User user = User.get(session.user)
+            User user = springSecurityService.currentUser
             if ((topic.createdBy == user) || (user.admin)) {
                 out << " <span class=\"glyphicon glyphicon-trash alert-link\" style=\"cursor:pointer;padding:0px 7px;margin:0px 7px\" onclick=topicdelete(${topic.id})></span>"
             }
@@ -136,7 +144,7 @@ class LinkSharingTagLib {
     def resourcerater = { attr, body ->
         Resource resource = Resource.get(attr.resourceId)
         Topic topic = resource.topic
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         String cssClass
         Integer score = resource.ratingInfo.averageScore
         if (score < 3) {

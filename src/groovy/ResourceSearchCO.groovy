@@ -7,6 +7,7 @@ class ResourceSearchCO extends SearchCO {
     Long topicId
     String visibilityString
     Long userId
+    Integer status
 
     Visibility getVisibility() {
         if (this?.visibilityString) {
@@ -15,7 +16,7 @@ class ResourceSearchCO extends SearchCO {
         }
     }
     static constraints = {
-   //     topicId blank: false
+        topicId blank: false
     }
 
     User getUser() {

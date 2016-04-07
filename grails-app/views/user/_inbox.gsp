@@ -41,11 +41,8 @@
                     <br/>
 
                     <div class="row col-sm-12">
-                        <a href="http://www.facebook.com"><i class="fa fa-facebook "
-                                                             style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
-                        </a>
-                        <a href="http://www.google.com"><i class="fa fa-google"
-                                                           style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
+                        <div class="fb-share-button" style="transform: scale(2);" data-href="http://www.linksharing.com/topic/show?id=${resource.topic.id}" data-layout="icon"></div>
+                        <a class="twitter-share-button btn fa fa-twitter" onclick="twitter()" style="transform: scale(2);">
                         </a>
                         <a href="http://www.twitter.com"><i class="fa fa-twitter"
                                                             style="font-size:20px; padding-top:20px;padding-right:20px;"></i>

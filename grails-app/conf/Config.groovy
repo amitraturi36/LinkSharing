@@ -42,7 +42,7 @@ grails.views.default.codec = "html"
 
 // The default scope for controllers. May be prototype, session or singleton.
 // If unspecified, controllers are prototype scoped.
-grails.controllers.defaultScope = 'singleton'
+//grails.controllers.defaultScope = 'singleton'
 
 // GSP settings
 grails {
@@ -73,6 +73,8 @@ grails {
                  "mail.smtp.socketFactory.fallback": "false"]
     }
 }
+
+
 
 queryValidation.minified = true
 jqueryValidation.cdn = false // false or "microsoft"
@@ -125,7 +127,7 @@ log4j.main = {
         console name: 'stdout', layout: pattern(conversionPattern: '%d{yyy-MM-dd HH:mm:ss,SSS} %p %c{2} %m%n')
     }
 
-    error 'org.codehaus.groovy.grails.web.servlet',        // controllers
+    info 'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
             'org.codehaus.groovy.grails.web.sitemesh',       // layouts
             'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
@@ -145,3 +147,32 @@ log4j.main = {
         newFileText = "import com.intelligrape.linksharing"
     }
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugin.springsecurity.logout.postOnly = false
+grails.plugins.springsecurity.auth.loginFormUrl = '/'
+grails.plugins.springsecurity.failureHandler.defaultFailureUrl = '/'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.intelligrape.linksharing.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.intelligrape.linksharing.UserRole'
+grails.plugin.springsecurity.authority.className = 'com.intelligrape.linksharing.Role'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+        '/'              : ['permitAll'],
+        '/index'         : ['permitAll'],
+        '/index.gsp'     : ['permitAll'],
+        '/assets/**'     : ['permitAll'],
+        '/**/js/**'      : ['permitAll'],
+        '/**/css/**'     : ['permitAll'],
+        '/**/images/**'  : ['permitAll'],
+        '/favicon.ico': ['permitAll']
+]
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+        "/console/**"         : ['ROLE_ADMIN'],
+        "/plugins/console*/**": ['ROLE_ADMIN'],
+        '/dbconsole/**'          : ['ROLE_ADMIN'],
+        "/plugins/dbconsole*/**": ['ROLE_ADMIN']
+]
+
+
+
+grails.plugin.console.baseUrl = "/console"
+

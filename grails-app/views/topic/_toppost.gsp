@@ -1,28 +1,24 @@
-<div>
-    <div class="col-sm-12" style="padding:10px;margin:10px 0px">
 
-    </div>
 
-    <div style="padding:10px;margin:10px 0px">
-        <div class="panel">
-            <div class="panel-heading col-sm-12  " style="border: 1px solid grey; background-color: #040404;color:white"><h4>Top Post</h4>
-            </div>
 
-            <div class="panel-body col-sm-12" style="border: 1px solid grey;">
-                <g:each in="${list}" var="post">
-                    <div class="col-sm-3" style="margin: 25px 0px;">
-                        <a href="/user/profile?userId=${post.createdBy.id}"><ls:userImage user="${post.createdBy}"/></a>
+<div style="background-color: darkgrey" >
+    <div class="table-responsive">
+        <table class="table table-striped">
+
+            <g:each in="${list}" var="post">
+                <tr>  <td>
+                    <span class="h2 col-sm-12 text-info" style="text-align: center;margin-bottom: 5%"> ${post.name}</span>
+
+                    <div class="col-sm-2" >
+                        <a href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none"><ls:userImage
+                                user="${post.createdBy}"/></a>
                     </div>
-
-                    <div class="text-info" style="float: right">${post.name}</div>
-                    <span class=" col-sm-6 " style="font-size: 15px;padding:20px 15px;">
-                        <a href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none">   ${post.createdBy}
-                   </a>
-                    </span>
-                    <span class=" col-sm-3 text-muted "
-                          style="padding:20px 0px;">@${post.createdBy.firstName}</span>
-
-                    <div class=" col-sm-12 row">
+                    <span class="col-sm-8"><span class="text-muted h4"><b>Created By:</b> </span>
+                        <a  class="h3 " href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none;">  ${post.createdBy}</a></span>
+                    <ins><g:link url="/resource/show?id=${post.id}" class="text-info h3"
+                                 style="float: right; text-decoration: none">View All Post</g:link></ins>
+                    <div class="col-sm-8 text-success" style="margin-top: 2%"> <p>${post.description}</p></div>
+                    <div class=" col-sm-12 row" style="margin-left: 5px;text-align:center">
                         <a href="http://www.facebook.com"><i class="fa fa-facebook "
                                                              style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
                         </a>
@@ -32,10 +28,11 @@
                         <a href="http://www.twitter.com"><i class="fa fa-twitter"
                                                             style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
                         </a>
-                        <ins><g:link url="/resource/show?id=${post.id}" class="text-info" style="float: right" >View post</g:link></ins>
-                    </div>
-                    <br/><br/> <br/><br/>
-                </g:each>
-            </div></div></div>
 
+                    </div>
+
+                </td>  </tr>
+            </g:each>
+        </table>
+    </div>
 </div>

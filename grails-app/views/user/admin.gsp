@@ -30,8 +30,7 @@
         </div>
     </div>
 </div>
-
-<div class="panel-body">
+<div class="panel-body col-sm-12">
     <div class="table-responsive">
         <table class="table table-striped">
             <tr>

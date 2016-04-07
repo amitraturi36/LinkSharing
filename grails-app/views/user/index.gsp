@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<g:if test="session.user">
+<g:if test="${sec.loggedInUserInfo(field: 'id')}">
 
 
 
@@ -18,12 +18,12 @@
             <div>
                 <div class="panel  col-sm-12 " style="border: 1px solid grey;">
                     <div class="col-sm-3" style="margin: 25px 0px;">
-                        <a href="/user/profile?userId=${session.user}"><ls:userImage user="${user}"/>
+                        <a href="/user/profile?userId=${sec.loggedInUserInfo(field:'id')}"><ls:userImage user="${user}"/>
                         </a>
                     </div>
 
                     <div class="panel-body col-sm-7">
-                        <span class="text-muted col-sm-12 h4"><strong>${user.name}</strong></span>
+                        <span class="text-muted col-sm-12 h4"><strong><a href="/user/profile?userId=${sec.loggedInUserInfo(field:'id')}" style="text-decoration: none">${user.name}</a></strong></span>
                         <span class="text-muted col-sm-12">@ ${user.firstName}</span><span
                             class="text-muted col-sm-6">Subscriptions</span> <span
                             class="text-muted col-sm-6">Topics</span>

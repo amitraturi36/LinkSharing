@@ -10,6 +10,7 @@
 //= require_self
 //= require_bootstrap.min
 //= require_changeread
+//= require_index.js
 
 if (typeof jQuery !== 'undefined') {
     (function ($) {

@@ -1,11 +1,14 @@
 package com.intelligrape.linksharing
 
+import grails.plugin.springsecurity.annotation.Secured
+
 class ResourceController {
 
     def resourceService
-
+    def   springSecurityService
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def search(ResourceSearchCO resourceSearchCO) {
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         if (user?.admin) {
             if (resourceSearchCO.q) {
                 List<Resource> resourceList = resourceService.search(resourceSearchCO, params)
@@ -38,9 +41,10 @@ class ResourceController {
             redirect(controller: 'login', action: 'index')
         }
     }
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def postSearch(ResourceSearchCO resourceSearchCO) {
-        println(resourceSearchCO.topicId)
-        User  user=User.get(session.user)
+
+        User  user=springSecurityService.currentUser
         if((resourceSearchCO.topicId)){
             Topic topic=Topic.get(resourceSearchCO.topicId)
             if(topic) {
@@ -58,7 +62,7 @@ class ResourceController {
             }
         }
     }
-
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def show(Long id,Integer status) {
         if((status==1)&&(id)){
             Resource resource=Resource.get(id)
@@ -72,7 +76,7 @@ class ResourceController {
         }
 
     }
-
+    @Secured(['ROLE_USER','ROLE_ADMIN'])
     def delete(Long id) {
         def resources = Resource.load(id)
         if (resources.delete(flush: true)) {
@@ -88,7 +92,13 @@ class ResourceController {
         }
 
     }
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def recentPost(Integer status){
 
+        if(status){
+            render(template:'/topic/recentshares',model: [recentpost: Resource.recentPost(status)] )
+        }
+    }
     protected void addToReadingItems(Resource resource, User user) {
         resource.topic.subscriptions.user.each {
             if (it.id != user.id) {

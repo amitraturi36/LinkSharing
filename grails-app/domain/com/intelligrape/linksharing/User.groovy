@@ -1,158 +1,204 @@
 package com.intelligrape.linksharing
 
-class User {
-    String email
-    String password
-    String firstName
-    String lastName
-    String userName
-    byte[] photo
-    Boolean admin
-    Boolean active
-    Date dateCreated
-    Date lastUpdated
-    String confirmPassword
-    static transients = ['name', 'confirmPassword']
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
-    String getName() {
-        return this.firstName + ' ' + this.lastName
-    }
+@EqualsAndHashCode(includes='username')
+@ToString(includes='username', includeNames=true, includePackage=false)
+class User implements Serializable {
 
-    static hasMany = [topics: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
+	private static final long serialVersionUID = 1
 
-    static mapping = {
-//        subscriptions lazy: false
-        photo(sqlType: "longblob")
-    }
+	transient springSecurityService
 
-    static constraints = {
-        userName(unique: true,blank: false)
-        email(unique: true, blank: false, email: true)
-        password(blank: false, size: 5..15)
-        firstName(blank: false)
-        lastName(blank: false)
-        photo(nullable: true)
-        admin(nullable: true)
-        active(nullable: true)
-        confirmPassword(bindable: true, validator: { String val, User obj ->
-            boolean result = false
-            if (obj.id) {
-                result = true
-            } else {
-                result = val == obj.password
-            }
-            return result
-        })
+	String username
+	String password
+	String email
+	String firstName
+	String lastName
+	byte[] photo
+	Boolean admin
+	Boolean active
+	Date dateCreated
+	Date lastUpdated
+	String confirmPassword
+	static transients = ['name', 'confirmPassword','springSecurityService']
 
-    }
+	boolean enabled = true
+	boolean accountExpired
+	boolean accountLocked
+	boolean passwordExpired
 
-    def getSubscribedTopic(params) {
-        List<Topic> topicList = Topic.createCriteria().list([max: 5, offset: 0]) {
-            createAlias('subscriptions', 'sp')
-            eq('sp.user', this)
+//	User(String username, String password) {
+//		this.username = username
+//		this.password = password
+//	}
+
+	Set<Role> getAuthorities() {
+		UserRole.findAllByUser(this)*.role
+	}
+
+	def beforeInsert() {
+		println "In before insert"
+		encodePassword()
+
+	}
+
+	def beforeUpdate() {
+		println "in before update"
+		if (isDirty('password')) {
+			encodePassword()
+		}
+	}
+
+	protected void encodePassword() {
+		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+		confirmPassword= password
+	}
+
+
+	static constraints = {
+		username blank: false, unique: true
+		password blank: false
+		email(unique: true, blank: false, email: true)
+		password(blank: false)
+		firstName(blank: false)
+		lastName(blank: false)
+		photo(nullable: true)
+		admin(nullable: true)
+		active(nullable: true)
+		confirmPassword(bindable: true, validator: { String val, User obj ->
+			boolean result = false
+			if (obj.id) {
+				result = true
+			} else {
+				result = (val == obj.password)
+			}
+			return result
+		})
+
+	}
+
+	static mapping = {
+		password column: '`password`'
+		photo(sqlType: "longblob")
+	}
+
+	String getName() {
+		return this.firstName + ' ' + this.lastName
+	}
+
+	static hasMany = [topics: Topic, subscriptions: Subscription, readingItems: ReadingItem, resources: Resource]
+
+	def getSubscribedTopic(params) {
+		List<Topic> topicList = Topic.createCriteria().list([max:5,offset: 0]) {
+			createAlias('subscriptions', 'sp')
+			order('id')
+			eq('sp.user', this)
 //            subscriptions{
 //                eq('user', this)
 //            }
-        }
-        return topicList
-    }
+		}
+		return topicList
+	}
 
-    static boolean canDeleteResource(Long id, User user) {
-        Resource resource = Resource.get(id)
-        User tempuser = get(user.id)
-        return resource.createdBy == tempuser || tempuser.admin
+	static boolean canDeleteResource(Long id, User user) {
+		Resource resource = Resource.get(id)
+		User tempuser = get(user.id)
+		return resource.createdBy == tempuser || tempuser.admin
 
-    }
+	}
 
-    @Override
-    String toString() {
-        return this.name
-    }
+	@Override
+	String toString() {
+		return this.name
+	}
 
-    static Long randomnumbergenerator() {
-        Random random = new Random()
-        return 100000 + random.nextInt(899999)
-    }
+	static Long randomnumbergenerator() {
+		Random random = new Random()
+		return 100000 + random.nextInt(899999)
+	}
 
-    String getImageUrl() {
+	String getImageUrl() {
 
-        return "/user/image/${this.id}"
-    }
+		return "/user/image/${this.id}"
+	}
 
-    Subscription getSubscription(Long id) {
-        Topic topic = Topic.get(id)
-        return Subscription.findByTopicAndUser(topic, this)
-    }
-
-
-    static namedQueries = {
-        search {
-            UserSearchCO co ->
-                if (co.active == null) {
-                    if (co.firstName) {
-                        eq("firstName", co.firstName)
-                    }
-                    if (co.lastName) {
-                        eq("lastName", co.lastName)
-                    }
-                    if (co.email) {
-                        eq("email", co.email)
-                    }
-                }
-                else if(co.active){
-                    eq('active',co.active)
-                    if (co.firstName) {
-                        eq("firstName", co.firstName)
-                    }
-                    if (co.lastName) {
-                        eq("lastName", co.lastName)
-                    }
-                    if (co.email) {
-                        eq("email", co.email)
-                    }
-                }
-                else{
-                    eq('active',co.active)
-                    if (co.firstName) {
-                        eq("firstName", co.firstName)
-                    }
-                    if (co.lastName) {
-                        eq("lastName", co.lastName)
-                    }
-                    if (co.email) {
-                        eq("email", co.email)
-                    }
-                }
-        }
-    }
-
-    def getUnReadResources(SearchCO searchCO){
-        List<Resource>resourceList
-        if(searchCO?.q){
-            resourceList=  ReadingItem.createCriteria().list([max: 0, offset: 0]) {
-                createAlias('resource','r')
-                projections{
-                    property('resource')
-                }
-                ilike('r.description','%'+searchCO.q+'%')
-                eq('user',this)
-                eq('isRead',false)
-                order('r.lastUpdated','desc')
+	Subscription getSubscription(Long id) {
+		Topic topic = Topic.get(id)
+		return Subscription.findByTopicAndUser(topic, this)
+	}
 
 
-            }
+	static namedQueries = {
+		search {
+			UserSearchCO co ->
+				if (co.active == null) {
+					if (co.firstName) {
+						eq("firstName", co.firstName)
+					}
+					if (co.lastName) {
+						eq("lastName", co.lastName)
+					}
+					if (co.email) {
+						eq("email", co.email)
+					}
+				}
+				else if(co.active){
+					eq('active',co.active)
+					if (co.firstName) {
+						eq("firstName", co.firstName)
+					}
+					if (co.lastName) {
+						eq("lastName", co.lastName)
+					}
+					if (co.email) {
+						eq("email", co.email)
+					}
+				}
+				else{
+					eq('active',co.active)
+					if (co.firstName) {
+						eq("firstName", co.firstName)
+					}
+					if (co.lastName) {
+						eq("lastName", co.lastName)
+					}
+					if (co.email) {
+						eq("email", co.email)
+					}
+				}
+		}
+	}
 
-        }else{
-            resourceList=  ReadingItem.createCriteria().list(([max: 0, offset: 0])){
-                createAlias('resource','r')
-                projections{
-                    property('resource')
-                }
-                eq('user',this)
-                eq('isRead',false)
-                order('r.lastUpdated','desc')
-            }
-        }
-        return resourceList
-    }
+	def getUnReadResources(SearchCO searchCO){
+		List<Resource>resourceList
+		if(searchCO?.q){
+			resourceList=  ReadingItem.createCriteria().list([max: 5]) {
+				createAlias('resource','r')
+				projections{
+					property('resource')
+				}
+				ilike('r.description','%'+searchCO.q+'%')
+				eq('user',this)
+				eq('isRead',false)
+				order('r.lastUpdated','desc')
+
+
+			}
+
+		}else{
+			resourceList=  ReadingItem.createCriteria().list(([max: 0, offset: 0])){
+				createAlias('resource','r')
+				projections{
+					property('resource')
+				}
+				eq('user',this)
+				eq('isRead',false)
+				order('r.lastUpdated','desc')
+			}
+		}
+		return resourceList
+	}
+
 }

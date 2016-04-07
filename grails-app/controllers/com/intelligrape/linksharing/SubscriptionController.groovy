@@ -1,13 +1,16 @@
 package com.intelligrape.linksharing
 
+import grails.plugin.springsecurity.annotation.Secured
 import org.hibernate.ObjectNotFoundException
 
 class SubscriptionController {
 
+    def springSecurityService
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def delete(Long id) {
 
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         Topic topic = Topic.get(id)
 
         if (topic?.createdBy?.id == user?.id) {
@@ -15,9 +18,9 @@ class SubscriptionController {
 
         } else {
             Subscription subscription = Subscription.findByTopicAndUser(topic, user)
-                   topic.resources.each {
-                ReadingItem readingItem=ReadingItem.findByResourceAndUser(it,user)
-                readingItem?.delete(flush:  true)
+            topic.resources.each {
+                ReadingItem readingItem = ReadingItem.findByResourceAndUser(it, user)
+                readingItem?.delete(flush: true)
             }
             try {
                 subscription.delete(flush: true)
@@ -25,28 +28,30 @@ class SubscriptionController {
                 flash.errors = error
             }
         }
-        render template:"/user/inbox",  model: [resources: user.getUnReadResources(new SearchCO()),user: user]
+        render template: "/user/inbox", model: [resources: user.getUnReadResources(new SearchCO()), user: user]
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def save(Long id) {
         Topic topic = Topic.get(id)
-        User user = User.get(session.user)
+        User user = springSecurityService.currentUser
         Subscription subscription = new Subscription(topic: topic, user: user, seriousness: Seriousness.SERIOUS)
-        if (subscription.validate()&&(!topic?.subscriptions?.contains(subscription))) {
+        if (subscription.validate() && (!topic?.subscriptions?.contains(subscription))) {
 
             subscription.save(flush: true, failOnError: true)
             ReadingItem readingItem
             topic?.resources?.each {
-              new ReadingItem(user: user,resource: it,isRead: false).save(flush: true)
+                new ReadingItem(user: user, resource: it, isRead: false).save(flush: true)
             }
 
         } else {
             flash.errors = "fail to update Subscription"
         }
 
-        render template:"/user/inbox",  model: [resources: user.getUnReadResources(new SearchCO()),user: user]
+        render template: "/user/inbox", model: [resources: user.getUnReadResources(new SearchCO()), user: user]
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def update(Long subId, String seriousness) {
         def message = [error: "", message: ""]
         Subscription subscription = Subscription.get(subId)

@@ -8,12 +8,12 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
-
+    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
 </head>
 
 <body>
 <!------------ box1 -->
-
+<g:render template="login"/>
 
 <div class="col-sm-6">
 
@@ -83,18 +83,18 @@
 
         <div class="panel-body " style="border:1px solid grey">
 
-            <g:form class="form-inline" role="form" url="[action: 'loginHandler']">
+            <g:form class="form-inline" role="form" url="${post}">
                 <div class="form-group">
                     <label class="control-label col-sm-4 h4" for="inputEmail">Email/UserName<sup>*</sup></label>
                     <input type="text" class="form-control col-sm-4 " id="inputEmail" placeholder="Email"
-                           name="username"
+                           name="j_username"
                            style="border: 1px solid grey; margin-left:40px " required><br>
                     <div class="col-sm-12">
                     <span id="loginformemail"></span></div>
                     <br/><br/><br/><br/>
 
                     <label class="control-label col-sm-5 h4" for="inputPassword">Password<sup>*</sup></label>
-                    <input type="password" class="form-control col-sm-6" id="inputPassword" name="password"
+                    <input type="password" class="form-control col-sm-6" id="inputPassword" name="j_password"
                            placeholder="Password"
                            style="border: 1px solid grey;" required><br/><br/><br/><br/>
                     <a href="#" data-toggle="modal"
@@ -131,6 +131,11 @@
         });
 
     </script>
+
+
+
+
+
 </div>
 
 </body>
