@@ -1,11 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title></title>
-    <meta name="layout" content="main"/>
-</head>
 
-<body>
 <g:if test="${!flag}">
     <g:if test="${resource}">
         <div class="alert-success h3"
@@ -89,5 +82,3 @@
                 action="search" total="${resourcecount}" params="[q: q]"/>
 </g:if>
 
-</body>
-</html>

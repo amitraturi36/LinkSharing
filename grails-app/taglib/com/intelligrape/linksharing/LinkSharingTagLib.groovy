@@ -102,6 +102,15 @@ class LinkSharingTagLib {
 
 
     }
+  def inboxImage = { attrs, body ->
+        if (attrs.user.photo) {
+            out << "<img src=\"${attrs.user.imageUrl}\" alt=\"${attrs.alt}\" />"
+        } else {
+            out << "<img src=${assetPath(src: 'user.png')} width=\"60px\" height=\"60px\"/>"
+        }
+
+
+    }
     def update = { attr, body ->
         if (springSecurityService.isLoggedIn()) {
             User user = springSecurityService.currentUser
@@ -221,5 +230,43 @@ class LinkSharingTagLib {
             out << Topic.countByCreatedBy(user)
         }
     }
+    def createdByresourceCount = { attr, body ->
+        User user = User.get(attr.user)
+        if (user) {
+            out << Resource.countByCreatedBy(user)
+        }
+    }
+   def subscribedusers={attr, body ->
+       int count=0;
+       User user = User.get(attr.user)
+       if (user) {
+           user.topics.each{Topic topic->
+               topic.subscriptions.each {
+                   count++
+               }
 
+           }
+           out<< count;
+       }
+
+   }
+    def besttopiccount={attr, body ->
+        int count1=0;
+        int count2=0;
+        User user = User.get(attr.user)
+        if (user) {
+            user.topics.each{Topic topic->
+                topic.resources.each{
+                    count1++
+                }
+                count2=count2>count1?count2:count1
+                }
+            out<<count2
+            }
+    }
+def score={attr, body ->
+    Resource resource=Resource.get(attr.resource)
+    out<<resource.ratingInfo.averageScore
+
+}
 }

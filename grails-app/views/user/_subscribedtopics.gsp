@@ -1,67 +1,71 @@
 <%@ page import="com.intelligrape.linksharing.Subscription" %>
 
-<div class="panel">
-    <div class="panel-heading col-sm-12 " style="border: 1px solid grey;background-color: black">
+<div id="subscribedtopics" style="margin-top: 3%;">
+    <div class="col-lg-12" id="messageanderrorblock" >
 
-        <span class="col-sm-9" style="color:white"><h4>Subscribed Topics</h4></span><a href="#"
-                                                                                       class="col-sm-3 "
-                                                                                       style="text-decoration: none"><h4></h4>
-    </a>
     </div>
-
-    <div class="panel-body col-sm-12" style="border:1px solid grey">
+           <div >
+<table class="table table-striped">
         <g:each in="${subtopics}" var="topic">
-            <div id="user1${topic.id}" class="container  col-sm-12">
+            <tr id="user1${topic.id}">  <td>
+                <span class="h2 col-sm-12 text-info" style="text-align: center;margin-bottom: 5%">
+                    <span  onclick=" topicload(${topic.id})"
+                       style="text-decoration: none;cursor: pointer">
+                 <a href="#topic:${topic.id}">   ${topic.toString()}</a></span></span>
+
+                <div  >
                <div style="margin-top:5% ">
-                <span class="col-sm-3"><a href="/user/profile?userId=${topic.createdBy.id}"><ls:userImage
+                <span class="col-sm-3"><a href="#profile:${topic.createdBy.id}" onclick="profileload( ${topic.createdBy.id})" style="cursor: pointer"><ls:userImage
                         user="${topic.createdBy}"/></a>
                 </span>
-                <span class="text-muted col-sm-8">
-                    <a href="/user/profile?userId=${topic.createdBy.id}"
-                       style="text-decoration: none">${topic.createdBy.name}</a>
-                    <span style="float: right"><a href="/topic/show?id=${topic.id}"
-                                                  style="text-decoration: none">${topic.toString()}</a></span>
-                    <span class="col-sm-12"></span></span>
+                <span class="col-sm-8">
+                    <a class="h3 " href="#profile:${topic.createdBy.id}" onclick=" profileload( ${topic.createdBy.id})" style="cursor: pointer;text-decoration: none"
+                       >${topic.createdBy.name}</a>
+                          </span>
 
-                <div class="row" style="margin-top:10px;padding-top:20px  ">
-                    <span class="text-muted col-sm-3">${topic.createdBy.firstName}</span><span
-                        class="text-muted col-sm-3">Subscriptions</span>
-                    <span class="text-muted col-sm-2">Post</span>
+                <div class="col-sm-8" style="margin-top: 2%">
+                  <span class="text-muted" >Subscriptions</span>
+                    <span class="text-muted pull-right">Post</span>
                 </div>
-                <span class="col-sm-3"></span>
-                <span class="text-info col-sm-3"><ls:subscription topics="${topic.id}"/></span>
-                <span class="text-info col-sm-3"><ls:subscriptionCount topic="${topic.id}"/></span>
-                <span class="text-info col-sm-2" style="float: right">
-                    <ls:resourceCount topic="${topic.id}"/>
-                </span>
-                <span class="text-info col-sm-12"></span>
+                   <div class="col-sm-8" style="margin-top: 2%">
+                   <span  style="    margin-left: 8%;"><ls:subscriptionCount topic="${topic.id}"/></span>
+                   <span  style="float: right; margin-right: 2%;">
+                       <ls:resourceCount topic="${topic.id}"/>
+                   </span>
+                       </div>
+               <div class="col-sm-9" style="margin-top: 2%">
+                <span class="text-info "><ls:subscription topics="${topic.id}"/></span>
+                   <div class="pull-right" style="margin-right:1%;">
+                   <span ><ls:update topic="${topic.id}"/>
+                   </span>
+                   <span  class="text-info"><ls:candeletetopic topic="${topic.id}"/>
+                   </span>
+                   </div>
+                   </div>
 
-                <div class="row">
-
-                </div><br>
-
-                <div class="row col-sm-12">
-                    <span class="col-xs-4">
+                <div class="col-sm-12" style="margin-top: 3%">
+                    <span class="col-sm-3"></span>
+                    <span class="col-sm-4">
                         <ls:seriousness topic="${topic.id}"/>
                     </span>
 
-                    <span class="col-xs-4">
+                    <span class="col-sm-4 pull-right">
                         <ls:visiblity topic="${topic.id}"/>
                     </span>
 
-                    <span style=" padding-top:15px;"><ls:update topic="${topic.id}"/>
-                    </span>
-                    <span style=" padding-top:15px;" class="text-info"><ls:candeletetopic topic="${topic.id}"/>
-                    </span>
+
                 </div>
                 </div>
             </div>
 
-
+</td></tr>
         </g:each>
-        <g:paginate next="Forward" prev="Back"
-                    maxsteps="0" controller="user"
-                    action="index" total="${subtopicscount}"/>
-    </div>
+   </table>
+        %{--<g:paginate next="Forward" prev="Back"--}%
+                    %{--maxsteps="0" controller="user"--}%
+                    %{--action="index" total="${subtopicscount}"/>--}%
+        <util:remotePaginate controller="topic" action="subTopic" total="${subtopicscount}"
+                             update="subscribedtopics" max="20" />
 
+    </div>
 </div>

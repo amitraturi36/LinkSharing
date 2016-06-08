@@ -1,55 +1,45 @@
-<div class="col-sm-12" style="padding-top: 30px"></div>
-<div class="panel ">
-    <div class="panel-heading col-sm-12 " style="border: 1px solid grey;background-color: black">
-
-        <span class="col-sm-9" style="color:white"><h4>Trending Topics</h4></span><a href="#"
-                                                                                       class="col-sm-3 "><ins><h4></h4>
-        </ins></a>
-    </div>
-
-    <div class="panel-body col-sm-12" style="border:1px solid grey">
-        <g:each in="${list}" var="topic">
-            <div id="trndng${topic.id}">
-                <div class="col-sm-3"><a href="/user/profile?userId=${topic.createdBy.id}"><ls:userImage user="${topic.createdBy}"/></a>
-                </div>
-                <div class="row">
-                <span class="col-sm-4">${topic.createdBy}</span>
-                <span class="col-sm-4" style="float: right"><a href="/topic/show?id=${topic.id}"><ins>${topic.name}</ins></a></span>
-                </div>
-                <div class="row">
+<div style="margin-top: 30px">
+<table class="table table-striped">
+    <g:each in="${trendingtopics}" var="topic">
+        <tr id="trndng${topic.id}">
+            <td>
+                <span class="h2 col-sm-12 text-info" style="text-align: center;margin-bottom: 5%">
+                <span  onclick=" topicload(${topic.id})"
+                       style="text-decoration: none;cursor: pointer">
+                    <a href="#topic:${topic.id}">   ${topic.name}</a></span></span>
+                <div style="margin-top:5% ">
+                    <span class="col-sm-3"><a href="#profile:${topic.createdBy.id}" onclick="profileload( ${topic.createdBy.id})" style="cursor: pointer"><ls:userImage
+                            user="${topic.createdBy}"/></a>
+                    </span>
+                    <span class="col-sm-8">
+                        <a class="h3 " href="#profile:${topic.createdBy.id}" onclick=" profileload( ${topic.createdBy.id})" style="cursor: pointer;text-decoration: none"
+                        >${topic.createdBy.name}</a>
+                    </span>
+                <div class="row col-sm-12">
                     <span class="col-sm-3"></span>
-                <span class="text-muted col-sm-4">${topic.createdBy.firstName}</span><span
-                    class="text-muted col-sm-3">Subscriptions</span> <span class="text-muted col-sm-2">Post</span>
-                    </div>
-                <div class="row">
-                    <span class="col-sm-6"></span>
-                <span class="text-info col-sm-2 " style="margin-left: 15%"><ls:subscriptionCount topic="${topic.id}"/></span>
-                <span class="text-info col-sm-3"></span>
-                <span class="text-info " style="margin-left: 5%"><ls:resourceCount topic="${topic.id}"/> </span>
+                   <span
+                        class="text-muted col-sm-3">Subscriptions</span> <span class="text-muted col-sm-2">Post</span>
                 </div>
-            <div class="row col-sm-12">
-                <a href="http://www.facebook.com" style="text-decoration: none"><i class="fa fa-facebook "
-                                                     style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
-                </a>
-                <a href="http://www.google.com" style="text-decoration: none"><i class="fa fa-google"
-                                                   style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
-                </a>
-                <a href="http://www.twitter.com" style="text-decoration: none"><i class="fa fa-twitter"
-                                                    style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
-                </a>
-                <span style="float: right; padding-top:20px">
-                    <span><ls:subscription topics="${topic.id}"/> </span>
-                <span>  <ls:update topic="${topic.id}"/>
-                </span>
-                <span class="text-info" ><ls:candeletetopic topic="${topic.id}"/>
-                </span></span>
-                   <div class=" col-sm-12"><br/><br/></div>
-            </div>
+                <div class="row col-sm-12">
+                    <span class="col-sm-3"></span>
+                    <span class="text-info col-sm-2 " style="margin-left: 5%"><ls:subscriptionCount topic="${topic.id}"/></span>
+                    <span class="text-info col-sm-3"></span>
+                    <span class="text-info " style="margin-left: -19%;"><ls:resourceCount topic="${topic.id}"/> </span>
+                </div>
+                    <br>
+                <div class="row col-sm-12">
+                    <br>
+                    <span style="margin-left: 220px"><ls:subscription topics="${topic.id}"/> </span>
+                    <span style=" padding-top:20px;float: right">
+                        <span>  <ls:update topic="${topic.id}"/>
+                        </span>
+                        <span class="text-info" ><ls:candeletetopic topic="${topic.id}"/>
+                        </span></span>
+                    <div class=" col-sm-12"><br/><br/></div>
+                </div></div></td>
 
+        </tr>
+    </g:each>
 
-        </g:each>
-
-    </div>
-
-</div>
+</table>
 </div>

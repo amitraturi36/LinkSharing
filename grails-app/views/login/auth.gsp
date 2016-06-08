@@ -6,21 +6,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
+
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet"/>
     <title>Link Sharing</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
     <link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
     <link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'apple-touch-icon-retina.png')}">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="canonical" href="https://dev.twitter.com/web/tweet-button">
+    <asset:javascript src="application.js"/>
     <asset:stylesheet src="application.css"/>
     <asset:stylesheet src="bootstrap.min.css"/>
-    <asset:javascript src="application.js"/>
+
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link rel="stylesheet" href="http://jqueryvalidation.org/files/demo/site-demos.css">
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
     <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+
 
 </head>
 
@@ -231,10 +235,15 @@
             <h2>Login Or Create Your Account</h2>
         </div>
 
-        <div style="margin-top: -70px">
+
             <g:if test="${error}">
-                <span class="alert-danger h4" style="margin-left:5% ">${error}</span>
+
+               <span class="alert-danger h4" style="margin-left:5%;padding:15px  ">${error}</span>
+                <div style="margin-top: -70px">
             </g:if>
+        <g:else>
+            <div style="margin-top: -70px">
+        </g:else>
             <g:render template="login"/>
             <g:render template="/login/forgetPassword"/>
         </div>

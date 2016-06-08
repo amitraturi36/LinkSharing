@@ -43,7 +43,6 @@ class ResourceController {
     }
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def postSearch(ResourceSearchCO resourceSearchCO) {
-
         User  user=springSecurityService.currentUser
         if((resourceSearchCO.topicId)){
             Topic topic=Topic.get(resourceSearchCO.topicId)

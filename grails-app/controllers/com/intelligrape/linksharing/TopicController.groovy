@@ -24,6 +24,29 @@ class TopicController {
 
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
+    def topicLoad(Integer status) {
+        User user = springSecurityService.currentUser
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.offset = (params.offset ? params.int('offset') : 0)
+        List<Topic> topicList
+        if (status) {
+            if (status == 1) {
+                topicList = user.getSubscribedTopic(params)
+                render(template: '/user/subscribedtopics', model: [subtopics: topicList, subtopicscount: topicList.size(), user: user])
+            } else if (status == 2) {
+                topicList = Topic.findAllByCreatedBy(user, [max: 5, offset: params.offset])
+                render(template: '/user/subscribedtopics', model: [subtopics: topicList, subtopicscount: topicList.size(), user: user])
+            } else {
+                Set<User> userList = user.topics.subscriptions.user.flatten() as Set<User>
+                render(template: '/user/subscribeduser', model: [subtopicusers: userList, topicusercount: userList.size(), subscribedtopiccount: userList.subscriptions.flatten().size(), user: user])
+
+            }
+        }
+
+
+    }
+
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def read(ResourceSearchCO resourceSearchCo) {
         Topic topic = Topic.read(resourceSearchCo.topicId)
@@ -35,7 +58,7 @@ class TopicController {
         User user = springSecurityService.currentUser
         if (topic && (topic.visibility == Visibility.PUBLIC || topic.checksubscribeuser(user))) {
             List<User> userList = topic.subscribedUser
-            render view: 'show', model: [topic: topic, user: userList, resource: topic.resources]
+            render template: 'show', model: [topic: topic, userList: userList, resource: topic.resources, user: springSecurityService.getCurrentUser()]
         } else if (!topic) {
             flash.errors = "topic not found"
             redirect(controller: "login", action: "auth")
@@ -69,12 +92,15 @@ class TopicController {
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def search(ResourceSearchCO resourceSearchCO) {
-
         if (resourceSearchCO.q) {
             List<Topic> topicList = topicService.search(resourceSearchCO)
-            List<Resource> resourceList = resourceService.globalsearch(resourceSearchCO, params)
+            List<Resource> resourceList = resourceService.globalsearch(resourceSearchCO, params) as List<Resource>
             User user = springSecurityService?.currentUser
-            if (user) {
+            if (user?.admin) {
+
+                render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
+
+            } else if (user) {
                 if (topicList[0]) {
                     topicList = topicList.findAll {
                         (it.checksubscribeuser(user)) || (it.visibility == Visibility.PUBLIC)
@@ -88,20 +114,17 @@ class TopicController {
                 }
                 render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
 
-            } else if (user) {
-                if (user.admin) {
-                    render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
-                }
             } else {
-                if (topicList[0]) {
+                if (topicList) {
 
                     topicList = topicList.findAll { it.visibility == Visibility.PUBLIC }
                 }
-                if (resourceList[0]) {
+                if (resourceList) {
+
                     resourceList = resourceList.findAll { it.topic.visibility == Visibility.PUBLIC }
                 }
 
-                render view: '/topic/search', model: [resource: resourceList, topic: topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
+                render view: '/topic/search', model: [resource: resourceList, subtopics:topicList, resourcecount: resourceList.size(), q: resourceSearchCO.q]
             }
         } else {
             redirect(controller: 'login', action: 'auth')
@@ -134,6 +157,32 @@ class TopicController {
         }
     }
 
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
+    def subTopic(SearchCO searchCO) {
+        User user = springSecurityService.currentUser
+        params.max = Math.min(params.max ? params.int('max') : 5, 100)
+        params.offset = (params.offset ? params.int('offset') : 0)
+        List<TopicVO> topicVOList = Topic.getTrendingTopics()
+        List<Topic> topicList = user.getSubscribedTopic(params)
+        topicList = user.getSubscribedTopic(params)
+        render(template: '/user/subscribedtopics', model: [subtopics: topicList, subtopicscount: topicList.size(), user: user])
+    }
+
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
+    def createdTopic(SearchCO searchCO) {
+        User user = springSecurityService.currentUser
+        params.max = Math.min(params.max ? params.int('max') :5, 100)
+        params.offset = (params.offset ? params.int('offset') : 0)
+        List<Topic> topicList
+        topicList = Topic.findAllByCreatedBy(user, [max: params.max, offset: params.offset])
+        render(template: '/user/subscribedtopics', model: [subtopics: topicList, subtopicscount: topicList.size(), user: user])
+    }
+    @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+    def trendingTopic(){
+        List<TopicVO> topicVOList = Topic.getTrendingTopics()
+        User user = springSecurityService.currentUser
+        render(template: '/user/trendingtopics',model:[trendingtopics:topicVOList,subtopicscount:topicVOList.size(), user: user] )
+    }
 }
 
 

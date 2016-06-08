@@ -11,11 +11,11 @@
             <div id="user1${topic.id}" class="container  col-sm-12">
 
                 <span class="col-sm-3">
-                    <a href="/user/profile?userId=${topic.createdBy.id}" style="text-decoration: none"> <ls:userImage user="${topic.createdBy}"/></a>
+                    <a href="#profile" onclick="profileload( ${topic.createdBy.id})" style="cursor: pointer"> <ls:userImage user="${topic.createdBy}"/></a>
                 </span>
                 <span class="text-muted col-sm-8">
-                    <a href="/user/profile?userId=${topic.createdBy.id}" style="text-decoration: none">  ${topic.createdBy.name}</a>
-                    <span  style="float: right"><a href="/topic/show?id=${topic.id}" style="text-decoration: none">${topic.toString()}</a></span>
+                    <a href="#profile:${topic.createdBy.id}" onclick="profileload( ${topic.createdBy.id})" style="cursor: pointer;text-decoration: none">  ${topic.createdBy.name}</a>
+                    <span  style="float: right"><a href="#profile:${topic.createdBy.id}" onclick="profileload( ${topic.createdBy.id})" style="cursor: pointer;text-decoration: none">${topic.toString()}</a></span>
                     <span class="col-sm-12"></span></span>
 
                 <div class="row" style="margin-top:10px;padding-top:20px  ">
@@ -60,6 +60,7 @@
         %{--<g:paginate next="Forward" prev="Back"--}%
                     %{--maxsteps="0" controller="user"--}%
                     %{--action="profile" total="${usertopicscount}" params="[userId: user.id]"/>--}%
+
     </div>
 
 </div>

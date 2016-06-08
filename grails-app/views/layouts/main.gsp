@@ -10,6 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta itemprop="description" content=" This Topic  have awesome resources please check them out at">
     <title>LinkSharing</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
     <link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
@@ -19,98 +20,208 @@
     <asset:stylesheet src="application.css"/>
     <asset:stylesheet src="bootstrap.min.css"/>
     <asset:javascript src="application.js"/>
+    <asset:javascript src="sidebarscroll.js"/>
+    <asset:javascript src="/scroll_jquery.js"/>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <g:layoutHead/>
 </head>
 
-<body class="body">
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid ">
-        <div class="navbar-header">
-            <a href="/login/index" class="navbar-brand " style="color:white;font-size:20px; padding-top:14px;">Link Sharing
-            </a></div>
-    <ul class="nav navbar-nav navbar-right">
+<body>
+<g:render template="/topic/createTopicTemplate"/>
+<g:render template="/topic/email"/>
+<g:render template="/LinkResource/create"/>
+<g:render template="/documentResource/create"/>
 
+<div id="trigger">
+</div>
+<!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+<!--header start-->
+<header class="header black-bg" style="background-color: #89229b">
+    <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+    </div>
+    <!--logo start-->
+
+
+    <a href="/user/index.html" class="logo"><b>LinkSharing</b></a>
+    <!--logo end-->
+    <div class="nav notify-row" id="top_menu">
+        <!--  notification start -->
+        <ul class="nav top-menu">
+            <!-- settings start -->
+
+            <!-- settings end -->
+            <!-- inbox dropdown start-->
+            <li id="header_inbox_bar" class="dropdown" style="    margin-left: 550px;">
+
+                <g:render template="/user/inbox_top_bar"/>
+
+            </li>
+            <!-- inbox dropdown end -->
+
+        </ul>
+        <!--  notification end -->
+    </div>
+
+    <div class="top-menu">
+    <ul class="nav pull-right top-menu">
         <li>
-            <g:form class="navbar-form" name="globalsearch" url="/topic/search" >
-                <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Search" name="q" id="srch-term">
+            <div style="    margin-right: 14%;margin-top:10px;">
+                <div class="row pull-right">
 
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
-                        </button>
+                    <div class="search pull-right">
+                        <g:form name="globalsearch" url="/topic/search">
+                            <input type="text" class="form-control input-sm" maxlength="64" name="q"
+                                   placeholder="Search" required/>
+                            <Button type="submit" class="  btn btn-primary btn-sm ">Search</Button>
+                        </g:form>
                     </div>
+
                 </div>
-            </g:form>
+            </div>
 
         </li>
-        <g:if test="${sec.loggedInUserInfo(field:'id')}">
-            <li><a href="#" class="glyphicon glyphicon-comment"
-                   data-toggle="modal" data-target="#myModal1"
-                   style="color:white;font-size:30px; padding-top:14px;"></a>
-            </li>
-            <g:if test="${subtopics||topic}">
-            <li><a href="#" class="glyphicon glyphicon-envelope"
-                   data-toggle="modal" data-target="#myModal2"
-                   style="color:white;font-size:30px; padding-top:14px;"></a>
-            </li>
-            <li><a href="#" class="glyphicon glyphicon-link"
-                   data-toggle="modal" data-target="#createlink"
-                   style="color:white;font-size:30px; padding-top:14px;"></a>
-            </li>
+        <g:if test="${sec.loggedInUserInfo(field: 'id')}">
 
-            <g:render template="/LinkResource/create"/>
-            <li><a href="#" class="glyphicon glyphicon-file"
-                   data-toggle="modal" data-target="#createDoc"
-                   style="color:white;font-size:30px; padding-top:14px;"></a>
-            </li>
-            <g:render template="/documentResource/create"/>
-            </g:if>
             <li><a class="btn dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown"
-                                         href="#" style="color:white;padding-top:14px;">
-                ${sec.loggedInUserInfo(field:'username')}
+                   href="#" style=" margin-top:14px;    color: aliceblue;">
+                ${sec.loggedInUserInfo(field: 'username')}
                 <b class="caret"></b>
             </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/user/profile?userId=${sec.loggedInUserInfo(field:'id')}">Profile</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/user/index">Inbox</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/user/subTopics">Topics</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/user/settings">Settings</a></li>
-                    <g:if test="${User.get(sec.loggedInUserInfo(field:'id')).admin}">
-                    <li class="divider"></li>
-                    <li><a href="/user/admin">Admin</a></li>
+                    <g:if test="${User.get(sec.loggedInUserInfo(field: 'id')).admin}">
+
+                        <li><a href="/user/admin?search=&selector=2">Admin</a></li>
                     </g:if>
                     <li class="divider"></li>
                     <li><g:link controller='logout' action="">LogOut</g:link></li>
 
                 </ul>
-            </li></ul>
-            <g:render template="/topic/createTopicTemplate"/>
-            <g:render template="/topic/email"/>
+            </li>
+
+
+
+            </ul>
+
         </g:if>
-    </div></nav>
+    </div>
 
-<div class="alert-danger" id="mainerror">
-    <g:if test="${flash.errors}">
-        ${flash.errors}
 
-    </g:if>
-</div>
+</header>
+<!--header end-->
 
-<div class="alert-danger">
-    <g:hasErrors bean="${user}">
-        <g:eachError><p><g:message error="${it}"/></p></g:eachError>
-    </g:hasErrors>
-</div>
+<!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+<!--sidebar start-->
+<g:if test="${sec.loggedInUserInfo(field: 'id')}">
+    <aside>
+        <div id="sidebar" class="nav-collapse ">
+            <!-- sidebar menu start-->
+            <ul class="sidebar-menu" id="nav-accordion">
 
-<div class="alert-success" id="mainmessage">
-    <g:if test="${flash.messages}">${flash.messages}</g:if>
-    %{--<button type="button" class="close" data-dismiss="mainmessage">&times;</button>--}%
-</div>
+                <p class="centered"><ls:userImage
+                        user="${user}"/></p>
+                <h5 class="centered">${user.name}</h5>
+
+                <li class="mt">
+                    <a class="active" href="/user/index">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-tasks"></i>
+                        <span>Components</span>
+                    </a>
+                    <ul class="sub">
+                        <li><br/></li>
+                        <li><a href="#inbox" onclick="inboxload()" style="cursor: pointer">
+                            Inbox
+                        </a>
+                        </li>
+                        <li><a href="#subscribedTopics" onclick="subscribedtopicload()" style="cursor: pointer">Subscribed Topic</a></li>
+                        <li><a href="#topicCreated"onclick="createdtopicload()" style="cursor: pointer">Created Topics</a></li>
+                        <li><a href="#subscribedUser" onclick="subscribeduserload()" style="cursor: pointer">Subscribed Users</a></li>
+                        <li><a href="#trendingtopic" onclick="trendingtopicload()" style="cursor: pointer">Trending Topics</a></li>
+                    </ul>
+                </li>
+                <g:if test="${subtopics || topic}">
+                    <li class="sub-menu">
+                        <a href="javascript:;">
+                            <i class="fa fa-book"></i>
+                            <span>Users Features</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a href="#" class="glyphicon glyphicon-comment"
+                                   data-toggle="modal" data-target="#myModal1"
+                                   style=" margin-top:14px;">&nbsp;Create Topic</a>
+                            </li>
+                            <li><a href="#" class="glyphicon glyphicon-envelope"
+                                   data-toggle="modal" data-target="#myModal2"
+                                   style=" margin-top:14px;">&nbsp;Invite</a>
+                            </li>
+                            <li><a href="#" class="glyphicon glyphicon-link"
+                                   data-toggle="modal" data-target="#createlinkresc"
+                                   style=" margin-top:14px;">&nbsp;Link Resource</a>
+                            </li>
+
+
+                            <li><a href="#" class="glyphicon glyphicon-file"
+                                   data-toggle="modal" data-target="#createDoc"
+                                   style=" margin-top:14px;">&nbsp;Document Rsource</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                </g:if>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-cogs"></i>
+                        <span>Settings</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="#setting" onclick="settingload()" >Accoun Setting</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- sidebar menu end-->
+        </div>
+    </aside>
+</g:if>
+<!--sidebar end-->
+
+
+
+
+
+%{--<nav class="navbar navbar-inverse">--}%
+%{--<div class="container-fluid ">--}%
+%{--<div class="navbar-header">--}%
+%{--<a href="/login/index" class="navbar-brand " style="color:white;font-size:20px; padding-top:14px;">Link Sharing--}%
+%{--</a></div>--}%
+%{--<ul class="nav navbar-nav navbar-right">--}%
+
+
+%{--</div>--}%
+
+%{--<div class="alert-danger">--}%
+%{--<g:hasErrors bean="${user}">--}%
+%{--<g:eachError><p><g:message error="${it}"/></p></g:eachError>--}%
+%{--</g:hasErrors>--}%
+%{--</div>--}%
+
+%{--<div class="alert-success" id="mainmessage">--}%
+%{--<g:if test="${flash.messages}">${flash.messages}</g:if>--}%
+%{--<button type="button" class="close" data-dismiss="mainmessage">&times;</button>--}%
+%{--</div>--}%
 
 <div class="body"><g:layoutBody/></div>
 
@@ -134,11 +245,10 @@
                     <h2>Get in touch</h2>
                     <span class="byline">Like Us</span></header>
                 <ul class="contact">
-                    <li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
-                    <li><a href="#" class="icon icon-facebook"><span></span></a></li>
-                    <li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
-                    <li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
-                    <li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
+                    <li><a href="https://twitter.com/tothenew?lang=en" class="icon icon-twitter"><span>Twitter</span></a></li>
+                    <li><a href="https://www.facebook.com/tothenewdigital/" class="icon icon-facebook"><span></span></a></li>
+                    <li><a href="https://plus.google.com/+Intelligrape/videos" class="fa fa-google-plus"><span class="fa-google-plus"></span></a></li>
+                    <li><a href="https://www.linkedin.com/company/tothenew" class="fa fa-linkedin "><span class="fa-linkedin "></span></a></li>
                 </ul>
             </div>
         </div>

@@ -49,7 +49,7 @@ class Topic {
     }
 
     static List getTrendingTopics() {
-        List<Resource> topicList = Resource.createCriteria().list([max: 5, offset: 0]) {
+        List<Resource> topicList = Resource.createCriteria().list([max: 20, offset: 0]) {
             createAlias('topic', 't')
             projections {
                 groupProperty('topic')

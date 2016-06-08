@@ -3,12 +3,12 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header alert-success" style="border: 1px solid grey;">
+            <div class="modal-header " style="border: 1px solid grey;background-color: purple">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Forget Password</h4>
             </div>
 
-            <g:form name="forgetpassform" class="inline-form" method="post" url="[controller: 'topic', action: 'save']" onsubmit="return passwordchange()">
+            <g:form name="forgetpassform" class="inline-form" method="post"  onsubmit="return passwordchange()">
                 <div class="modal-body" style="border: 1px solid grey;background:inherit; ">
                          <div id="forgetpasswordmessage" ></div>
                     <span class=" col-sm-4 h3">Email<sup>*</sup></span>

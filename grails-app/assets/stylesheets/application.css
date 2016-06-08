@@ -11,11 +11,14 @@
 *= require mobile
 *= require_self
 *= require_bootstrap.min
+*= require bootstrap
 *= require linkSharingHeader
 *= require linksharingbody
 *= require normalize
 *= require style
 *= require default.css
 *= require fonts.css
+*= require profile_style
+*= require icons
 
 */

@@ -9,12 +9,14 @@ class TopicService {
 
     }
 
-    def search(ResourceSearchCO resourceSearchCO){
-        List<Topic>topicList = Topic.createCriteria().list {
+    def search(ResourceSearchCO resourceSearchCO) {
+        List<Topic> topicList = Topic.createCriteria().list {
 
-            ilike("topicName",'%'+resourceSearchCO.q+'%')
+            ilike("topicName", '%' + resourceSearchCO.q + '%')
 
         }
+
+
         return topicList
     }
 

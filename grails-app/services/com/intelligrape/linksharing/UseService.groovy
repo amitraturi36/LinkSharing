@@ -50,4 +50,19 @@ class UseService {
 
 
     }
+    def topTopic(){
+        Topic topic=null
+        int count1=0
+        int count2=0
+        List <Topic> topicList=Topic.getAll();
+        topicList.each {Topic topic1->
+            topic1.resources.each {
+                count1++
+            }
+            topic=count1>count2?topic1:topic
+            count2=count1
+            count1=0
+        }
+        return topic
+    }
 }

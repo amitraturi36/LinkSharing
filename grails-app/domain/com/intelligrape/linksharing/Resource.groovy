@@ -29,6 +29,7 @@ abstract class Resource {
                 sum "score"
                 avg("score")
                 count('id', "score")
+
             }
             eq('resource', resource)
 
@@ -38,8 +39,31 @@ abstract class Resource {
 
     }
 
+    static def TopresourceRater() {
+        List a = ResourceRating.createCriteria().list(max: 1) {
+            createAlias('resource', 'rt')
+            projections {
+                max('score')
+            }
+            max('score')
+        }
+
+        List resourceList = ResourceRating.createCriteria().list {
+
+            createAlias('resource', 'rt')
+            projections {
+                property('resource')
+
+            }
+            eq('score', a.flatten()[0])
+        }
+
+        return resourceList.flatten()[0]
+
+    }
+
     static def toppost() {
-       def topicList = ResourceRating.createCriteria().list {
+        def topicList = ResourceRating.createCriteria().list {
             createAlias('resource', 'resc')
             createAlias('resource.topic', 'resctp')
             projections {
@@ -55,7 +79,7 @@ abstract class Resource {
         }
         List<TopicVO> topicVOList = []
         topicList.each { row ->
-            topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4],description: row[5]))
+            topicVOList.add(new TopicVO(name: row[0], count: row[1], createdBy: row[2], visibility: row[3], id: row[4], description: row[5]))
 
         }
 
@@ -96,8 +120,8 @@ abstract class Resource {
                 order('dateCreated')
             }
         } else {
-            date.date=1
-            date.month=0
+            date.date = 1
+            date.month = 0
             list = Resource.createCriteria().list([max: 5, offset: 0]) {
                 gt('dateCreated', date - date.date + 1)
                 order('dateCreated')
@@ -106,5 +130,21 @@ abstract class Resource {
         return list.findAll { it.topic.visibility.PUBLIC }
     }
 
+    static Resource topresource() {
+       List <Resource> resource = Resource.getAll()
+        Resource resource1=null
+        int count1 = 0
+        int count2 = 0
+        resource.each { Resource rs->
+            rs.ratings.each{
+                count1=count1+ it.score
+            }
+            println count1
+          resource1 =count1>count2?rs:resource1
+            count2=count1
+            count1=0
+        }
+        return resource1
+    }
 
 }

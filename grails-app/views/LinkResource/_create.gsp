@@ -1,16 +1,17 @@
 
-<div id="createlink" class="modal fade" role="dialog">
+  <div id="createlinkresc" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
-    <!-- Modal content-->
+        <!-- Modal content-->
+        <div class="modal-content col-sm-12">
+            <div class="modal-header " style=" background-color: purple;margin-left: -15px;margin-right: -15px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Share Link</h4>
 
-            <div class="modal-content">
-                <div class="modal-header alert-success" style="border: 1px solid grey;">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Share Link</h4>
-                </div>
+            </div>
 
-                <div class="modal-body" style="border: 1px solid grey;background:whitesmoke; ">
+
+            <div class="modal-body col-lg-12 col-sm-12" style="borer: 1px solid grey; ">
                     <span id="linkspan"> </span><br/>
                     <form class="inline-form"   id="linkresourceform" onSubmit="return linkresource() " >
                     <span class=" col-sm-4">Link<sup>*</sup></span>
@@ -38,15 +39,12 @@
 
             </g:if>
 
-            <br/><br/><br/>
-<span style="float: right">
-                <button type="submit"  class="btn btn-success" value="Share"/>Submit </button>
-                <button type="reset" class="btn btn-warning">Reset</button>
-                        </span>
-                        <div class="col-sm-12">
-                            <br/><br/><br/> <br/><br/><br/>
 
-                        </div> <br/><br/><br/>
+                        <span class="col-sm-12 col-lg-12">
+                            <input type="submit" id="edit" name="edit"  class="btn btn-success col-sm-4 col-lg-4" value="Share" style="margin-left: -5px"/>
+                            <button type="reset" class="btn btn-warning col-sm-4 col-lg-4" style="margin-left:100px;">Reset</button>
+                        </span>
+
 
         </form>
 

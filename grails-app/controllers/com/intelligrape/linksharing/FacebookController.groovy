@@ -61,6 +61,11 @@ class FacebookController {
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def login() {
         render "success"
+
+
+
+
+
     }
 
 }

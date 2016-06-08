@@ -2,7 +2,6 @@ package com.intelligrape.linksharing
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class UserController {
@@ -12,12 +11,14 @@ class UserController {
 
     @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def index(SearchCO searchCO) {
+        println ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         User user = springSecurityService.currentUser
-        println(user.authorities)
-        params.max = Math.min(params.max ? params.int('max') : 1, 100)
+        params.max = Math.min(params.max ? params.int('max') : 5, 100)
         List<TopicVO> topicVOList = Topic.getTrendingTopics()
         List<Topic> topicList = user.getSubscribedTopic(params)
-        render view: "index", model: [resources: user.getUnReadResources(searchCO), list: topicVOList, subtopics: topicList, subtopicscount: topicList.size(), user: user]
+        List<Resource> resourceList = user.getUnReadResources(searchCO)
+
+        render view: "index", model: [resources: resourceList, list: topicVOList, subtopics: topicList, subtopicscount: topicList.size(), user: user, resourcecount: resourceList.size(),topuser:User.topUser(),toptopic:useService.topTopic(),topresource:Resource.topresource()]
         // render view: "index", model: [list: userService.serviceMethod(), subtopics: session.user.subscribedTopic]
     }
 
@@ -39,13 +40,13 @@ class UserController {
         if ((okContentTypes.contains(file?.getContentType())) || (!file)) {
 
             if (user.validate()) {
-                user.save(flush: true,validate: false)
+                user.save(flush: true, validate: false)
                 def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
                 new UserRole(user, userRole).save()
                 flash.messages = "sucessfully registered"
-                springSecurityService.reauthenticate(user.username,user.password)
-              //  springSecurityService.currentUser=user
-                redirect (controller: 'login',action: 'auth')
+                springSecurityService.reauthenticate(user.username, user.password)
+                //  springSecurityService.currentUser=user
+                redirect(controller: 'login', action: 'auth')
 
             } else {
                 render view: '/login/auth', model: [user: user]
@@ -66,7 +67,7 @@ class UserController {
             Topic topic = Topic.get(id)
             List<User> user = topic.subscribedUser
 
-            render view: "/topic/show", model: [user: user, topics: topic]
+            render view: "/topic/_show", model: [user: user, topics: topic]
 
         } else {
             flash.errors = "No such topic Exists"
@@ -80,7 +81,7 @@ class UserController {
         if (springSecurityService.isLoggedIn()) {
             User user = springSecurityService.currentUser
 
-            render view: "/topic/show", model: [user: user, topics: Topic.findAllByCreatedBy(user)]
+            render view: "/topic/_show", model: [user: user, topics: Topic.findAllByCreatedBy(user)]
         }
     }
 
@@ -136,39 +137,19 @@ class UserController {
         params.offset = (params.offset ? params.int('offset') : 0)
 
         User user = User.get(searchString) //resourceSearchCO.user
+
         List<Topic> topicList = user?.getSubscribedTopic(params)
         List<Topic> userTopics = Topic.findAllByCreatedBy(user, [max: 5, offset: params.offset])
 
-        if ((sessionUser?.id == user.id) || (sessionUser?.admin)) {
-            if (resourceSearchCO.status) {
-                if (resourceSearchCO.status == 1) {
-                    render template: 'profilesub', model: [
-                            user          : resourceSearchCO.user,
-                            subtopics     : topicList,
-                            subtopicscount: topicList.size()
-                    ]
-                } else {
-                    render view: '/user/profile', model: [
-                            user           : resourceSearchCO.user,
-                            usertopics     : userTopics,
-                            usertopicscount: userTopics.size()
-                    ]
-                }
-
-            } else {
-
-                render view: '/user/profile', model: [
-                        user           : resourceSearchCO.user,
-                        subtopics      : topicList,
-                        subtopicscount : topicList.size(),
-                        usertopics     : userTopics,
-                        usertopicscount: userTopics.size()
-                ]
-            }
+        if ((sessionUser)) {
+           render(template:'/user/profilelogedinuser',model:[user           : resourceSearchCO.user,
+                                                       subtopics      : topicList,
+                                                       subtopicscount : topicList.size(),
+                                                       usertopics     : userTopics,
+                                                       usertopicscount: userTopics.size()])
 
         } else {
-            topicList = topicList.findAll { it.visibility.PUBLIC }
-            userTopics = userTopics.findAll { it.visibility.PUBLIC }
+
             render view: '/user/profile', model: [user           : resourceSearchCO.user,
                                                   subtopics      : topicList,
                                                   subtopicscount : topicList.size(),
@@ -254,7 +235,15 @@ class UserController {
                 eq('active', false)
             }
         } else {
-            user = User.getAll()
+            user = User.createCriteria().list() {
+
+                or {
+                    ilike('firstName', "%${search}%")
+                    ilike('lastName', "%${search}%")
+                    ilike('email', "%${search}%")
+
+                }
+            }
         }
         user = user.findAll { (!it.admin) }
         render view: '/user/admin', model: [users: user, usercount: user.size()]
@@ -309,6 +298,17 @@ class UserController {
     }
 
     @Secured(['ROLE_USER', 'ROLE_ADMIN'])
+    def inboxload() {
+
+        User user = springSecurityService.currentUser
+        if (user) {
+            SearchCO searchCO = null
+            render template: "/user/inbox_main_layout", model: [resources: user.getAllResources(), user: user]
+
+        }
+    }
+
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
     def inbox(SearchCO searchCO, Integer status) {
         User user = springSecurityService.currentUser
         if (status == 1) {
@@ -322,15 +322,35 @@ class UserController {
                 order('r.dateCreated')
             }
             if (resourceList) {
-                render template: "/user/inbox", model: [resources: user.getUnReadResources(searchCO), user: user]
+
+                render template: "/user/inbox", model: [resources: user.getAllResources(), user: user]
             }
 
         } else {
-
-            render template: "/user/inbox", model: [resources: user.getUnReadResources(searchCO), user: user]
+            render template: "/user/inbox", model: [resources: user.getAllResources(searchCO), user: user]
 
         }
     }
+
+    @Secured(['ROLE_USER', 'ROLE_ADMIN'])
+    def inboxbar() {
+        User user = springSecurityService.currentUser
+        SearchCO searchCO = null
+        Date d = new Date()
+        d.seconds = d.seconds - 10
+        def resourceList = ReadingItem.createCriteria().list([max: 0, offset: 0]) {
+            createAlias('resource', 'r')
+            eq('user', user)
+            eq('isRead', false)
+            gt('r.dateCreated', d)
+            order('r.dateCreated')
+        }
+        if (resourceList) {
+            List<Resource> resourceList1 = user.getUnReadResources(searchCO)
+            render template: "/user/inbox_top_bar", model: [resources: resourceList1, user: user, resourcecount: resourceList1.size()]
+        }
+    }
+
 //    def myBean
 //    def    myBeanConstrctr
 //    def beanTest(){
@@ -344,14 +364,20 @@ class UserController {
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
     def test(User user) {
-     //   render view: '/user/test'
-       // render myBean.firstName
-            // render customBean.firstName
+        //   render view: '/user/test'
+        // render myBean.firstName
+        // render customBean.firstName
 //        UserSearchCO co=new UserSearchCO(firstName: "Amit")
 //        render(User.search(co).listDistinct())
 
-    //render myBean.properties
-
+        //render myBean.properties
+//       File file=new File("/home/amit/NarutoShippuudenEpisode459.mp4")
+//      response.contentType = 'video/mp4' // or the appropriate image content type
+//        file.eachByte {
+//            response.outputStream << it
+//            response.outputStream.flush()
+//        }
+render "file:///home/amit/NarutoShippuudenEpisode459.mp4"
     }
 
 

@@ -1,70 +1,72 @@
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!-- Name Panel -->
 <!-- ************************************************** -->
 
+<div id="inboxpanel" >
+<g:if test="${!resources}">
 
-   <div id="inboxpanel">
-        <g:if test="${!resources}">
+    <span class="alert-warning">Inbox Is Empty</span>
+    <span class="col-sm-12"></span>
+</g:if>
+<g:else>
+    <div >
+        <div class="col-lg-12" id="messageanderrorblock" >
+        </div>
+        <table class="table table-striped" style="margin-top: 2%">
 
-            <span class="alert-warning">Inbox Is Empty</span>
-            <span class="col-sm-12"></span>
-        </g:if>
-        <g:else>
-            <g:each in="${resources}" var="resource">
-                <div class="container col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-3"><ls:userImage user="${resource.createdBy}"/>
-                        </div>
+            <g:each in="${resources}" var="post">
+                <tr>  <td>
+                    <span class="h2 col-sm-12 text-info" style="text-align: center;margin-bottom: 5%"> ${post.topic.topicName}</span>
 
-                        <div class="col-sm-3 h5">${resource.createdBy}</div>
-
-                        <div class="col-sm-4" style="float: right">
-                            <a href="#" class="text-left">${resource.topic.topicName}</a>
-                        </div>
+                    <div class="col-sm-3" >
+                        <a href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none"><ls:userImage
+                                user="${post.createdBy}"/></a>
                     </div>
+                    <span class="col-sm-8">
+                        <a  class="h3 " href="/user/profile?userId=${post.createdBy.id}" style="text-decoration: none;">${post.createdBy}</a>
+                        <span class="pull-right" style="font-size:20px;"><ls:read
+                                resource="${post}"/>
+                        </span>
 
-                    <div class="row">
-                        <span class="col-sm-3"></span>
 
-                        <div class="col-sm-3">
-                            <small class="text-muted">@${resource.createdBy.firstName}</small>
-                        </div>
+                    </span>
+                    <span class=" col-sm-3 text-muted "
+                          style="    padding: 5px;margin-left: 6px;">
+                        <g:formatDate date="${post.dateCreated}" type="time" style="short" />
+                        <g:formatDate date="${post.dateCreated}" type="date" style="short" />
 
-                        <div class="col-xs-6 text-muted">
-                            <g:formatDate date="${resource.dateCreated}" type="datetime" style="MEDIUM"/></div>
-                    </div>
-                    <br/>
+                    </span>
 
-                    <div class="col-sm-10">
-                        <p class="h5 right">${resource.description}</p>
-                    </div>
-                    <br/>
+                    <p class="text-success col-sm-10" style="margin-left: 23%" >${post.description}</p>
 
-                    <div class="row col-sm-12">
-                        <div class="fb-share-button" style="transform: scale(2);" data-href="http://www.linksharing.com/topic/show?id=${resource.topic.id}" data-layout="icon"></div>
-                        <a class="twitter-share-button btn fa fa-twitter" onclick="twitter()" style="transform: scale(2);">
+                    <div class=" col-sm-12 row" style="margin-left: 5px">
+                        <a href="http://www.facebook.com"><i class="fa fa-facebook "
+                                                             style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
+                        </a>
+                        <a href="http://www.google.com"><i class="fa fa-google"
+                                                           style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
                         </a>
                         <a href="http://www.twitter.com"><i class="fa fa-twitter"
                                                             style="font-size:20px; padding-top:20px;padding-right:20px;"></i>
                         </a>
-                        <span style=" padding-top:20px;padding-right:20px;"><ls:download resource="${resource}"/>
-                        </span>
-                        <span style=" padding-top:20px;padding-right:20px;"><ls:link resource="${resource}"/>
-                        </span>
-                        <span style="font-size:20px; padding-top:20px;padding-right:20px;"><ls:read
-                                resource="${resource}"/>
-                        </span>
-                        <a href="/resource/show?id=${resource.id}&status=1"
-                           style="float: right;padding-top:20px;padding-right:20px">View Post</a>
+                        <ins><g:link url="/resource/show?id=${post.topic.id}" class="text-info h3"
+                                     style="float: right">View post</g:link></ins>
                     </div>
-                </div>
-                <br/><br/><br/><br/>
 
-                <div class="col-sm-12" style="margin-top:20px;padding-top: 20px"></div>
-                <br/><br/><br/><br/>
+                </td>  </tr>
             </g:each>
-        </g:else>
+        </table>
     </div>
+    </div>
+</g:else>
 
 </div>
-</div>
+
+
+
+
+
+
+
+

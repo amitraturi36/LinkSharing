@@ -1,15 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <title></title>
-    <meta name="layout" content="main"/>
-</head>
 
-<body>
-<div class=" panel panel-default col-sm-12" id="loginbody">
+
+
+<div style="
+width: 123%; margin-left:-11.7%;" >
+<div class=" panel panel-default col-sm-12" id="loginbody" style="">
    <div class=" h3" style="    margin-left: 50%;;padding-top: 2%">Update Info</div>
 
-    <div class="panel-body ">
+    <div class="panel-body " style="">
         <span class="col-sm-12"></span>
 
         <g:uploadForm class="form-inline cmxform" role="form" url="/user/update" method="post"
@@ -56,9 +53,9 @@
 
             <g:render template="changepassword"/>
         </div>
-    </div></div>
+    </div>
+    <div style="    margin-bottom: 10%;"></div>
 
+</div>
+</div>
 
-
-</body>
-</html>

@@ -1,15 +1,17 @@
-<div id="createDoc" class="modal fade" role="dialog">
+
+   <div id="createDoc" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
-    <!-- Modal content-->
+        <!-- Modal content-->
+        <div class="modal-content col-sm-12">
+            <div class="modal-header " style=" background-color: purple;margin-left: -15px;margin-right: -15px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Share Documents</h4>
 
-            <div class="modal-content">
-                <div class="modal-header alert-success" style="border: 1px solid grey; background:#f2f2f2;">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Share Document</h4>
-                </div>
+            </div>
 
-                <div class="modal-body" style="borer: 1px solid grey; ">
+
+            <div class="modal-body col-lg-12 col-sm-12" style="borer: 1px solid grey; ">
         <span id="docspan"> </span><br/>
         <g:uploadForm name="mydocform" class="inline-form" onSubmit="return docresource()">
                     <span class=" col-sm-4">Document<sup>*</sup></span>
@@ -38,14 +40,13 @@
 
                 </div>
                 <br/><br/><br/>
-            <span style="float: right">
-                <g:submitButton name="linkresource" class="btn btn-success" value="Share"/>
-                <button type="reset" class="btn btn-warning">Reset</button>
-            </span>
-            <div class="col-sm-12">
-                <br/><br/><br/> <br/><br/><br/>
+            <div class="row col-sm-12" style="margin-bottom: 20px">
 
-            </div> <br/><br/><br/>
+                <button type="submit" class="btn btn-success  col-sm-4" style="margin-left: 3%;">Share</button>
+                <button type="reset" class="btn btn-warning col-sm-4" style="margin-left: 19%;">Reset</button>
+            </div>
+
+
         </g:uploadForm>
 
             </div>
