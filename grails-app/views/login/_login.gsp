@@ -1,4 +1,4 @@
-<div >
+<div>
 
     <div class="logmod__wrapper">
         <div class="logmod__container">

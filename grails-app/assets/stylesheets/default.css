@@ -24,13 +24,14 @@
 	#recentsharebody
 	{
 
-		margin-top: -35px;
-		padding: 0px;
+		margin-top: 60px;
+		padding-top: 0px;
 		background: orange ;
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 12pt;
 		font-weight: 400;
 		color: #000000;
+		position: relative;
 
 	}
 	#toppostbody{

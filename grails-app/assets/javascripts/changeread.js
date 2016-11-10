@@ -312,7 +312,6 @@ $("document").ready(function () {
             jQuery.ajax({
                 type: 'POST',
                 url: "/user/checkUniqueUser",
-
                 data: {
                     userName: userval,
                     status: 2

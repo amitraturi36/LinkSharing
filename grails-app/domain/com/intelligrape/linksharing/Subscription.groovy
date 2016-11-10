@@ -15,7 +15,7 @@ class Subscription {
     }
 
     def afterInsert() {
-        log.info "----------User is Subscribed------"
+        log.info "----------User is Subscribed------"zzz
     }
 
 }

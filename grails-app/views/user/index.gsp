@@ -15,8 +15,8 @@
                 <div class="col-lg-10" id="dashboardcontentbody" style="    margin-left: 9%;">
                     </div>
 
-                    <div class="col-lg-12" id="dashboardcontentbody2" >
-            <div class="col-sm-12 col-lg-12 " style="background: aliceblue;">
+                    <div class="col-lg-12 container" id="dashboardcontentbody2" >
+            <div class="col-sm-12 col-lg-12 " style="background: aliceblue;width: 102%;">
                 <div class="row">
 
                     <div class="col-lg-9 main-chart " style="" >

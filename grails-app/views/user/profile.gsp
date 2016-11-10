@@ -95,7 +95,7 @@
 
     <div id="wrapper4">
         <div id="footer" class="container">
-            <div id="loginfooter" style="margin-left:-10%;margin-right:-10%;padding-bottom: 5% ;padding-top: 5%">
+            <div id="loginfooter" style="margin-left:-10%;margin-right:-20%;padding-bottom: 5% ;padding-top: 5%">
                 <header class="title">
                     <h2>Get in touch</h2>
                     <span class="byline">Like Us</span></header>

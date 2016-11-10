@@ -13,7 +13,7 @@
 //= require changeread
 //= require spinner.js
 //= require jquery.spinner.js
-//= requireindex.js
+//= require index.js
 //= require profile_jquery.js
 //= require sidebarscroll.js
 //= require scroll_jquery.js

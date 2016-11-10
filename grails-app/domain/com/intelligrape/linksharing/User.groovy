@@ -134,7 +134,7 @@ class User implements Serializable {
 
     static namedQueries = {
         search {
-            UserSearchCO co ->
+            UserSearchCO co ->e
                 if (co.active == null) {
                     if (co.firstName) {
                         eq("firstName", co.firstName)

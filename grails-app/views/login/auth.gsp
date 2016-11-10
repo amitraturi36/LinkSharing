@@ -6,15 +6,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
-
+    <link rel="canonical" href="https://dev.twitter.com/web/tweet-button">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet"/>
     <title>Link Sharing</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
-    <link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'apple-touch-icon-retina.png')}">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="canonical" href="https://dev.twitter.com/web/tweet-button">
+
     <asset:javascript src="application.js"/>
     <asset:stylesheet src="application.css"/>
     <asset:stylesheet src="bootstrap.min.css"/>
@@ -157,8 +154,11 @@
     }
 
 </script>
+<img src="/assets/linkshare.jpg"  style="height: 200%;width: 100%;top: 802px;position: absolute;opacity: 0.5;
+Ffilter: alpha(opacity=50)">
 <div id="changebody" >
-<div id="loginbody">
+<div id="loginbody" style="position: relative">
+
     <div class="container  ">
         <div class="row pull-right">
 
@@ -184,7 +184,7 @@
         </div>
     </div>
 
-    <div id="three-column" class="container" style="margin-top: -10%">
+    <div id="three-column" class="container" style="margin-top: -10%;position: relative">
         <div style="margin-left: 10%">
             <div><span class="arrow-down"></span></div>
 
@@ -230,37 +230,39 @@
 </div>
 
 <div id="wrapper2">
-    <div id="welcome" class="container" style="padding-top: 5px">
-        <div class="title" id="logintemplate">
+    <span id="logintemplate" style="margin-top: -15%"></span>
+    <div id="welcome" class="container" style="padding-top: 5px ;position: relative; ">
+
+        <div class="title" >
             <h2>Login Or Create Your Account</h2>
         </div>
 
 
-            <g:if test="${error}">
+            <g:if test="${error}" >
 
                <span class="alert-danger h4" style="margin-left:5%;padding:15px  ">${error}</span>
-                <div style="margin-top: -70px">
+                <div style="margin-top: -60px">
             </g:if>
         <g:else>
-            <div style="margin-top: -70px">
+            <div style="margin-top: -60px" >
         </g:else>
             <g:render template="login"/>
             <g:render template="/login/forgetPassword"/>
         </div>
     </div>
-
+    </div>
     <div id="recentsharebody">
 
-        <div class="title" style="text-align: center;padding-top: 1%">
+        <div class="title" style="text-align: center;padding-top:2%;padding-bottom: 4%">
             <h2>Recent Shared</h2>
             <span class="byline">Recent Posts share By the Users</span>
 
-            <div class=" col-sm-12 ">
+            <div class=" col-sm-12 " >
 
-                <div class="nav navbar" style="margin-right: 45%;">
+                <div class="nav navbar" style="margin-right: 43%;">
                     <a class="btn dropdown-toggle " data-toggle="dropdown" href="#"
                        style="font-size: 20px ">
-                        Today
+                       Select Post By Time
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu   " style="    margin-left: 76%;">
@@ -276,16 +278,14 @@
             </div>
 
         </div>
-        <br>
-
-
-        <div class="col-sm-12">
+        </div>
+        <div class="col-sm-12" style="background-color:aliceblue;position: relative;margin-top: -4% ">
             <br> <br>
             <ls:recentshare/>
 
         </div>
 
-    </div>
+
 
     <div class="col-sm-12">
         <div id="toppostbody" style="padding-top: 5%;">
@@ -323,17 +323,16 @@
     </div>
 
     <div id="wrapper4">
-        <div id="footer" class="container">
-            <div id="loginfooter" style="margin-left:-10%;margin-right:-10%;padding-bottom: 5% ;padding-top: 5%">
+        <div id="footer" class="container col-lg-12 ">
+            <div id="loginfooter" style="margin-left: -2%;margin-right: -1%; padding-bottom:5px">
                 <header class="title">
                     <h2>Get in touch</h2>
                     <span class="byline">Like Us</span></header>
                 <ul class="contact">
-                    <li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
-                    <li><a href="#" class="icon icon-facebook"><span></span></a></li>
-                    <li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
-                    <li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
-                    <li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
+                    <li><a href="https://twitter.com/tothenew?lang=en" class="icon icon-twitter"><span>Twitter</span></a></li>
+                    <li><a href="https://www.facebook.com/tothenewdigital/" class="icon icon-facebook"><span></span></a></li>
+                    <li><a href="https://plus.google.com/+Intelligrape/videos" class="fa fa-google-plus"><span class="fa-google-plus"></span></a></li>
+                    <li><a href="https://www.linkedin.com/company/tothenew" class="fa fa-linkedin "><span class="fa-linkedin "></span></a></li>
                 </ul>
             </div>
         </div>
@@ -356,6 +355,7 @@
     });
 
 </script>
+
 </body>
 </html>
 

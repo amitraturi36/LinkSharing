@@ -2,10 +2,14 @@ package com.intelligrape.linksharing
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.multipart.commons.CommonsMultipartFile
+
+import javax.sql.rowset.serial.SerialBlob
 
 class UserController {
 //    def userService
+   
     def useService
     def springSecurityService
 
@@ -363,7 +367,7 @@ class UserController {
 //    CustomBean  myBean
 
     @Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
-    def test(User user) {
+    def test(String ap) {
         //   render view: '/user/test'
         // render myBean.firstName
         // render customBean.firstName
@@ -377,7 +381,25 @@ class UserController {
 //            response.outputStream << it
 //            response.outputStream.flush()
 //        }
-render "file:///home/amit/NarutoShippuudenEpisode459.mp4"
+//render "file:///home/amit/NarutoShippuudenEpisode459.mp4"
+//        println("<<<<<<<<<<<<<<<<<<<<<<<<<"+ap)
+//        if(ap){
+//            render "gabar"
+//        }
+//        else {
+//            render view: "/user/test"
+//        }
+
+render view: "/user/test"
+//    println"11111111111111111111111111111111<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<${ap}"
+//    File file=new File("/home/amit/dest.png")
+//    response.contentType = 'text/txt'
+//    response.outputStream << file.absolutePath
+//    response.outputStream.flush()
+//
+
+
+
     }
 
 
